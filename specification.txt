@@ -1,0 +1,174 @@
+================================================================
+
+    Specification of the 16 bit homebrew von Neuman Machine    
+            by Simon Walter & Alexander Wersching
+                 last updated 11.05.2021
+
+================================================================
+
+1.1. Table of Contend
+
+1. General Notes
+    1.1 Table of Contend
+    1.2 Update History
+    1.3 Introduction
+2. Basic schematic
+3. Part specification
+    3.1. BUS
+    3.2. ALU
+
+================================================================
+
+1.2. Update History
+
+11.05.2021 by Alexander
+    Added Basic schematic
+    Added General Notes
+    Added Part specification for BUS and ALU
+
+================================================================
+
+1.3. Introduction
+
+This is first official iteration of the homebrew von Neuman Machine
+aka Computer aka CPU (*1). This Reference sheet/Specification/Documenation 
+should document and discripe the our self build CPU. This CPU is designed
+for build with DIP IC and basic electronic compends eg Resistor, Capacitors
+and Transistors. The components shall be mounted onto Printed circet
+Board or PCBs.
+
+This development process is driven by Simon Walter and Alexander Wersching
+(Jufo Gymansium Puchheim)
+
+Some simple an general rules always should hold true:
+
+ - Reads on High, Writes on edge
+ - High is defined as 3.3V - 5V
+ - Low is defined as 0V - 0.7V
+ - floating 0.7 - 3.3V should be avoided
+
+(*1) It's no really an CPU, because it should feature RAM or Memory
+    and Input and Output devices
+
+================================================================
+
+2. Basic schematic
+
+A basic schematic shall be provided now
+
++------------+      +-----+
+|            |      | BUS |
+|            |      |     |
+|     CU   IR| <--- |     |
+|            |      |     |
+|            |      |     |
++------------+      |     |
+                    |     |
+        +---------- |     |
+        |           |     |       +---------------+
+        |           |     |       |               |
+        \/          |     | <---- | Output Device |
++---------------+   |     |       |               |
+|               |   |     |       +---------------+
+| Register File |   |     |  
+|               |   |     |       +---------------+
+|               |   |     |       |               |
+|               |   |     | ----> | Input  Device |
+|               |   |     |       |               |
++---------------+   |     |       +---------------+
+  |          |      |     |
+  \/         \/     |     |       +--------------+
++---------------+   |     |       |              |  
+|               |   |     | ----> | Data In      |
+|      ALU      |   |     |       |              |
+|               |   |     |       |              |
+|   A   D       |   |     |       | Main  Memory |
++---------------+   |     |       |              |
+    |   |           |     |       |              |
+    |   +---------> |     | <---- | Data Out     |
+    +-------------> |     | ----> | Address      |
+                    +-----+       +--------------+    
+
+===============================================================
+
+3. Part specification
+
+The following parts in the schematic now shall be described
+
+3.1. BUS
+    The Bus is an connecting point for every component in
+    the CPU (besides Register File). The bus is an long
+    circet Board with 48 parallel lines for data and address 
+    transportation and for holding the CPU to gether.
+    Every board is inserted perpendicular to the BUS for better
+    use of space. 
+
+           /|    /|    /|    /|
+          / |   / |   / |   / |
+       /=/  |==/  |==/  |==/  |===/
+      /  |  /  |  /  |  /  |  /  / 
+     /   | /   | /   | /   | /  /
+    /    |/    |/    |/    |/  /
+   /==========================/
+     [Drawing of the bus PCB]
+    
+    
+    The lines from 0-47 always should follow This
+    structure:
+
+[Power] [GND] [Control] [Address] [ Data  ] [ unused ] [Clock] [Ground] [Power]
+[  0  ] [ 1 ] [  2-9  ] [ 10-25 ] [ 26-41 ] [ 42-44  ] [  45 ] [  46  ] [ 47  ]
+
+    Ground and Power are Power supply. Power is 5V and Ground 0V.
+
+    Control is connected to the CU for controlling every circet.
+    Every circet has an unique ID that specifies the action/module.
+    A module should test if the corresponding Data is put to
+    the control lines. If the ID and data matches the Module is free
+    to read or write data to the bus. Note that the rule "Writes on edge" 
+    should always hold true. This is the reason the system clock is 
+    exposed on the bus. Note that a module can have more then one Id 
+    that is valid. For example the Memory module has one write and one 
+    read ID. This system is put in places to insure maintainability 
+    and flexibility.
+
+3.2. ALU
+    The ALU (Arithmetic and Logic Unit) is the calculating
+    part of the Computer. It shall do the following jobs
+    Adding, subtracting, bit shifting, xoring, anding, oring
+    multiplying, differentiating (the big - small), comparing
+    (>,<,0). As well as managing address and data flow
+
+    For better developing, managing and trouble shotting the
+    ALU should be build an an modular manner. Every operating
+    eg. xor or add should be build as an separate PCB. This
+    pcb should be inserted into the main ALU PCB.
+
+    +----------------------------------------------+
+    |                                              |
+    |   +--------------------------------------+   |
+    |   |                                      |   |
+    |   |             Operation 0              |   |
+    |   |                                      |   |
+    |   +--------------------------------------+   |
+    |   +--------------------------------------+   |
+    |   |                                      |   |
+    |   |             Operation 1              |   |
+    |   |                                      |   |
+    |   +--------------------------------------+   |
+    |                                              |
+    |                    . . .                     |
+    |                                              |
+    |   +--------------------------------------+   |
+    |   |                                      |   |
+    |   |             Operation n              |   |
+    |   |                                      |   |
+    |   +--------------------------------------+   |
+    |                                              |
+    +----------------------------------------------+
+
+    Every Operation should be connected by the following
+    standardized pin connector
+
+    [Insert Drawing here]
+
