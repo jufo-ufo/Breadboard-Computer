@@ -46,6 +46,7 @@ Some simple an general rules always should hold true:
  - High is defined as 3.3V - 5V
  - Low is defined as 0V - 0.7V
  - floating 0.7 - 3.3V should be avoided
+ - for basic logic NAND gates are preffered
 
 (*1) It's no really an CPU, because it should feature RAM or Memory
     and Input and Output devices
