@@ -99,7 +99,7 @@ The following parts in the schematic now shall be described
 3.1. BUS
     The Bus is an connecting point for every component in
     the CPU (besides Register File). The bus is an long
-    circet Board with 48 parallel lines for data and address 
+    circet Board with 64 parallel lines for data and address 
     transportation and for holding the CPU to gether.
     Every board is inserted perpendicular to the BUS for better
     use of space. 
@@ -114,11 +114,11 @@ The following parts in the schematic now shall be described
      [Drawing of the bus PCB]
     
     
-    The lines from 0-47 always should follow This
+    The lines from 0-63 always should follow This
     structure:
 
 [Power] [GND] [Control] [Address] [ Data  ] [ unused ] [Clock] [Ground] [Power]
-[  0  ] [ 1 ] [  2-9  ] [ 10-25 ] [ 26-41 ] [ 42-44  ] [  45 ] [  46  ] [ 47  ]
+[  0  ] [ 1 ] [  2-9  ] [ 10-25 ] [ 26-41 ] [ 42-60  ] [  61 ] [  62  ] [ 63  ]
 
     Ground and Power are Power supply. Power is 5V and Ground 0V.
 
