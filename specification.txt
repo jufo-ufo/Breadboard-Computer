@@ -16,15 +16,21 @@
 3. Part specification
     3.1. BUS
     3.2. ALU
+4. Hardware Refrences
+5. Instruction set
 
 ================================================================
 
 1.2. Update History
 
-11.05.2021 by Alexander
+11.05.2021 by Alexander & Simon
     Added Basic schematic
     Added General Notes
     Added Part specification for BUS and ALU
+
+12.05.2021 by Alexander & Simon
+    Change Bus desgin from 48 to 64
+    Change Bus Layout and added Intrup Lines
 
 ================================================================
 
@@ -117,11 +123,17 @@ The following parts in the schematic now shall be described
     The lines from 0-63 always should follow This
     structure:
 
-[Power] [GND] [Control] [Address] [ Data  ] [ unused ] [Clock] [Ground] [Power]
-[  0  ] [ 1 ] [  2-9  ] [ 10-25 ] [ 26-41 ] [ 42-60  ] [  61 ] [  62  ] [ 63  ]
+[Ground] [Power] [Data] [Address] [Control] [unused] [Interupt set] [Intrupt ID] [ unused] [Clock] [Power] [Ground]
+[   0  ] [  1  ] [2-18] [ 19-35 ] [ 36-44 ] [42-45 ] [     46     ] [   47-54  ] [ 55-60 ] [  61 ] [  62 ] [  63  ]
 
-    Ground and Power are Power supply. Power is 5V and Ground 0V.
-
+    Ground: 0V
+    Power: 5V
+    Data: General Data bus
+    Address: The Address that gets feed to Main Memory
+    Control: Operation ID transmission from CU to Module
+    Interupt set: If an error/intrupt occurs this pin has to be set
+    Interupt ID: 
+    
     Control is connected to the CU for controlling every circet.
     Every circet has an unique ID that specifies the action/module.
     A module should test if the corresponding Data is put to
@@ -138,7 +150,7 @@ The following parts in the schematic now shall be described
     part of the Computer. It shall do the following jobs
     Adding, subtracting, bit shifting, xoring, anding, oring
     multiplying, differentiating (the big - small), comparing
-    (>,<,0). As well as managing address and data flow
+    (>,<,=). As well as managing address and data flow
 
     For better developing, managing and trouble shotting the
     ALU should be build an an modular manner. Every operating
@@ -173,3 +185,24 @@ The following parts in the schematic now shall be described
 
     [Insert Drawing here]
 
+
+===============================================================
+
+5. Instruction Set
+
+
+
+The Instruction type featur four diffrent types of instructions
+
+(I)   ALU-OP <r> <r> <r>
+(II)  BUS-OP <r>
+(III) BUS-OP <r> <addr>
+
+Every Instruction is 24 bit long 
+
+(I)   [ Operation ID] [] 
+       
+(II)  [] [ 0-6       ]
+
+(III) [Operation ID]    [ r  ] [addr ]
+      [     0-6    ] [] [8-12] [13-31] 
