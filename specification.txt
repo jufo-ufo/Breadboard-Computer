@@ -38,7 +38,7 @@
 
 ================================================================
 
-1.3. Introduction
+1.3.1 Introduction
 
 This is first official iteration of the homebrew von Neuman Machine
 aka Computer aka CPU (*1). This Reference sheet/Specification/Documenation 
@@ -52,14 +52,25 @@ This development process is driven by Simon Walter and Alexander Wersching
 
 Some simple an general rules always should hold true:
 
- - Reads on High, Writes on edge
- - High is defined as 3.3V - 5V
- - Low is defined as 0V - 0.7V
- - floating 0.7 - 3.3V should be avoided
- - for basic logic NAND gates are preffered
+1.3.2 Basic Concepts
+
+The base of every moderen Computational-System is the a way to represent
+data. There are many diffrent ways to represent data with an physikal
+unit like Volage, Presure, Wight. Voltage is chosen for it's effiency
+in spaces well as in time. Voltage can change repitlay with littel power
+const. Voltage is also nice to handle because of small size the computing
+componets. In this CPU so called DIP-IC are used.
+
+Sadly there is one Problem with Voltage base system. So called noise.
+In our morderen world we have a lot of wires in our walls and floors. If
+a current is switch one an change in the electric field is cause, that proprages
+throw the air like a wave. This Change cause an change in the magnetic field,
+witch cause an voltgae to be induce the the an conductor. This change the voltage
+present on the cable ever so slightly.
 
 (*1) It's no really an CPU, because it should feature RAM or Memory
     and Input and Output devices
+
 
 ================================================================
 
