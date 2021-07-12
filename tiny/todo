@@ -1,6 +1,7 @@
-[ ] Test: Alle Element Write auf falling edge
-[ ] ALU: B -> address bus
-[ ] Memory: WE für Programmierer
+[X] Test: ALU, Memory Write auf falling edge
+[X] ALU: A2Address bus
+[X] ALU: Pass B throw
+[X] Memory: WE für Programmierer
 [ ] CU entwerfen/bauen
 [ ] I/O bauen
 [ ] Instruction Set entwerfen
