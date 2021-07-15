@@ -1,0 +1,9 @@
+[X] Test: ALU, Memory Write auf falling edge
+[X] ALU: A2Address bus
+[X] ALU: Pass B throw
+[X] Memory: WE für Programmierer
+[ ] CU entwerfen/bauen
+[ ] I/O bauen
+[ ] Instruction Set entwerfen
+[ ] Instruction Set ROMs programieren
+[ ] Test Program Schreiben (HelloWorld)
