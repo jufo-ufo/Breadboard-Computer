@@ -1,0 +1,110 @@
+
+================ Register ================
+
+0 : ZERO : Contains const 0x0
+1 : PC   : Current Address for execution
+2 : SP   : Address to the to of the Stack
+3 : A    : General purpose
+4 : B    :      ...
+5 : C    :      ...
+6 : D    :      ...
+7 : E    :      ...
+
+================ Memory  ================
+
+Data Length    : 16 bit
+Address Length : 16 bit
+
+ w (word)      = 2  B (byte)
+kw (kilo word) = 2 kB (kilo byte)
+
+                     Size:
+0x0000 +-------------+
+       | ROM         |  16384 w = 16.0 kw
+       |             |
+       | Supervisor  |
+0x4000 +-------------+
+       | RAM         |  18431 w = 18.4 kw
+       | (Bank 1)    |
+       | INS         |
+       | 0x4800      |
+       |          /\ |   
+       | STACK    || |
+0x5800 +-------------+
+       | RAM         |  18431 w = 18.4 kw
+       | (Bank 2)    |
+       |             |
+       | Optional    |
+       | Data        |
+0xd000 +-------------+
+       | RAM         |  12287  w = 12.3 kw
+       | Supervisor  |
+       |             |  
+       |          /\ |
+       | STACK    || |
+0xffff +-------------+
+
+================ flags ================
+
+Overflow (of) : set if an calculation results in an intager overflow
+Equale (e)    : set if both input values to TEST are the same
+Greater (g)   : set if the first value to TEST is greate then the second value
+Smaller (s)   : set if the first value to Test is smaller then the second value
+
+================ Input & Output ================
+
+There are two function for IO Manipulation:
+IN  : for reading data from an IO devices
+OUT : for writing data to an IO devices
+
+Every IO - Devices has an IO-ID
+This IO-ID works like an address for memory
+
+An maps as follows:
+
+       +----------------------------+
+0x0000 | 1. IN  : IO-ID             | 
+       | 2. OUT : Type of IO-Device |
+       +----------------------------+
+       | Every exsiting IO-Device   |
+0xffff +----------------------------+
+
+Slot 0 maps to IO-ID 0x0001
+Slot 1 maps to IO-ID 0x0002
+ ...
+Slot n maps to IO-ID n+1
+
+There exsists a flag if an device is pluged in
+
+================ Instruction Set ================
+
+nop
+
+mov
+add
+sub
+mul ?
+div ?
+xor
+and
+or
+not
+aes ??
+sha1 ??
+
+str
+ld
+
+push
+pop
+call
+ret
+
+test
+je
+jo
+
+in
+out
+
+
