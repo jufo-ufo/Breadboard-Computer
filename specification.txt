@@ -44,7 +44,7 @@ This is first official iteration of the homebrew von Neuman Machine
 aka Computer aka CPU (*1). This Reference sheet/Specification/Documenation 
 should document and discripe the our self build CPU. This CPU is designed
 for build with DIP IC and basic electronic compends eg Resistor, Capacitors
-and Transistors. The components shall be mounted onto Printed circet
+and Transistors. The components shall be mounted onto Printed circuit
 Board or PCBs.
 
 This development process is driven by Simon Walter and Alexander Wersching
@@ -78,13 +78,8 @@ present on the cable ever so slightly.
 
 A basic schematic shall be provided now
 
-+------------+      +-----+
-|            |      | BUS |
-|            |      |     |
-|     CU   IR| <--- |     |
-|            |      |     |
-|            |      |     |
-+------------+      |     |
+                    +-----+
+                    | BUS |
                     |     |
         +---------- |     |
         |           |     |       +---------------+
@@ -108,8 +103,17 @@ A basic schematic shall be provided now
 +---------------+   |     |       |              |
     |   |           |     |       |              |
     |   +---------> |     | <---- | Data Out     |
-    +-------------> |     | ----> | Address      |
-                    +-----+       +--------------+    
+    +-------------> |     | ----> | Address   ins|
+                    |     |       +--------------+    
+                    |     |                   |
+                    |     |                   \/
+                    |     |       +--------------+
+                    |     |<------| const     IR |
+                    |     |       |              |
+                    |     |       |     CU       |
+                    |     |       |              |
+                    |     |       |              |
+                    +-----+       +--------------+  
 
 ===============================================================
 
@@ -120,7 +124,7 @@ The following parts in the schematic now shall be described
 3.1. BUS
     The Bus is an connecting point for every component in
     the CPU (besides Register File). The bus is an long
-    circet Board with 64 parallel lines for data and address 
+    circuit Board with 64 parallel lines for data and address 
     transportation and for holding the CPU to gether.
     Every board is inserted perpendicular to the BUS for better
     use of space. 
@@ -149,8 +153,8 @@ The following parts in the schematic now shall be described
     Interupt set: If an error/intrupt occurs this pin has to be set
     Interupt ID: 
     
-    Control is connected to the CU for controlling every circet.
-    Every circet has an unique ID that specifies the action/module.
+    Control is connected to the CU for controlling every circuit.
+    Every circuit has an unique ID that specifies the action/module.
     A module should test if the corresponding Data is put to
     the control lines. If the ID and data matches the Module is free
     to read or write data to the bus. Note that the rule "Writes on edge" 
@@ -204,7 +208,7 @@ The following parts in the schematic now shall be described
 
  The CU (or Controll Unit) is one of the most importent part. It's the component
  that Controlls everything. It has a number of jobs. loading the instrucitons from
- Memory, decoding them, and last execute them. Also some vitale circetries are localed
+ Memory, decoding them, and last execute them. Also some vitale circuitries are localed
  here. for example the Clock Moduel
  
  3.3.1 Clock
