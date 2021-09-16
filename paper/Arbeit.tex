@@ -1,0 +1,118 @@
+\documentclass{scrartcl}
+
+\usepackage{graphicx}
+\usepackage[siunitx, RPvoltages, european]{circuitikz}
+
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[babel,german=quotes]{csquotes}
+\usepackage[style=numeric, backend=biber]{biblatex}
+
+\addbibresource{ref.bib}
+
+\graphicspath{ {.} }
+
+\KOMAoptions{parskip=full}
+
+\begin{document}
+
+\title{Bau eines Platinen Computers}
+\author{Alexander Wersching und Simon Walter}
+\date{2021}
+\maketitle
+\newpage
+
+
+\tableofcontents
+\newpage
+
+\section{Anforderungen}
+
+\section{Specification des Computers}
+Eine Computer hat eine Reihe Verschiedener high-level Aufgaben und Features die es ihm erlauben seiner Tätlichkeiten nach zu gehen! 
+Diese Features können wie folgt auf gegliedert werden: Register, Memory, Banking, Input/Output und das Instructuion Set.
+
+Aber um zuerst ein paar standarts festzulegen: der Computer hatte eine Daten/Addresse Länge von 16 bit. D.h. er kann auf 
+maximal 16 bit aufeinmal operieren bzw können maximal 16 bit an Daten/Addresse im Computer auf einmal bewegt werden.
+
+\subsection{Registers}
+Register dienen als kleine Speichereinheiten 
+\section{Kommentar zur Specification}
+
+\subsection{16 bit Daten/Address Länge}
+Die Address- und Datenlänge besagt viele Binary Ziffern für eine Address und Daten verwendet werden. Je mehr Ziffernen man verwendet desto größer Zahlen können in einer Operation verarbeitet werden wobei die maximal repräsentierbare Zahle $2^n$ ist wenn $n$ die Anzahl der Binary Ziffern (= Bits) ist. Zu sehen in der Tabelle \ref{table:max_zahlen} sind einige der am häufigst verwendeten Address/Datenlängen. 
+
+\begin{center}
+\begin{table}
+	\caption{\label{table:max_zahlen} Maximalerepersäntierbare Zahlen}
+	\begin{tabular}{ l | l }
+ 	$n$ & $n^2$ \\
+	\hline 
+	2 & 4\\  
+	4 & 16\\
+	8 & 256\\
+	16 & 65536\\
+ 	32 & 4294967296\\
+ 	64 & 18446744073709551616\\
+	128 & 340282366920938463463374607431768211456\\
+	256 & 115792089237316195423570985008687907853269984665640564039457584007913129639936
+	\end{tabular}
+\end{table}
+\end{center}
+
+Speziell vielfache von $8$ wie $8, 16, 32, 64, 128, 256$ werden gerene als Bitlängen verwendet. 8 bit ergeben 1 byte. Diese \enquote{Konvension} ist dabei historisch begründet. Alle modernen bis halbwegsmodernen Prozessoren operieren mit Daten die ein vielfaches von $8$ sind.   
+\footnote[1]{Nicht alle Computer folgen dieser Regel, vor allem historische Computer halten sich nicht daran. z.B. der Apollo Guidance Computer, welcher zwar intern mit 16 bit Datenwort arbeite aber davon nur 14 bit für die eigentlichen Daten nutzte und die anderen zwei als Kontroll bits verwendete}.
+So ist es heute Standard 64 bit oder 32 bit als Datenlänge zu verwenden.
+
+Zudem ergeben 8 bit 1 byte was das operieren mit texten vereinfacht. Nachedem ASCII-Standared und dem Extendened ASCII-Standeren, lassen sich alle zeichen (die sich im Lateinischen Alphabet) und einige Controll Sequenz speichern. Der ASCII Standart \cite{ascii} ist zudem im UTF-8 Standared enthalten, welcher auch die Codierung von Sonderzeichen erlaubt. Dieser ist das heute am meisten verwendedeste Verfahren zur kodierung von Texten. Eine Datenlänge die ein vielfaches von 8 bit ist dahere was Texte angeht vorteilhaft!
+
+Logischer Weiße wächst der Platz und damit die Kosten des Computers mit mehr bits. Für eine Computer mit 32 bit braucht man doppelt so viel Schaltung wie für eine mit 16 bit. Sommit wächst die Platzkomlexizität um eine factor von $O(n)$
+
+Jedoch wächst auch die Größe der Zahlen mit denen man rechen kann. Die maximale Zahl die man mit n bits repräsentieren kann ist somit $2^n$. Daher ergeben sich bei den möglichen für alle möglichen $n$ welche eine zweier Potenz sind die ensprechenden maximale repräsentierbaren Zahlen wie in Tabelle \ref{table:max_zahlen} gezeigt. 
+
+
+
+\section{Grundlegen Tests der Einzelnen Komponenten}
+
+\subsection{NANDs}
+Das NAND Gatter ist ein fundermentaller Logik Bautstein und bedarf daher einer Näheren Inspektion. Jedes NAND Gatte hat einen bestimmten propagation delay. Dieser gliedert sich einmal auf in High to Low ($t_{PHL}$) und Low to High ($t_{PLH}$). Diese ist den Datenblättern zu entnehmen. Wir haben uns dazu entschieden diese noch einemal selbst zutesten. Wir haben zu dem unterschiedliche NANDs von Unterschiedlichen Herstellern getested. Der Test Aufbau war dabei immer gleich:
+
+
+\begin{circuitikz}
+\ctikzset{multipoles/thickness=4}
+\ctikzset{multipoles/dipchip/width=1.6}
+\draw (3,0) node [dipchip, num pins=14, hide numbers](NAND){NAND};
+\node [left, font=\small] at (NAND.bpin 14){$U_{cc}$};
+\node [right, font=\small] at (NAND.bpin 1){$A$};
+\node [right, font=\small] at (NAND.bpin 2){$B$};
+\node [right, font=\small] at (NAND.bpin 3){$O$};
+\node [right, font=\small] at (NAND.bpin 7){GND};
+\draw (NAND.pin 7) -- ++ (-0.5,0) node[ground,rotate=270]{};
+\draw (NAND.pin 1) -- ++(-0.5,0) -- ++(0,1);
+\draw (NAND.pin 14) -- ++(0.5,0) -- ++(0,1) -- ++(-4,0) to[voltage source, v_<=$U_{cc}$] ++(-2,0) node[ground,rotate=270]{};
+
+\end{circuitikz}
+
+
+Wir haben alle Test mir einer Basis Spannung von $U_{cc} = 5V$, $V_H = 5V$ und $V_L \leq 0.7V$ durch deführt
+
+
+\subsection{SRAM}
+Der RAM oder Random Access Memory ist der Hauptspeicher des Computers und bedarf daher ebenfalls einer genaueren Untesuchen. Er hat viele Funtionen die Getestet werden müssen:
+\begin{enumerate} 
+\item Zeit zwischen OE und dem Erscheinen der Daten
+\item Zeit zwischen Änderung der Addresse und dem Erscheinen der Daten
+\end{enumerate}
+Der Test Aufbau ist dabei wie folgt:
+
+\section{Quellenverzeichnis}
+
+\printbibliography{}
+
+\end{document}
