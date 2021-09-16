@@ -1,0 +1,15 @@
+paper/*.aux
+paper/*.bbl
+paper/*.bcf
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.synctex.gz
+paper/*.toc
+paper/*.run.xml
+paper/*.pdf
+
+.vscode
+
+*.out
+*.log
