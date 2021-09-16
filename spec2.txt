@@ -2,13 +2,13 @@
 ================ Register ================
 
 0 : ZERO : Contains const 0x0
-1 : PC   : Current Address for execution
+1 : IP   : Current Address for instruction to be executed
 2 : SP   : Address to the to of the Stack
 3 : A    : General purpose
 4 : B    :      ...
 5 : C    :      ...
 6 : D    :      ...
-7 : E    :      ...
+7 : FLAG : Stores the flags
 
 ================ Memory  ================
 
@@ -46,10 +46,25 @@ kw (kilo word) = 2 kB (kilo byte)
 
 ================ flags ================
 
-Overflow (of) : set if an calculation results in an intager overflow
-Equale (e)    : set if both input values to TEST are the same
-Greater (g)   : set if the first value to TEST is greate then the second value
-Smaller (s)   : set if the first value to Test is smaller then the second value
+The flags are stored in the FLAG Register
+Every Flag corresponds to one flag
+
+ 0 : Overflow (of)   : set if an calculation results in an intager overflow
+ 1 : Equale (e)      : set if both input values to TEST are the same
+ 2 : Greater (g)     : set if the first value to TEST is greate then the second value
+ 3 : Smaller (s)     : set if the first value to TEST is smaller then the second value
+ 4 : IO-Pluged (p)   : set if the first value  to TEST is an pluged in IO-Devices
+ 5 : Supervisor (sop) : set if supervisor mode is enable
+ 6 :
+ 7 :
+ 8 :
+ 9 :
+10 : 
+11 :
+12 :
+13 :
+14 :
+15 :
 
 ================ Input & Output ================
 
@@ -66,45 +81,95 @@ An maps as follows:
 0x0000 | 1. IN  : IO-ID             | 
        | 2. OUT : Type of IO-Device |
        +----------------------------+
+0x0001 | Interrupt Source           |
+       +----------------------------+
+0x0002 | Interrupt ID               |
+       +----------------------------+
        | Every exsiting IO-Device   |
 0xffff +----------------------------+
 
-Slot 0 maps to IO-ID 0x0001
-Slot 1 maps to IO-ID 0x0002
+Slot 0 maps to IO-ID 0x0003
+Slot 1 maps to IO-ID 0x0004
  ...
-Slot n maps to IO-ID n+1
+Slot n maps to IO-ID n+3
 
 There exsists a flag if an device is pluged in
 
+================ Interupts ================
+
+On Interupt the Supervisor flag is set and the processor executes the instruction at IV.
+After that the processor executes at the position of IP.
+
+IV is set by physikal dip-switches on the processor cases. It's advives to set the IV to
+0x3fff and put there an CALL instruction to preserv the old IP
+
+Interupts can be trigger
+	- by IO-Devices
+	- by INT Instruction
+
+By Reading from IO-ID 0x0001 the source of the interrupt can be optainted.
+And Interrupt Sourece of 0x0000 means the interrupt was cause by an INT instruction
+Any Interrupt Source higher then 0x0002 means that the interrupt was cause by the
+corresponding IO - Devices
+
 ================ Instruction Set ================
 
-nop
+NOP : No operatation
 
-mov
-add
-sub
-mul ?
-div ?
-xor
-and
-or
-not
-aes ??
-sha1 ??
+------ ALU ------
+MOV  <reg> <reg/const>       : Move
+ADD  <reg> <reg> <reg/const> : Add
+SUB  <reg> <reg> <reg/const> : Subtracted
+MUL? <reg> <reg> <reg/const> : Mulitply
+DIV? <reg> <reg> <reg/const> : Divide
+XOR  <reg> <reg> <reg/const> : Bitwise Exclusive Or
+AND  <reg> <reg> <reg/const> : Bitwise And
+OR   <reg> <reg> <reg/const> : Bitwise Or
+NOT  <reg> <reg>             : Bitwise Not
 
-str
-ld
+------ Memory ------
+STR <reg (data)> <reg/const (addr)> : Store to Memory
+LD  <reg (data)> <reg/const (addr)> : Load from Memory
 
-push
-pop
-call
-ret
+------ Stack -------
+PUSH <reg/const> : push one value to stack
+POP  <reg/const> : remove value from stack
+CALL <reg/const> : push current PC to stack and jump to address
+RET              : remove value from stack and jump to it
 
-test
-je
-jo
+------- Conditional ------
+TEST <reg> <reg/const> : Comparse two values and sets/unsets flags
+JE   <reg/const>       : jump if flag equal is set
+JO   <reg/const>       : jump if flag overflow is set
+JG   <reg/const>       : jump if flag greater is set
+JS   <reg/const>       : jump if flag smaller is set
+JP   <reg/const>       : jump if flag IO-Pluged is set
 
-in
-out
+For evey conditional jump there is an inverted form
+by setting one bit and adding an N in the instruct like
+JNE = Jump if flag equal is not set
 
+------- IO -------
+IN  <reg/const (data)> <reg (IO-ID)> : Reads value from IO-Devices
+OUT <reg/const (data)> <reg (IO-ID)> : Writes value to IO-Devices
+IM  <reg/const (data)> <reg (IO-ID)> : Reads value from IO-Devices to Memory 
+OM  <reg/const (data)> <reg (IO-ID)> : Write value from Memory to IO-Devices
 
+------- Intreupts ------
+INT : Triggers an Interupt
+
+================ Instruction Encoding ================
+
+reg   :  3 bit x 2
+const : 16 bit
+ins   : 10 bit
+----------------
+total : 32 (max)   
+
++-----+-----+-------+-------+-------+--------+
+| ins | rcm | reg1  | reg2  | reg3  | Empty  |
+| 0-8 |   9 | 10-12 | 13-15 | 16-18 | 19-31  |
++-----+-----+-------+-------+-------+--------+
+                            |      const     |
+                            |      16-31     |
+                            +----------------+
