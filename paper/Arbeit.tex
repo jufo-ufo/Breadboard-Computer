@@ -13,6 +13,10 @@
 \usepackage[utf8]{inputenc}
 \usepackage[babel,german=quotes]{csquotes}
 \usepackage[style=numeric, backend=biber]{biblatex}
+\usepackage{listings}
+
+\lstdefinestyle{asm}{
+}
 
 \addbibresource{ref.bib}
 
@@ -36,53 +40,149 @@
 
 \section{Specification des Computers}
 Eine Computer hat eine Reihe Verschiedener high-level Aufgaben und Features die es ihm erlauben seiner Tätlichkeiten nach zu gehen! 
-Diese Features können wie folgt auf gegliedert werden: Register, Memory, Banking, Input/Output und das Instructuion Set.
+Diese Features können wie folgt auf gegliedert werden: Register, Memory, Banking, Input/Output, Flagen, Hardware Stack, Interrupts, Supervisor-Mode und das Instructuion Set.
 
 Aber um zuerst ein paar standarts festzulegen: der Computer hatte eine Daten/Addresse Länge von 16 bit. D.h. er kann auf 
 maximal 16 bit aufeinmal operieren bzw können maximal 16 bit an Daten/Addresse im Computer auf einmal bewegt werden.
 
 \subsection{Registers}
-Register dienen als kleine Speichereinheiten 
+Register sind kleine sehr schnelle Speichereinheiten, die genutzt werden können um zwischen Ergebnisse, local Variablen, argumente für Funktionen zu speichern oder um Daten im Computer zwischen den einzelnen Komponenten zuverschieben. Aus jedem Register kann \emph{gelesen} werden (\emph{Kopiert} des alten Wert an eine anderen Ort) oder \emph{geschrieben} werden (den alten Wert mit einem neuen Wert \emph{überschrieben})
+
+Dem Programmiere des Computers stehen bei uns $8$ verschieden, jeweils $16$ bit lange Register zur verfügung. Jedes Register hat dabei eine eigene Register Number (= RN). Machen Register erfühlen zudem noch speziell Aufgaben und sollten auch nur so verwendet werden. Diese Funktionen sind in Tabelle \ref{table:register} zu sehen.
+
+\begin{center}
+	\begin{table}[h]
+		\caption{\label{table:register} Register Aufteilung}
+		\begin{tabular}{l | l | l}
+			RN & Name & Funktion\\
+			\hline
+			$0$ & ZERO & Konstante $0\text{x}0000$; Schreiben hat keine Effekt\\
+			$1$ & IP & Instruction Pointer, zeigt auf akutuelle auszuführenden Instruktion\\
+			$2$ & SP & Stack Pointer, zeigt auf obersten Element des Hardware Stacks, siehe \ref{section:stack} \\
+			$3$ & A & Alzweck Register ohne besonderen Aufgaben \\
+			$4$ & B & ... \\
+			$5$ & C & ... \\
+			$6$ & D & ... \\
+			$7$ & FLAG & Enthält alle wichtigen Flaggen, siehe \ref{section:flags} \\
+		\end{tabular}
+	\end{table}
+\end{center}
+
+Die Register A-B sind dabei die Register, dabei freie für jede nutzung. Es ist \emph{stark zuempfelen} die spezieall Register, (ZERO, IP, SP und FLAG) \emph{nicht} für die speicherung von Daten zuverwenden, da diese evt. Program abläufe stark störenen können. Sie sind ausdrücklich nur für ihre zugewiesenen Aufgaben da.
+
+\subsubsection{\label{section:flags}Flaggen}
+
+Das Register FLAG, enthält alle Status Flagen. Ein Flagge kann entweder gesetzt oder nicht gesetzt sein, daher kann jede Flagge als ein bit repräsentiert werden. Jedes Bit in FLAG stellt daher eine Flagge da. Flaggen werden bei unterschiedlichen Ereignissen geschaltet. Dies, und welche Flaggen es gibt ist in Tabelle \ref{table:flag}
+
+\begin{center}
+	\begin{table}[h]
+		\caption{\label{table:flag}Flaggen auf Teilung in FLAG}
+		\begin{tabular}{l | l | l | l}
+			Bit & Name & Funktion & Schaltung \\
+			\hline
+			 0 & OF  & Intager Overflow einer Rechenoperation an & Bei jeder ALU Operation\\
+			 1 & E   & Gleichheit zweier Werte an & TEST arg[0] = arg[1]\\
+			 2 & G   & Ungleicheit ($>$) zweier Werte an & TEST arg[0] > arg[1]\\
+			 3 & S   & Ungleicheit ($<$) zweier Werte an & TEST arg[0] < arg[0]\\
+			 4 & P   & IO-Geräte Eingesteckt siehe \ref{section:io} & TEST arg[0]\\
+			 5 & SOP & Supervisor-/Usermode & Interrupt siehe \ref{section:interrupts} \\
+			 6 &  &  &  \\
+			 7 &  &  &  \\
+			 8 &  &  &  \\
+			 9 &  &  &  \\
+			10 &  &  &  \\
+			11 &  &  &  \\
+			12 &  &  &  \\
+			13 &  &  &  \\
+			14 &  &  &  \\
+			15 &  &  & 
+		\end{tabular}
+	\end{table}
+\end{center}
+
+Alle Flagen die mit TEST als Schaltung gekenzeichnet werden, werden bei der Ausführung der TEST Operation geschaltet. Da die TEST Operation 
+
+Das FLAG Register verhält sich ebenfalls wie ein Register, daher können Flagge auch per Hand gesetzt oder nicht gesetzt werden. Eine Ausnahme macht SOP die nur manuel geschaltet werden kann wenn SOP gesetzt ist.
+
+
+
+\subsection{\label{section:supervisor}Supervisor/Normal Mode}
+
+\subsection{\label{section:memory}Memory}
+
+\subsubsection{\label{section:banking}Banking}
+
+\subsubsection{\label{section:stack}Hardware Stack}
+
+\subsection{\label{section:io}Input/Output}
+
+Der Computer hat zudem die Möglichkeit mit verschieden IO-Geräte zu interagieren. Diese läuft über die sogenaten IO-Ports. Der Computer hat physische Slots wo IO-Geräte angesteckt werden können. Dabei bekommt jedes IO-Geräte eine eigene ID (IO-ID), welche im Bereich von $3$ bis $65535$ liegt. Die ersten drei IO-IDs sind für spezielle Aufgaben zugewiesenen. Die Interaktion funktioniert dabei wie mit Memory. Es kann zudem IO-Geräte Daten übertragen werden mit der OUT Instruktion und Daten vom IO-Gerät gelesen werden über IN Instruktion. Die IO-ID sind dann wie folgt vergeben, wie Tabelle \ref{table:IOIDs}
+
+\begin{center}
+	\begin{table}[h]
+		\caption{\label{table:IOIDs}}
+		\begin{tabular}{l | l}
+			IO-ID & Funktion \\
+			\hline
+			$0\text{x}0000$ & IO-Gerätetyp \\
+			$0\text{x}0001$ & Interrupt Quelle \\
+			$0\text{x}0002$ & Interrupt ID \\
+			... & \\
+			$0\text{xffff}$ & physische IO-Geräte
+ 		\end{tabular}
+	\end{table}
+\end{center}
+
+Jedes IO-Geräte hat eine feste unveränderliche Typen nummer. Diese lassen sich über die IO-ID $0\text{x}0000$ herausfinden. Diese sieht dann wie folgt aus: 
+
+\begin{lstlisting}[style=asm]
+OUT A 0x0000 ; A enthaelt die IO-ID fuer ein unbekanntes Geraet 
+IN  B 0x0000 ; B enthaelt nun die Typennummer des Geraets
+\end{lstlisting}
+
+\subsection{\label{section:interrupts}Interrupts}
+
+\subsection{\label{section:insSet}Instructuion Set}
+
 \section{Kommentar zur Specification}
 
 \subsection{16 bit Daten/Address Länge}
-Die Address- und Datenlänge besagt viele Binary Ziffern für eine Address und Daten verwendet werden. Je mehr Ziffernen man verwendet desto größer Zahlen können in einer Operation verarbeitet werden wobei die maximal repräsentierbare Zahle $2^n$ ist wenn $n$ die Anzahl der Binary Ziffern (= Bits) ist. Zu sehen in der Tabelle \ref{table:max_zahlen} sind einige der am häufigst verwendeten Address/Datenlängen. 
+Die Address- und Datenlänge besagt viele Binäre Ziffern (bits) für eine Address und Daten verwendet werden. Je mehr Ziffern man verwendet desto größere Zahlen können in einer Operation verarbeitet werden wobei die maximal repräsentierbare Zahle $2^n - 1$ ist wenn $n$ die Anzahl der Binary Ziffern (= Bits) ist und wenn man mit $0$ anfängt zu zählen. Sie Tabelle \ref{table:max_zahlen}
+
+Ein eine $n$ stellige Binär Zahl wobei $n$ teilbar durch $8$ ist, ist dabei relative angenehm, $8$ bit = $1$ byte. Das byte ist dabei die Basis Einheit für so gut wie alle informationstechnischen Standards. Daher ist es gute eine solches $n$ zu wählen.
+Zudem kommen einige elementar ICs, z.B. Buffer oder Register, immer mit 8 bits.
+
+Jedoch gilt je mehr Bits man verwendet, desto mehr Schaltung brauchen man, desto mehr Stromverbrauch. Da wir wie zwar nicht speziell auf Platz und Stromverbrauch optimieren, aber trozdem ein limitiertes Buget haben, können wir auch nicht eine belibig große Daten/Address Länge wählen.
+
+Wir haben uns daher für $16$ bit entschieden, da man laut Tabelle \ref{table:max_zahlen} Zahlen bis zwischen $0$ und $65535$ darstellen kann. Diese Menge ist gerade große genug, um für die meisten Programme große genüge Zahl abzubilden
+\footnote{Für Programme die Zahlen welche $> 65535$ darstellen wohlen ist es ratsam immer zwei oder mehr Spreichereinheiten zunehmen oder bei Berechnungen, selbige auf zwei oder mehr Schritte auf zuteilen}.
+
+Die Entscheidung zur größe der Daten/Address Länge ist eine sehr ausschlag gebende, daher haben wir diese zuerst festgelegt. Sie wird für viele weitere Entscheidung eine wichtige Rolle spielen. Wichtig ist nur das wir maximal $65536$ Zustände oder Zahlen von $0$ bis $65535$ darstellen können mit unseren $16$ bit
 
 \begin{center}
-\begin{table}
-	\caption{\label{table:max_zahlen} Maximalerepersäntierbare Zahlen}
-	\begin{tabular}{ l | l }
- 	$n$ & $n^2$ \\
-	\hline 
-	2 & 4\\  
-	4 & 16\\
-	8 & 256\\
-	16 & 65536\\
- 	32 & 4294967296\\
- 	64 & 18446744073709551616\\
-	128 & 340282366920938463463374607431768211456\\
-	256 & 115792089237316195423570985008687907853269984665640564039457584007913129639936
-	\end{tabular}
-\end{table}
+	\begin{table}[h]
+		\caption{\label{table:max_zahlen} Maximalerepersäntierbare Zahlen (startend mit 0)}
+		\begin{tabular}{ l | l }
+ 		$n$ & $n^2 - 1$ \\
+		\hline 
+		2 & 3\\  
+		4 & 15\\
+		8 & 255\\
+		16 & 65535\\
+ 		32 & 4294967295\\
+ 		64 & 18446744073709551615\\
+		\end{tabular}
+	\end{table}
 \end{center}
 
-Speziell vielfache von $8$ wie $8, 16, 32, 64, 128, 256$ werden gerene als Bitlängen verwendet. 8 bit ergeben 1 byte. Diese \enquote{Konvension} ist dabei historisch begründet. Alle modernen bis halbwegsmodernen Prozessoren operieren mit Daten die ein vielfaches von $8$ sind.   
-\footnote[1]{Nicht alle Computer folgen dieser Regel, vor allem historische Computer halten sich nicht daran. z.B. der Apollo Guidance Computer, welcher zwar intern mit 16 bit Datenwort arbeite aber davon nur 14 bit für die eigentlichen Daten nutzte und die anderen zwei als Kontroll bits verwendete}.
-So ist es heute Standard 64 bit oder 32 bit als Datenlänge zu verwenden.
-
-Zudem ergeben 8 bit 1 byte was das operieren mit texten vereinfacht. Nachedem ASCII-Standared und dem Extendened ASCII-Standeren, lassen sich alle zeichen (die sich im Lateinischen Alphabet) und einige Controll Sequenz speichern. Der ASCII Standart \cite{ascii} ist zudem im UTF-8 Standared enthalten, welcher auch die Codierung von Sonderzeichen erlaubt. Dieser ist das heute am meisten verwendedeste Verfahren zur kodierung von Texten. Eine Datenlänge die ein vielfaches von 8 bit ist dahere was Texte angeht vorteilhaft!
-
-Logischer Weiße wächst der Platz und damit die Kosten des Computers mit mehr bits. Für eine Computer mit 32 bit braucht man doppelt so viel Schaltung wie für eine mit 16 bit. Sommit wächst die Platzkomlexizität um eine factor von $O(n)$
-
-Jedoch wächst auch die Größe der Zahlen mit denen man rechen kann. Die maximale Zahl die man mit n bits repräsentieren kann ist somit $2^n$. Daher ergeben sich bei den möglichen für alle möglichen $n$ welche eine zweier Potenz sind die ensprechenden maximale repräsentierbaren Zahlen wie in Tabelle \ref{table:max_zahlen} gezeigt. 
-
-
+\subsection{Register Anzahl}
 
 \section{Grundlegen Tests der Einzelnen Komponenten}
 
+\subsection{NAND vs AND,OR,NOT}
+
 \subsection{NANDs}
 Das NAND Gatter ist ein fundermentaller Logik Bautstein und bedarf daher einer Näheren Inspektion. Jedes NAND Gatte hat einen bestimmten propagation delay. Dieser gliedert sich einmal auf in High to Low ($t_{PHL}$) und Low to High ($t_{PLH}$). Diese ist den Datenblättern zu entnehmen. Wir haben uns dazu entschieden diese noch einemal selbst zutesten. Wir haben zu dem unterschiedliche NANDs von Unterschiedlichen Herstellern getested. Der Test Aufbau war dabei immer gleich:
-
 
 \begin{circuitikz}
 \ctikzset{multipoles/thickness=4}
@@ -102,13 +202,17 @@ Das NAND Gatter ist ein fundermentaller Logik Bautstein und bedarf daher einer N
 
 Wir haben alle Test mir einer Basis Spannung von $U_{cc} = 5V$, $V_H = 5V$ und $V_L \leq 0.7V$ durch deführt
 
-
 \subsection{SRAM}
 Der RAM oder Random Access Memory ist der Hauptspeicher des Computers und bedarf daher ebenfalls einer genaueren Untesuchen. Er hat viele Funtionen die Getestet werden müssen:
 \begin{enumerate} 
 \item Zeit zwischen OE und dem Erscheinen der Daten
 \item Zeit zwischen Änderung der Addresse und dem Erscheinen der Daten
 \end{enumerate}
+
+\subsection{ROM}
+
+\subsection{Buffer}
+
 Der Test Aufbau ist dabei wie folgt:
 
 \section{Quellenverzeichnis}
