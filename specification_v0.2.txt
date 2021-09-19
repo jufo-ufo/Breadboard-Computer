@@ -128,12 +128,14 @@ OR   <reg> <reg> <reg/const> : Bitwise Or
 NOT  <reg> <reg>             : Bitwise Not
 
 ------ Memory ------
-STR <reg (data)> <reg/const (addr)> : Store to Memory
-LD  <reg (data)> <reg/const (addr)> : Load from Memory
-
+STR  <reg (data)> <reg/const (addr)> : Store to Memory
+LD   <reg (data)> <reg/const (addr)> : Load from Memory
+BNK1 <reg/const>                     : maps Bank Slot 1 to BID
+BNK2 <reg/const>                     : maps Bank Slot 2 to BID
 ------ Stack -------
 PUSH <reg/const> : push one value to stack
-POP  <reg/const> : remove value from stack
+POP  <reg>       : remove value from stack
+PEEK <reg>       : get value from stack without removing it
 CALL <reg/const> : push current PC to stack and jump to address
 RET              : remove value from stack and jump to it
 
