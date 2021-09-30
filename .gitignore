@@ -9,6 +9,7 @@ paper/*.toc
 paper/*.run.xml
 
 .vscode
+tools/VTR-toolchain/VTR/*
 
 *.out
 *.log
