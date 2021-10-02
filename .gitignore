@@ -7,7 +7,7 @@ paper/*.fls
 paper/*.synctex.gz
 paper/*.toc
 paper/*.run.xml
-out/*
+out/*.*
 
 .vscode
 
