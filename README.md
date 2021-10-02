@@ -2,7 +2,12 @@
 Let's build an Computer form ICs!
 
 ## TODO
-- [ ] Write Specification for V0.2
 - [ ] Test out NAND vs NOT, AND, OR
+- [ ] Write Specification for V0.4
+  - [X] Add Instructionset to "Handbuch"
+  - [ ] Rework Interupts
+  - [ ] I/O Specification
+  - [ ] Update Flags
+  - [ ] Insert test results
 - [ ] Get familiary with EAGLE/Target3001
 - [ ] Build Circet Designs

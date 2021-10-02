@@ -102,10 +102,12 @@ Das Register FLAG enthält alle Statusflaggen. Eine Flagge kann entweder gesetzt
 			12 &  &  &  \\
 			13 &  &  &  \\
 			14 &  &  &  \\
+			15 &  &  & 
 			15 & SUP & Supervisor-/Usermode & siehe \autoref{section:interrupts} 
 		\end{tabular}
 	\end{table}
 \end{center}
+
 
 Alle Flaggen, die mit TEST als Schaltung gekennzeichnet werden, werden bei der Ausführung der TEST Operation geschaltet.
 
@@ -175,6 +177,7 @@ Die mit Supervisor gekennzeichneten Bereich können nur dann gelesen oder geschr
 
 \subsubsection{\label{section:banking}Banking}
 
+
 Banken sind externe Memory Module, die eingesteckt werden können. Alle Banken sind gleich groß ($~18.4\text{kw} = 36.8\text{kb}$) und der Computer unterstützt maximal $65536$ unterschiedliche Banken. Jede Bank hat dabei eine ID (BID), die von $0$ bis $65535$ reicht.
 
 Der Computer hat zwei Bank-Slots (Slot 1 \texttt{0x4000 - 0x3fff} und Slot 2 \texttt{0x4000 - 0x57ff}). Er kann nun auf jenden dieser Slots eine der theoretisch $65536$ Bank legen
@@ -199,14 +202,77 @@ POP und PUSH schalten automatisch zwischen Supervisor-Stack und User-Stack bei �
 
 
 
-
 \subsection{\label{section:io}Input/Output}
 
-Der Computer hat zudem die Möglichkeit mit verschieden IO-Geräte zu interagieren. Jedes IO-Geräte hat eine ID (IO-ID). Diese reicht von $0$ bis $65535$. Die Kommunikation zwischen Computer und IO-Geräte funktioniert über IN bzw OUT Instruktion. IN Ließt einen Wert vom IO-Geräte. Und OUT schreibt eine Wert zum IO-Gerät. 
+Der Computer hat zudem die Möglichkeit mit verschieden IO-Geräte zu interagieren. Diese läuft über die sogenaten IO-Ports.
+Der Computer hat physische Slots wo IO-Geräte angesteckt werden können.
+Dabei bekommt jedes IO-Geräte eine eigene ID (IO-ID), welche im Bereich von $0$ bis $65535$ liegt.
+Die Interaktion funktioniert dabei ähnlich wie Memory.
 
-Im Supervisormode kann jedes IO-Geräte uneingeschränkt verwendet werden. Im Usermode hingegen sind standartmässig alle IO-Geräte gesperrt. Der Supervisor kann sie dauerhaft freigeben oder sie wieder sperren, mit AIO (Allow Input/Output), für das Aktivieren und DIO (Disallow Input/Output) für das Deaktivieren. Diese Information wird in einem Seperatem Speichermodule gesichert, wobei die Speicheraddresse von der BID (Bank ID) abhängt.
 
-Jedes IO-Geräte hat eine feste unveränderliche Typennummer. Diese lassen sich über die TYPE Instruktion erfahren. Die Typennummer $0\texttt{x}0000$ markiert dabei ein nicht eingestecktes Geräte. Mehr zu IO-Geräte in \autoref{section:devices}
+Schema der Instruktionen (Iin = InstruktionEingang(Computer->I/O-Gerät); Din = DatenEingang(Computer->I/O-Gerät); Dout = DatenOutput(I/O-Gerät -> Computer) ) an I/O Geräte:
+
+\begin{center}
+	\begin{table}[h]
+		\caption{\label{table:IO_Schem}}
+		\begin{tabular}{l | l | l | l | l | l | l}
+			 Bereich & Instr 1 & Instr 2 & ... & Instr n & Instr $n+1$ & ... \\
+			\hline
+			Iin & 1 & 0 &   & 0 & \\
+			Din & 0 & 1 &   & 0 & \\
+			Dout & 0 & 0 &   & 1 & \\
+			Data$0-7$ & InstructionID & Variable &   & Rückgabewert & Rückgabewert \\
+			Data$8-15$ & 8b Variable & Variable &   & Rückgabewert & Rückgabewert
+ 		\end{tabular}
+	\end{table}
+\end{center}
+
+
+I/O-Pinbelegung:
+\begin{center}
+	\begin{table}[h]
+		\caption{\label{table:IOPins}}
+		\begin{tabular}{l | l}
+			# & Funktion \\
+			\hline
+			00 & GND \\
+			01 & Vcc \\
+			02-17 & 16Bit Daten \\
+			18 & Iin-Enable \\
+			19 & Din-Enable \\
+			20 & Dout-Enable \\
+			21 & Clock
+ 		\end{tabular}
+	\end{table}
+\end{center}
+
+
+\begin{center}
+	\begin{table}[h]
+		\caption{\label{table:IOins}I/O-Instruktionen}
+		\begin{tabular}{p{0.045\textwidth} | p{0.1\textwidth} | p{0.12\textwidth} | p{0.40\textwidth} | p{0.22\textwidth}}
+			ID & Gerätetyp & Name & Funktion & Verhalten \\
+			\hline
+			 $0\text{x}00$ & All & ls & gibt alle normalen Funktionen des Geräts zurück & Iin; n$*$Dout\\
+			\hline
+			 $0\text{x}01$ & All  & ll & gibt ALLE (auch die, die man nicht verwenden sollte) Funktionen zurück & Iin(Instruktion); n$*$Dout(Antworten)\\
+			\hline
+			 $0\text{x}02$ & Drive & nsr (normal singel read) & Lesen eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); 1$*$Dout(Antwort) \\
+			\hline
+			 $0\text{x}03$ & Drive & nmr (normal multiple read) & Lesen einer reihe an 16-Bit werten von 24-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(Länge); n$*$Dout(Antworten) \\
+			\hline
+			 $0\text{x}04$ & Drive & nsw (normal singel write) & Schreiben eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Daten); Dout(bestätigung) \\
+			\hline
+			 $0\text{x}05$ & Drive & bsr (big singel read) & Lesen eines einzelnen 16-Bit werts von einer 40-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Addresse); 1$*$Dout(Antwort) \\
+			\hline
+			 $0\text{x}06$ & Drive & bmr (big multiple write) & Lesen einer reihe an 16-Bit werten von 40-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(startAddresse2); Din(Länge); n$*$Dout(Antworten) \\
+			\hline
+			 $0\text{x}07$ & Drive & bmw (big singel write) & Schreiben eines einzelnen 16-Bit werts von einer 40-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Addresse);Din(Daten); 1$*$Dout(bestätigung) \\
+			\hline
+			 $0\text{x}08$ &  & & &
+		\end{tabular}
+	\end{table}
+\end{center}
 
 \subsection{\label{section:interrupts}Interrupts}
 
@@ -297,6 +363,7 @@ Alle zuverfügenung stehenden Instruktion sind in \autoref{table:instructions}. 
 \section{Kommentar zur Specification}
 
 \subsection{\label{section:comment:datalength}16 bit Daten/Address Länge}
+
 Die Address- und Datenlänge besagt viele Binäre Ziffern (bits) für eine Address und Daten verwendet werden. Je mehr Ziffern man verwendet desto größere Zahlen können in einer Operation verarbeitet werden wobei die maximal repräsentierbare Zahle $2^n - 1$ ist wenn $n$ die Anzahl der Binary Ziffern (= Bits) ist und wenn man mit $0$ anfängt zu zählen. Sie \autoref{table:max_zahlen}
 
 Ein eine $n$ stellige Binär Zahl wobei $n$ teilbar durch $8$ ist, ist dabei relative angenehm, $8$ bit = $1$ byte. Das byte ist dabei die Basis Einheit für so gut wie alle informationstechnischen Standards. Daher ist es gute eine solches $n$ zu wählen.

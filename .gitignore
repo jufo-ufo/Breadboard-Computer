@@ -7,6 +7,9 @@ paper/*.fls
 paper/*.synctex.gz
 paper/*.toc
 paper/*.run.xml
+out/*.*
+WIP/*.*
+wip/*.*
 
 .vscode
 tools/VTR-toolchain/VTR/*
