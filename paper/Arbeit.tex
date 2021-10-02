@@ -188,29 +188,75 @@ POP und PUSH schalten automatischen zwischen Supervisor Stack und User Stack bei
 
 \subsection{\label{section:io}Input/Output}
 
-Der Computer hat zudem die Möglichkeit mit verschieden IO-Geräte zu interagieren. Diese läuft über die sogenaten IO-Ports. Der Computer hat physische Slots wo IO-Geräte angesteckt werden können. Dabei bekommt jedes IO-Geräte eine eigene ID (IO-ID), welche im Bereich von $3$ bis $65535$ liegt. Die ersten drei IO-IDs sind für spezielle Aufgaben zugewiesenen. Die Interaktion funktioniert dabei wie mit Memory. Es kann zudem IO-Geräte Daten übertragen werden mit der OUT Instruktion und Daten vom IO-Gerät gelesen werden über IN Instruktion. Die IO-ID sind dann wie folgt vergeben, wie \autoref{table:IOIDs} zeigt
+Der Computer hat zudem die Möglichkeit mit verschieden IO-Geräte zu interagieren. Diese läuft über die sogenaten IO-Ports.
+Der Computer hat physische Slots wo IO-Geräte angesteckt werden können.
+Dabei bekommt jedes IO-Geräte eine eigene ID (IO-ID), welche im Bereich von $0$ bis $65535$ liegt.
+Die Interaktion funktioniert dabei ähnlich wie Memory.
+
+
+Schema der Instruktionen (Iin = InstruktionEingang(Computer->I/O-Gerät); Din = DatenEingang(Computer->I/O-Gerät); Dout = DatenOutput(I/O-Gerät -> Computer) ) an I/O Geräte:
 
 \begin{center}
 	\begin{table}[h]
-		\caption{\label{table:IOIDs}}
-		\begin{tabular}{l | l}
-			IO-ID & Funktion \\
+		\caption{\label{table:IO_Schem}}
+		\begin{tabular}{l | l | l | l | l | l | l}
+			 Bereich & Instr 1 & Instr 2 & ... & Instr n & Instr $n+1$ & ... \\
 			\hline
-			$0\text{x}0000$ & IO-Gerätetyp \\
-			$0\text{x}0001$ & Interrupt Quelle \\
-			$0\text{x}0002$ & Interrupt ID \\
-			... & \\
-			$0\text{xffff}$ & physische IO-Geräte
+			Iin & 1 & 0 &   & 0 & \\
+			Din & 0 & 1 &   & 0 & \\
+			Dout & 0 & 0 &   & 1 & \\
+			Data$0-7$ & InstructionID & Variable &   & Rückgabewert & Rückgabewert \\
+			Data$8-15$ & 8b Variable & Variable &   & Rückgabewert & Rückgabewert
  		\end{tabular}
 	\end{table}
 \end{center}
 
-Jedes IO-Geräte hat eine feste unveränderliche Typen nummer. Diese lassen sich über die IO-ID $0\text{x}0000$ herausfinden. Diese sieht dann wie folgt aus: 
 
-\begin{lstlisting}[style=asm]
-OUT A 0x0000 ; A enthaelt die IO-ID fuer ein unbekanntes Geraet 
-IN  B 0x0000 ; B enthaelt nun die Typennummer des Geraets
-\end{lstlisting}
+I/O-Pinbelegung:
+\begin{center}
+	\begin{table}[h]
+		\caption{\label{table:IOPins}}
+		\begin{tabular}{l | l}
+			# & Funktion \\
+			\hline
+			00 & GND \\
+			01 & Vcc \\
+			02-17 & 16Bit Daten \\
+			18 & Iin-Enable \\
+			19 & Din-Enable \\
+			20 & Dout-Enable \\
+			21 & Clock
+ 		\end{tabular}
+	\end{table}
+\end{center}
+
+
+\begin{center}
+	\begin{table}[h]
+		\caption{\label{table:IOins}I/O-Instruktionen}
+		\begin{tabular}{p{0.045\textwidth} | p{0.1\textwidth} | p{0.12\textwidth} | p{0.40\textwidth} | p{0.22\textwidth}}
+			ID & Gerätetyp & Name & Funktion & Verhalten \\
+			\hline
+			 $0\text{x}00$ & All & ls & gibt alle normalen Funktionen des Geräts zurück & Iin; n$*$Dout\\
+			\hline
+			 $0\text{x}01$ & All  & ll & gibt ALLE (auch die, die man nicht verwenden sollte) Funktionen zurück & Iin(Instruktion); n$*$Dout(Antworten)\\
+			\hline
+			 $0\text{x}02$ & Drive & nsr (normal singel read) & Lesen eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); 1$*$Dout(Antwort) \\
+			\hline
+			 $0\text{x}03$ & Drive & nmr (normal multiple read) & Lesen einer reihe an 16-Bit werten von 24-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(Länge); n$*$Dout(Antworten) \\
+			\hline
+			 $0\text{x}04$ & Drive & nsw (normal singel write) & Schreiben eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Daten); Dout(bestätigung) \\
+			\hline
+			 $0\text{x}05$ & Drive & bsr (big singel read) & Lesen eines einzelnen 16-Bit werts von einer 40-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Addresse); 1$*$Dout(Antwort) \\
+			\hline
+			 $0\text{x}06$ & Drive & bmr (big multiple write) & Lesen einer reihe an 16-Bit werten von 40-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(startAddresse2); Din(Länge); n$*$Dout(Antworten) \\
+			\hline
+			 $0\text{x}07$ & Drive & bmw (big singel write) & Schreiben eines einzelnen 16-Bit werts von einer 40-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Addresse);Din(Daten); 1$*$Dout(bestätigung) \\
+			\hline
+			 $0\text{x}08$ &  & & &
+		\end{tabular}
+	\end{table}
+\end{center}
 
 \subsection{\label{section:interrupts}Interrupts}
 
