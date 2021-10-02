@@ -9,6 +9,7 @@ paper/*.toc
 paper/*.run.xml
 out/*.*
 WIP/*.*
+wip/*.*
 
 .vscode
 
