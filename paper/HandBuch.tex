@@ -210,10 +210,31 @@ Jedes IO-Geräte hat eine feste unveränderliche Typennummer. Diese lassen sich 
 
 \subsection{\label{section:interrupts}Interrupts}
 
-REWORK!
+Interrupts sind Unterbrechungen im Programmablauf. Wenn ein Interrupt meldet wird. Wird dieser im nächsten Instruktions-Zyklus bearbeitet. Für diesen Zyklus, wird, je nach Interrupt-Quelle, nicht die Instruktion ander Stelle von IP sondern von IV (Interrupt Vektor) geladen.
 
+Alle Interrupts werden blockiert wenn die OINT Flagge gesetzt ist. Blockiert heißt dabei das alle Interrupts nicht behandelt werden. Diese Flagge kann nur gesetzt werden wenn sicher der Computer im Supervisormode befindet.
 
+Wir unterscheiden dabei zwischen drei verschiedenen Interrupt-Quelle, wobei jede Quelle einen eigenen IV hat, wie in \autoref{table:iv}
 
+\begin{center}	
+	\begin{table}[h]
+		\caption{\label{table:iv}}
+		\begin{tabular}{l | l l}
+			Interrupt-Quelle & IV Name & IV Standard Wert \\
+			\hline
+			IO-Interrupts & IV-IO & $0\texttt{x}0000$ \\
+			INT-Instruktion & IV-INT & $0\texttt{x}0000$ \\
+			Timed-Interrupts & IV-TI & $0\texttt{x}0000$ \\
+		\end{tabular}
+	\end{table}
+\end{center}
+
+\subsubsection{Timed-Interrupts}
+
+Der Timed-Intrrupt funktioniert wie ein Wecker. Nachdem Ausführen der STI (Set Timed Interrupt) Instruktion, wird nach angebender Anzahl an ausgeführten Instruktion ein Intrrupt ausgelöst. So 
+würde \texttt{STI 0x00ff} in 256 Instruktion einen Interrupt auslösen. Wenn ein Timed-Interrupt mit der Zeit \texttt{0x0000} gesetzt wird, so wird der Timed-Intrrupt deaktiviert.
+
+\subsubsection{IO-Interrupts}
 
 \subsection{\label{section:supervisor}Supervisor-/Usermode}
 
@@ -229,42 +250,45 @@ Alle zuverfügenung stehenden Instruktion sind in \autoref{table:instructions}. 
 		\begin{tabular}{l | l l l l | l}
 			Ins-ID & Name & op1 & op2 & op3 & Beschreibung \\
 			\hline
-			$0\texttt{x}00$ & NOP  &  &  &  & Kein Effekt  \\
+			\texttt{0x00} & NOP  &  &  &  & Kein Effekt  \\
 			\hline
-			$0\texttt{x}01$ & MOV  & reg1 & reg2/c &  & reg1 $=$ reg2/c\\
-			$0\texttt{x}02$ & ADD  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $+$ reg3/c \\
-			$0\texttt{x}03$ & SUB  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $-$ reg3/c \\
-			$0\texttt{x}03$ & MUL? & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $*$ reg3/c \\
-			$0\texttt{x}05$ & DIV? & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $/$ reg3/c \\
-			$0\texttt{x}06$ & XOR  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $\oplus$ reg3/c \\
-			$0\texttt{x}07$ & AND  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $\land$ reg3/c \\
-			$0\texttt{x}08$ & OR   & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $\lor$ reg3/c \\
-			$0\texttt{x}09$ & NOT  & reg1 & reg2/c &      & reg1 $=$ $\lnot$reg2/c \\
+			\texttt{0x01} & MOV  & reg1 & reg2/c &  & reg1 $=$ reg2/c\\
+			\texttt{0x02} & ADD  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $+$ reg3/c \\
+			\texttt{0x03} & SUB  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $-$ reg3/c \\
+			\texttt{0x04} & MUL? & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $*$ reg3/c \\
+			\texttt{0x05} & DIV? & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $/$ reg3/c \\
+			\texttt{0x06} & XOR  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $\oplus$ reg3/c \\
+			\texttt{0x07} & AND  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $\land$ reg3/c \\
+			\texttt{0x08} & OR   & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $\lor$ reg3/c \\
+			\texttt{0x09} & NOT  & reg1 & reg2/c &      & reg1 $=$ $\lnot$reg2/c \\
 			\hline 
-			$0\texttt{x}0\texttt{a}$ & STR  & reg1 & reg2 & reg3/c & memory[reg2 + reg3/c] = reg1  \\
-			$0\texttt{x}0\texttt{b}$ & LD   & reg1 & reg2 & reg3/c & reg1 = memory[reg2 + reg3/c] \\
-			$0\texttt{x}0\texttt{c}$ & BNK1 & reg1/c &  &  & Setzt BID für Bank-Slot1 \\
-			$0\texttt{x}0\texttt{d}$ & BNK2 & reg1/c &  &  & Setzt BID für Bank-Slot2 \\
+			\texttt{0x0a} & STR  & reg1 & reg2 & reg3/c & memory[reg2 + reg3/c] = reg1  \\
+			\texttt{0x0b} & LD   & reg1 & reg2 & reg3/c & reg1 = memory[reg2 + reg3/c] \\
+			\texttt{0x0c} & BNK1 & reg1/c &  &  & Setzt BID für Bank-Slot1 \\
+			\texttt{0x0d} & BNK2 & reg1/c &  &  & Setzt BID für Bank-Slot2 \\
 			\hline
-			$0\texttt{x}0\texttt{e}$ & PUSH & reg1/c &  &  & SP--; memory[SP] = reg1 \\
-			$0\texttt{x}0\texttt{f}$ & POP  & reg1 &  &  & reg1 = memory[SP]; SP++ \\
-			$0\texttt{x}10$ & PEEK & reg1 &  &  & reg1 = memory[SP] \\
-			$0\texttt{x}11$ & CALL & reg1/c &  &  & \vtop{
+			\texttt{0x0e} & PUSH & reg1/c &  &  & SP--; memory[SP] = reg1 \\
+			\texttt{0x0f} & POP  & reg1 &  &  & reg1 = memory[SP]; SP++ \\
+			\texttt{0x10} & PEEK & reg1 &  &  & reg1 = memory[SP] \\
+			\texttt{0x11} & CALL & reg1/c &  &  & \vtop{
 				\hbox{\strut memory[SP] = IP; SP++;}
 				\hbox{\strut IP = reg1/c}} \\
-			$0\texttt{x}12$ & RET  &  &  &  & IP = memory[SP]; SP++ \\
+			\texttt{0x1b} & RET  &  &  &  & IP = memory[SP]; SP++ \\
 			\hline
-			$0\texttt{x}12$ & TEST & reg1 & reg2/c &  & Vergleicht reg1 und reg2/c \\
-			$0\texttt{x}13$ & JE   & reg1/c &  &  & IP = reg1/c if E \\
-			$0\texttt{x}14$ & JO   & reg1/c &  &  & IP = reg1/c if O \\
-			$0\texttt{x}15$ & JG   & reg1/c &  &  & IP = reg1/c if G \\
-			$0\texttt{x}16$ & JL   & reg1/c &  &  & IP = reg1/c if L \\
+			\texttt{0x12} & TEST & reg1 & reg2/c &  & Vergleicht reg1 und reg2/c \\
+			\texttt{0x13} & JE   & reg1/c &  &  & IP = reg1/c if E \\
+			\texttt{0x14} & JO   & reg1/c &  &  & IP = reg1/c if O \\
+			\texttt{0x15} & JG   & reg1/c &  &  & IP = reg1/c if G \\
+			\texttt{0x16} & JL   & reg1/c &  &  & IP = reg1/c if L \\
 			\hline
-			$0\texttt{x}16$ & IN   & reg1 & reg2 &  & reg1 = IO[reg2] \\
-			$0\texttt{x}17$ & OUT  & reg1/c & reg2 &  & IO[reg2] = reg1/c \\
-			$0\texttt{x}18$ & AIO  & reg1 &  &  & Aktiviert IO[reg1] \\
-			$0\texttt{x}19$ & DIO  & reg1 &  &  & Deaktivieren IO[reg1] \\
-			$0\texttt{x}1\texttt{a}$ & TYPE & reg1 & reg2 &  & reg1 = Type von IO[reg2] \\
+			\texttt{0x17} & IN   & reg1 & reg2 &  & reg1 = IO[reg2] \\
+			\texttt{0x18} & OUT  & reg1/c & reg2 &  & IO[reg2] = reg1/c \\
+			\texttt{0x19} & AIO  & reg1 &  &  & Aktiviert IO[reg1] \\
+			\texttt{0x1a} & DIO  & reg1 &  &  & Deaktivieren IO[reg1] \\
+			\texttt{0x1b} & TYPE & reg1 & reg2 &  & reg1 = Type von IO[reg2] \\
+			\hline
+			\texttt{0x1c} & INT  & & & & Löst einen Interrupt aus \\
+			\texttt{0x1d} & STI  & reg1/c & & & Setzt Timed Interrupt für reg1/c \\
 			\hline
 		\end{tabular}
 	\end{table*}
