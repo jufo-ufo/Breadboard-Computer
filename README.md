@@ -3,7 +3,7 @@ Let's build an Computer form ICs!
 
 ## TODO
 - [ ] Test out NAND vs NOT, AND, OR
-- [ ] Write Specification for V0.2
+- [ ] Write Specification for V0.4
   - [ ] add Instructionset to "Arbeit"
   - [ ] rework Interupts
   - [ ] I/O Specification
