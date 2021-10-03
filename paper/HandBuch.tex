@@ -257,17 +257,21 @@ I/O-Pinbelegung:
 			\hline
 			 $0\text{x}01$ & All  & ll & gibt ALLE (auch die, die man nicht verwenden sollte) Funktionen zurück & Iin(Instruktion); n$*$Dout(Antworten)\\
 			\hline
-			 $0\text{x}02$ & Drive & rsn (singel read normal) & Lesen eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); 1$*$Dout(Antwort) \\
+			 $0\text{x}02$ & Drive & rsn (read singel normal) & Lesen eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); 1$*$Dout(Antwort) \\
 			\hline
-			 $0\text{x}03$ & Drive & rmn (multiple read normal) & Lesen einer reihe an 16-Bit werten von 24-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(Länge); n$*$Dout(Antworten) \\
+			 $0\text{x}03$ & Drive & rmn (read multiple normal) & Lesen einer reihe an 16-Bit werten von 24-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(Länge); n$*$Dout(Antworten) \\
 			\hline
-			 $0\text{x}04$ & Drive & wsn (singel write normal) & Schreiben eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Daten); Dout(bestätigung) \\
+			 $0\text{x}04$ & Drive & wsn (write singel normal) & Schreiben eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Daten); Dout(bestätigung) \\
+			\hline
+			 $0\text{x}08$ & Drive & wmn (write multiple normal) & Schreiben einer reihe an 16-Bit werten an 24-Bit Addressen & Iin(Instruktion); Din(startAddresse); n$*$Din(Daten); Dout(bestätigung) \\
 			\hline
 			 $0\text{x}05$ & Drive & rsb (singel read big) & Lesen eines einzelnen 16-Bit werts von einer 40-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Addresse); 1$*$Dout(Antwort) \\
 			\hline
 			 $0\text{x}06$ & Drive & rmb (multiple write big) & Lesen einer reihe an 16-Bit werten von 40-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(startAddresse2); Din(Länge); n$*$Dout(Antworten) \\
 			\hline
 			 $0\text{x}07$ & Drive & wmb (singel write big) & Schreiben eines einzelnen 16-Bit werts von einer 40-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Addresse);Din(Daten); 1$*$Dout(bestätigung) \\
+			\hline
+			 $0\text{x}08$ & Drive & wmb (write multiple big) & Schreiben einer reihe an 16-Bit werten an 40-Bit Addressen & Iin(Instruktion); Din(startAddresse); n$*$Din(Daten); Dout(bestätigung) \\
 			\hline
 			 $0\text{x}08$ &  & & & \\
 			\hline
