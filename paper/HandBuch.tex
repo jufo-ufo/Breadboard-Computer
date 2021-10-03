@@ -273,13 +273,13 @@ I/O-Pinbelegung:
 			\hline
 			 $0\text{x}09$ & Drive & wmb (write multiple big) & Schreiben einer reihe an 16-Bit werten an 40-Bit Addressen & Iin(Instruktion); Din(startAddresse); n$*$Din(Daten); Dout(bestätigung) \\
 			\hline
-			 $0\text{x}0a$ & Drive &  & & \\
+			 $0\text{x}0a$ & Drive & rfn (read file normal) & Lesen einer gesamten Datei (24-bit Namen)  & Iin(Instruction); Din(Name); n$*$Dout(Antwort) \\
 			\hline
-			 $0\text{x}0b$ & Drive & & & \\
+			 $0\text{x}0b$ & Drive & wfn (write file normal) & Schreiben einer neuen Datei (24-bit Namen) & Iin(instruction); Din(Name); n$*$Din(daten); Dout(bestätigung) \\
 			\hline
-			 $0\text{x}0c$ & Drive & & & \\
+			 $0\text{x}0c$ & Drive & rfpb (read file-part big) & Lesen eines teils einer Datei (24-bit Namen) & Iin(instruction); Din(Name); 2$*$Din(läge); n$*$Dout(Daten) \\
 			\hline
-			 $0\text{x}0d$ & Drive & & & \\
+			 $0\text{x}0d$ & Drive & wfpb (write file-part big) & Anhängen von Daten an eine Datei(24-bit Namen) & Iin(instruction); Din(Name); Din(länge); n$*$Din(Daten); Dout(bestätigung) \\
 			\hline
 			 $0\text{x}0e$ &  & & & \\
 			\hline
