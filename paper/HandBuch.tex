@@ -249,9 +249,10 @@ I/O-Pinbelegung:
 
 
 
-	\begin{longtable}[c]
+	\begin{longtable}{p{0.045\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.40\textwidth} | p{0.22\textwidth}}[h]
+	\kill
 		\caption{\label{table:IOins}I/O-Instruktionen}
-		\begin{tabular}{p{0.045\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.40\textwidth} | p{0.22\textwidth}}
+		\endhead
 			ID & Gerätetyp & Name & Funktion & Verhalten \\
 			\hline
 			 $0\text{x}00$ & All & ls & gibt alle normalen Funktionen des Geräts zurück & Iin; n$*$Dout\\
@@ -285,7 +286,7 @@ I/O-Pinbelegung:
 			 $0\text{x}0e$ &  & & & \\
 			\hline
 			 $0\text{x}0f$ &  & & &
-		\end{tabular}
+
 	\end{longtable}
 \end{center}
 
