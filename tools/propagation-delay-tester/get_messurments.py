@@ -94,16 +94,16 @@ else:
             {"display":"OFF", "offset":"0", "scale":"2", "probe" : "10"}, 
             {"display":"OFF", "offset":"0", "scale":"2", "probe" : "10"}], "timebase" : "0.00000005", "trigger_level" : 2.8},
         {"channels" : [
-            {"display":"ON", "offset":"0", "scale":"2", "probe" : "10"}, 
-            {"display":"ON", "offset":"-6", "scale":"2", "probe" : "10"}, 
-            {"display":"OFF", "offset":"0", "scale":"2", "probe" : "10"}, 
-            {"display":"OFF", "offset":"0", "scale":"2", "probe" : "10"}], "timebase" : "0.00000005", "trigger_level" : 2.8},
+            {"display":"ON", "offset":"10", "scale":"5", "probe" : "10"}, 
+            {"display":"ON", "offset":"0", "scale":"5", "probe" : "10"}, 
+            {"display":"ON", "offset":"-10", "scale":"5", "probe" : "10"}, 
+            {"display":"OFF", "offset":"0", "scale":"5", "probe" : "10"}], "timebase" : "0.00000005", "trigger_level" : 2.8},
         {"channels" : [
-            {"display":"ON", "offset":"0", "scale":"2", "probe" : "10"}, 
-            {"display":"ON", "offset":"-6", "scale":"2", "probe" : "10"}, 
-            {"display":"OFF", "offset":"0", "scale":"2", "probe" : "10"}, 
-            {"display":"OFF", "offset":"0", "scale":"2", "probe" : "10"}], "timebase" : "0.00000005", "trigger_level" : 2.8}
-    ][args.number_probes]
+            {"display":"ON", "offset":"11", "scale":"5", "probe" : "10"}, 
+            {"display":"ON", "offset":"1", "scale":"5", "probe" : "10"}, 
+            {"display":"ON", "offset":"-9", "scale":"5", "probe" : "10"}, 
+            {"display":"ON", "offset":"-19", "scale":"5", "probe" : "10"}], "timebase" : "0.00000005", "trigger_level" : 2.8}
+    ][args.number_probes-1]
 
 print("Configurating Oscilloscope... ", end="")
 
@@ -124,9 +124,14 @@ osc.write("*WAI")
 print("Done!")
 
 if args.edge == "rising":
-    osc.write("")
+    osc.write(":TRIGger:EDGe:SLOPe POSitive")
+else:
+    osc.write(":TRIGger:EDGe:SLOPe NEGative")
 
 if args.callibrate: 
+    osc.write(":TRIGger:SWEep NORMal")
+
+
     print("Starting callibration\nWrite \"exit\" to end callibartion\n")
 
     i = 1
@@ -183,7 +188,7 @@ else: # Takeing measurements
             ser.write(b"\x00")
         else:
             ser.write(b"\xff")
-        time.sleep(1)
+        time.sleep(args.delay)
         if args.edge == "rising":
             ser.write(b"\xff")
         else:
