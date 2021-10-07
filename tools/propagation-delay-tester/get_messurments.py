@@ -30,10 +30,10 @@ parser.add_argument("-c", "--callibrate", help="Simple pulse for oscilloscope ca
 parser.add_argument("-n", "--number-probes", help="How many probes are used", default=1, type=int, choices=[1, 2, 3])
 parser.add_argument("-N", "--number-off-samples", help="Number of test samples", default=100, type=int)
 parser.add_argument("-i", "--meta-info", help="Meta information about the tested IC", default="")
-parser.add_argument("-t", "--timeout", help="Timeout for chip not responding in ms", default=None, type=int)
 parser.add_argument("-o", "--output-file", help="Output file for test results", default=None)
 parser.add_argument("-d", "--delay", help="Delay between measurements (This is NOT precise", default=0.01, type=float)
 parser.add_argument("-e", "--edge", help="The edge to messure on", default="rising", choices=["rising", "falling"])
+parser.add_argument("-E", "--external-signal-source", help="If used, the arduino can be replaced by an external-signal-source", action="store_true")
 
 parser.add_argument("-w", "--write-current-scope-config", help="Output file for current scope config", default=None)
 parser.add_argument("-C", "--scope-config-file", help="Input scope config file", default=None)
@@ -136,20 +136,22 @@ if args.callibrate:
 
     i = 1
     while True:
-        if args.edge == "rising":
-            ser.write(b"\x00")
-        else:
-            ser.write(b"\xff")
 
-        time.sleep(args.delay)
+        if not args.external_signal_source:
+            if args.edge == "rising":
+                ser.write(b"\x00")
+            else:
+                ser.write(b"\xff")
 
-        if args.edge == "rising":
-            ser.write(b"\xff")
-        else:
-            ser.write(b"\x00")
+            time.sleep(args.delay)
 
-        print(f"\033[F(Pulse #{str(i)}) ", end="")
-        i += 1
+            if args.edge == "rising":
+                ser.write(b"\xff")
+            else:
+                ser.write(b"\x00")
+
+            print(f"\033[F(Pulse #{str(i)}) ", end="")
+            i += 1
 
         try:
             if input() == "exit":
@@ -161,12 +163,18 @@ if args.callibrate:
 
 else: # Takeing measurements
     print("Starting measurement!")
-    data = {"config" : config, "oscilloscope" : osc.query("*IDN?"), "data" : []}
+    data = {
+        "config" : config, 
+        "oscilloscope" : osc.query("*IDN?"), 
+        "edge" : args.edge, 
+        "info" : args.meta_info, 
+        "data" : []
+    }
 
     if args.output_file == None:
         if args.meta_info == "":
             args.meta_info = "Sample"
-        output_file = open(args.meta_info + datetime.datetime.now().strftime('-%Y:%m:%d-%H:%M:%S.json'), "w")
+        output_file = open("Samples" + datetime.datetime.now().strftime('-%Y:%m:%d-%H:%M:%S.json'), "w")
     else:
         output_file = open(args.output_file + datetime.datetime.now().strftime('-%Y:%m:%d-%H:%M:%S.json'), "w")
 
@@ -184,15 +192,16 @@ else: # Takeing measurements
         while osc.query(":TRIGger:STATus?") != "WAIT":
             pass
 
-        if args.edge == "rising":
-            ser.write(b"\x00")
-        else:
-            ser.write(b"\xff")
-        time.sleep(args.delay)
-        if args.edge == "rising":
-            ser.write(b"\xff")
-        else:
-            ser.write(b"\x00")
+        if not args.external_signal_source:
+            if args.edge == "rising":
+                ser.write(b"\x00")
+            else:
+                ser.write(b"\xff")
+            time.sleep(args.delay)
+            if args.edge == "rising":
+                ser.write(b"\xff")
+            else:
+                ser.write(b"\x00")
 
         data["data"].append([])
 
