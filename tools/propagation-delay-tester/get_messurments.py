@@ -30,10 +30,10 @@ parser.add_argument("-c", "--callibrate", help="Simple pulse for oscilloscope ca
 parser.add_argument("-n", "--number-probes", help="How many probes are used", default=1, type=int, choices=[1, 2, 3])
 parser.add_argument("-N", "--number-off-samples", help="Number of test samples", default=100, type=int)
 parser.add_argument("-i", "--meta-info", help="Meta information about the tested IC", default="")
-parser.add_argument("-t", "--timeout", help="Timeout for chip not responding in ms", default=None, type=int)
 parser.add_argument("-o", "--output-file", help="Output file for test results", default=None)
 parser.add_argument("-d", "--delay", help="Delay between measurements (This is NOT precise", default=0.01, type=float)
 parser.add_argument("-e", "--edge", help="The edge to messure on", default="rising", choices=["rising", "falling"])
+parser.add_argument("-E", "--extern-signal-source", help="If used the arduino doesn't produce an output signal", action="store_true")
 
 parser.add_argument("-w", "--write-current-scope-config", help="Output file for current scope config", default=None)
 parser.add_argument("-C", "--scope-config-file", help="Input scope config file", default=None)
@@ -183,16 +183,17 @@ else: # Takeing measurements
         
         while osc.query(":TRIGger:STATus?") != "WAIT":
             pass
-
-        if args.edge == "rising":
-            ser.write(b"\x00")
-        else:
-            ser.write(b"\xff")
-        time.sleep(args.delay)
-        if args.edge == "rising":
-            ser.write(b"\xff")
-        else:
-            ser.write(b"\x00")
+        
+        if not args.extern_signal_source:
+            if args.edge == "rising":
+                ser.write(b"\x00")
+            else:
+                ser.write(b"\xff")
+            time.sleep(args.delay)
+            if args.edge == "rising":
+                ser.write(b"\xff")
+            else:
+                ser.write(b"\x00")
 
         data["data"].append([])
 
@@ -201,7 +202,7 @@ else: # Takeing measurements
 
         for j in range(1, args.number_probes+1):
             osc.write(f":WAVeform:SOURce CHANnel{str(j)}")
-            data["data"][-1].append(osc.query(":WAVeform:DATA?"))
+            data["data"][-1].append(osc.query(":WAVeform:DATA?").split(","))
 
         delta_time = time.time()-start
         time_total = (delta_time/(i+1)) * args.number_off_samples
