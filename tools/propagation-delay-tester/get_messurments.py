@@ -92,22 +92,23 @@ else:
             {"display":"ON", "offset":"0", "scale":"2", "probe" : "10"}, 
             {"display":"ON", "offset":"-6", "scale":"2", "probe" : "10"}, 
             {"display":"OFF", "offset":"0", "scale":"2", "probe" : "10"}, 
-            {"display":"OFF", "offset":"0", "scale":"2", "probe" : "10"}], "timebase" : "0.00000005", "trigger_level" : 2.8},
+            {"display":"OFF", "offset":"0", "scale":"2", "probe" : "10"}], "timebase" : "0.00000005", "trigger_level" : 2.8, "time_offset":0},
         {"channels" : [
             {"display":"ON", "offset":"10", "scale":"5", "probe" : "10"}, 
             {"display":"ON", "offset":"0", "scale":"5", "probe" : "10"}, 
             {"display":"ON", "offset":"-10", "scale":"5", "probe" : "10"}, 
-            {"display":"OFF", "offset":"0", "scale":"5", "probe" : "10"}], "timebase" : "0.00000005", "trigger_level" : 2.8},
+            {"display":"OFF", "offset":"0", "scale":"5", "probe" : "10"}], "timebase" : "0.00000005", "trigger_level" : 2.8, "time_offset":0},
         {"channels" : [
             {"display":"ON", "offset":"11", "scale":"5", "probe" : "10"}, 
             {"display":"ON", "offset":"1", "scale":"5", "probe" : "10"}, 
             {"display":"ON", "offset":"-9", "scale":"5", "probe" : "10"}, 
-            {"display":"ON", "offset":"-19", "scale":"5", "probe" : "10"}], "timebase" : "0.00000005", "trigger_level" : 2.8}
+            {"display":"ON", "offset":"-19", "scale":"5", "probe" : "10"}], "timebase" : "0.00000005", "trigger_level" : 2.8, "time_offset":0}
     ][args.number_probes-1]
 
 print("Configurating Oscilloscope... ", end="")
 
 osc.write(f":TIMebase:MAIN:SCALe {config['timebase']}")
+osc.write(f":TIMebase:MAIN:OFFSet {config['time_offset']}")
 
 for i in range(1,5):
     osc.write(f":CHANnel{str(i)}:DISPlay {config['channels'][i-1]['display']}")
@@ -167,7 +168,9 @@ else: # Takeing measurements
         "config" : config, 
         "oscilloscope" : osc.query("*IDN?"), 
         "edge" : args.edge, 
-        "info" : args.meta_info, 
+        "info" : args.meta_info,
+        "number_of_samples" : args.number_off_samples,
+        "meta_info" : args.meta_info,
         "data" : []
     }
 
@@ -208,9 +211,9 @@ else: # Takeing measurements
         while osc.query(":TRIGger:STATus?") != "STOP":
             pass
 
-        for j in range(1, args.number_probes+1):
+        for j in range(1, args.number_probes+2):
             osc.write(f":WAVeform:SOURce CHANnel{str(j)}")
-            data["data"][-1].append(osc.query(":WAVeform:DATA?"))
+            data["data"][-1].append(osc.query(":WAVeform:DATA?").split(",")[1:])
 
         delta_time = time.time()-start
         time_total = (delta_time/(i+1)) * args.number_off_samples
