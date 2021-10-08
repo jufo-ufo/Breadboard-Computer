@@ -205,13 +205,46 @@ POP und PUSH schalten automatisch zwischen Supervisor-Stack und User-Stack bei �
 
 \subsection{\label{section:io}Input/Output}
 
-Der Computer hat zudem die Möglichkeit mit verschieden IO-Geräte zu interagieren. Diese läuft über die sogenaten IO-Ports.
-Der Computer hat physische Slots wo IO-Geräte angesteckt werden können.
-Dabei bekommt jedes IO-Geräte eine eigene ID (IO-ID), welche im Bereich von $0$ bis $65535$ liegt.
-Die Interaktion funktioniert dabei ähnlich wie Memory.
+Der Computer hat zudem die Möglichkeit mit verschieden IO-Geräte zu interagieren.
+Die Komunikation läuft über die sogenannten IO-Ports.
+Der Computer hat physische Anschlüsse an denen IO-Geräte angesteckt werden können.
+Die Struktur dieser Anschlüsse sieht wir folgt aus:
 
+\begin{center}
+	\begin{table}[h]
+		\caption{\label{table:IOPins}}
+		\begin{tabular}{l | l}
+			\# & Funktion \\
+			\hline
+			00 & GND \\
+			01 & Vcc \\
+			02-17 & 16Bit Daten \\
+			18 & Iin-Enable \\
+			19 & Din-Enable \\
+			20 & Dout-Enable \\
+			21 & Clock
+ 		\end{tabular}
+	\end{table}
+\end{center}
 
-Schema der Instruktionen (Iin = InstruktionEingang(Computer->I/O-Gerät); Din = DatenEingang(Computer->I/O-Gerät); Dout = DatenOutput(I/O-Gerät -> Computer) ) an I/O Geräte:
+Dabei bekommt jedes IO-Gerät eine eigene ID (IO-ID), welche im Bereich von $0$ bis $65535$ liegen darf, wobei davon aufgrund von physikalischen beschränkungen vermutlich nur die ersten -zig verwendet werden.
+Die Interaktion funktioniert dabei über drei Instruktionen:
+
+\begin{center}
+	\begin{table}[h]
+		\caption{\label{table:IOInstructions}}
+		\begin{tabular}{r | r | l}
+			kurzform & Ausgeschrieben & funktion \\
+			\hline
+			Iin & Instruktion Eingang & Computer schreibt eine Instruktion ans I/O-Gerät \\
+			Din & Daten Eingang & Computer schreibt 16-Bit Daten ans I/O-Gerät \\
+			Dout &  Daten Output & Computer liest 16-Bit Daten vom I/O-Gerät
+ 		\end{tabular}
+	\end{table}
+\end{center}
+
+Jede Interaktion benötigt dabei mehrere Schritte, die genaue Definition der Kommunikationsschritte wird dabei durch jede instruktion eigen festgelegt.
+Ein allgemeiner standart Ablauf (wie z.B. der der später definierten IO-Instruktion "rmn") sieht wir folgt aus:
 
 \begin{center}
 	\begin{table}[h]
@@ -228,27 +261,13 @@ Schema der Instruktionen (Iin = InstruktionEingang(Computer->I/O-Gerät); Din = 
 	\end{table}
 \end{center}
 
+Die Pins Iin und Din werden dabei durch den Computer für einen Clock-Tick gesetzt, sobald die Daten/Instruktionsinformationen am Dateneingang an liegen; der Dout Pin wird durch das I/O-Gerät selbst gesetzt, sobald dieses seinerseits die Rückgabeinformation auf die Daten-pins anlegt.
+Das setzen des Dout-pins wird vom Computer als Interupt( \autoref{section:interrupts}) bearbeitet.
+Der fall, dass gleichzeitig der Computer und das I/O-Gerät die Datenpins versuchen zu beschreiben wird dadurch gelöst, dass meinstens die instruktionen definieren, wann das I/O-Gerät schreiben darf. Bei geräten, wie z.B. Peripherie-Geräten, die standartmäßig schreiben dürfen sollen ist von dem I/O-Gerät der Dout-pin schon eine Instruktion vor beginn des beschreibens des auf den Daten-pins zu setzen.
 
-I/O-Pinbelegung:
+die Momentan bestehenden I/O-Instruktionen sind die folgenden, aber diese sind im Programm frei veränderlich, solange das externe Gerät die gleiche Interpretation der Anweisungen hat.
+
 \begin{center}
-	\begin{table}[h]
-		\caption{\label{table:IOPins}}
-		\begin{tabular}{l | l}
-			\# & Funktion \\
-			\hline
-			00 & GND \\
-			01 & Vcc \\
-			02-17 & 16Bit Daten \\
-			18 & Iin-Enable \\
-			19 & Din-Enable \\
-			20 & Dout-Enable \\
-			21 & Clock
- 		\end{tabular}
-	\end{table}
-
-
-
-
 	\begin{longtable}{p{0.045\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.40\textwidth} | p{0.22\textwidth}}[h]
 	\kill
 		\caption{\label{table:IOins}I/O-Instruktionen}
