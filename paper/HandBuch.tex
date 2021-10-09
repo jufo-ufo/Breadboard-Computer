@@ -265,6 +265,9 @@ Die Pins Iin und Din werden dabei durch den Computer für einen Clock-Tick geset
 Das setzen des Dout-pins wird vom Computer als Interupt( \autoref{section:interrupts}) bearbeitet.
 Der fall, dass gleichzeitig der Computer und das I/O-Gerät die Datenpins versuchen zu beschreiben wird dadurch gelöst, dass meinstens die instruktionen definieren, wann das I/O-Gerät schreiben darf. Bei geräten, wie z.B. Peripherie-Geräten, die standartmäßig schreiben dürfen sollen ist von dem I/O-Gerät der Dout-pin schon eine Instruktion vor beginn des beschreibens des auf den Daten-pins zu setzen.
 
+Berechtigungen: der Supervisor-mode hat die berechtigungen zu allen I/O-Interaktionen, für normale prozesse wird die Berechtigungsliste in einer reihe an RAM-chips gespeichert, deren Addressen sich mit dem wechseln zwischen den verschiedenen Banks ändern.
+gesetzt werden können sie nur durch den Supervisor, wobei auch dieser die RAM-Addressen nicht manuel ändern kann (\autoref{section:insSet})
+
 die Momentan bestehenden I/O-Instruktionen sind die folgenden, aber diese sind im Programm frei veränderlich, solange das externe Gerät die gleiche Interpretation der Anweisungen hat.
 
 \begin{center}
