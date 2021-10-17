@@ -12,7 +12,6 @@ WIP/*.*
 wip/*.*
 
 .vscode
-tools/VTR-toolchain/VTR/*
 
 *.out
 *.log
