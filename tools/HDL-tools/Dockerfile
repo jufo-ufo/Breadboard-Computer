@@ -57,5 +57,6 @@ RUN ./run_quick_test.py
 RUN mkdir /workspace
 WORKDIR /workspace
 RUN ln -s /vtr/ODIN_II/odin_II /usr/bin/odin_II
+RUN sed -i "1iforce_color_prompt=yes" /root/.bashrc
 
 CMD [ "/bin/bash" ]
