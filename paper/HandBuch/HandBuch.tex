@@ -38,7 +38,15 @@
 \tableofcontents
 \newpage
 
-\section{Anforderungen und Methode}
+\section{Einführung}
+\subsection{Ziel diese Dokuments}
+Diese Dokument soll die Funktionionsweiße unserers Computer beschreiben. Dabei soll nicht auf die tatsächliche auf Implementation wertgelegt werden, wobei wir an machen stellen in genau dies tun müssen wie z.B. bei der Codierung der Instruktion, aber viel mehr auf die einzelnen Features und Funktionen. Diese Spezifikation wurde vor dem Bau des Computer bzw des Emulators geschrieben um eine Grundlage für alle weiteren Konstruktions Schritte zu haben. 
+
+\subsection{Geschichte}
+Dieses Dokument hat dabei sehr viel Änderung durchleben müssen, diese können sich \url{https://github.com/jufo-ufo/Breadboard-Computer} eingesehen werden. Zudem hatte diese Spezifikation zwei, wenn auch nicht vollständige, Vorgänger: \url{https://github.com/jufo-ufo/Breadboard-Computer/blob/master/specification_v0.1.txt} und \url{https://github.com/jufo-ufo/Breadboard-Computer/blob/master/specification_v0.2.txt}. Wobei die zweite Fassung als Basis diese Dokuments dient.
+
+
+
 
 \section{Spezifikation des Computers}
 Eine Computer hat eine Reihe verschiedener ``high-level`` Aufgaben und Features, die es ihm erlauben seiner Tätigkeiten nach zu gehen! 
@@ -112,7 +120,12 @@ Das Register FLAG enthält alle Statusflaggen. Eine Flagge kann entweder gesetzt
 
 Alle Flaggen, die mit TEST als Schaltung gekennzeichnet werden, werden bei der Ausführung der TEST Operation geschaltet.
 
-Das FLAG Register verhält sich ebenfalls wie ein Register, daher können Flagge auch per Hand gesetzt oder nicht gesetzt werden. Eine Ausnahme macht SUP die nur manuel geschaltet werden kann wenn SUP gesetzt ist, siehe \autoref{section:supervisor}
+Das FLAG Register verhält sich ebenfalls wie ein Register, daher können Flagge auch per Hand gesetzt oder nicht gesetzt werden. Eine Ausnahme macht SUP und OINT die nur manuel geschaltet werden kann wenn SUP gesetzt ist, siehe \autoref{section:supervisor}
+
+
+\subsubsection{\label{section:arthimatik}Arithmetische Operationen}
+
+\subsubsection{\label{section:controllflow}Kontrollfluss Instruktionen}
 
 
 
@@ -316,7 +329,7 @@ die Momentan bestehenden I/O-Instruktionen sind die folgenden, aber diese sind i
 
 Interrupts sind Unterbrechungen im Programmablauf. Wenn ein Interrupt meldet wird. Wird dieser im nächsten Instruktions-Zyklus bearbeitet. Für diesen Zyklus, wird, je nach Interrupt-Quelle, nicht die Instruktion ander Stelle von IP sondern von IV (Interrupt Vektor) geladen.
 
-Alle Interrupts werden blockiert wenn die OINT Flagge gesetzt ist. Blockiert heißt dabei das alle Interrupts nicht behandelt werden. Diese Flagge kann nur gesetzt werden wenn sicher der Computer im Supervisormode befindet.
+Alle Interrupts werden blockiert wenn die OINT Flagge gesetzt ist. Blockiert heißt dabei das alle Interrupts nicht behandelt werden. Diese Flagge kann nur gesetzt werden wenn sicher der Computer im Supervisormode befindet. siehe \ref*{section:supervisor}
 
 Wir unterscheiden dabei zwischen drei verschiedenen Interrupt-Quelle, wobei jede Quelle einen eigenen IV hat, wie in \autoref{table:iv}
 
@@ -342,7 +355,22 @@ würde \texttt{STI 0x00ff} in 256 Instruktion einen Interrupt auslösen. Wenn ei
 
 \subsection{\label{section:supervisor}Supervisor-/Usermode}
 
-REWORK
+Der Computer hatte ein eingebautes Rechte-System. Er kann dabei in zwei Modi operieren: dem Supervisormode und Usermode. Im Supervisormode kann der Computer alle Funktion, ohne einschreckung, nutzen. Im Usermode hingegen ist der Computer in einigen Funktion eingeschrenckt. Folgendes kann der Computer im Usermode \emph{nicht} machen:
+
+\begin{itemize}
+	\item Setzen der SUP Flagge
+	\item Änderung der OINT Flagge
+	\item Lesen und/oder schreiben in den Bereichen von \texttt{0x0000} - \texttt{0x3fff} und \texttt{0xd000} - \texttt{0xffff}
+	\item Änderung der Banken
+	\item Die IO-Berechtigungsliste zu modifizieren
+	\item Zugriff auf IO-Geräte, welche nicht in der Berechtigungsliste gespeichert sind
+\end{itemize}
+
+Der Modes des Computers (Supervisor or User) wird dabei in der SUP Flagge gespeichert. Eine gesetzte SUP Flagge entspricht dem Supervisormode und eine nicht gesetzte SUP dem Usermode Der Computer started dabei mit gestetzter SUP Flagge.
+
+Zudem änderet sich je nach Modus des Computer die Start position des Stacks wie in \autoref{section:stack} erleutert.
+
+Mehr zu der Motivation hinter diesem System in \autoref{com:sup}
 
 \subsection{\label{section:insSet}Instruktions-Satz}
 
@@ -440,7 +468,7 @@ Fünf lässt sich nicht mehr mit $2$ bits repräsentieren ($2^2 = 4$), daher mus
 
 \subsection{\label{com:insEnc}Alternative Instruktion Encodierung}
 
-\section{\label{section:security}}
+\subsection{\label{com:sup}Gedanken Hinter dem Supervisormode}
 
 \section{Quellenverzeichnis}
 
