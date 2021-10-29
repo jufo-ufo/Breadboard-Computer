@@ -205,6 +205,8 @@ else: # Takeing measurements
                 ser.write(b"\xff")
             else:
                 ser.write(b"\x00")
+        else:
+            time.sleep(args.delay)
 
         data["data"].append([])
 
