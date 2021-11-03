@@ -45,7 +45,6 @@ WORKDIR /
 RUN git clone https://github.com/verilog-to-routing/vtr-verilog-to-routing/
 RUN mv vtr-verilog-to-routing/ /vtr 
 
-
 # Compile and Test VTR
 WORKDIR /vtr
 RUN rm -rf .git
@@ -57,6 +56,9 @@ RUN ./run_quick_test.py
 RUN mkdir /workspace
 WORKDIR /workspace
 RUN ln -s /vtr/ODIN_II/odin_II /usr/bin/odin_II
+RUN ln -s /vtr/vpr/vpr /usr/bin/vpr
+RUN ln -s /vtr/abc/abc /usr/bin/abc
+RUN ln -s /vtr/vtr_flow/scripts/restore_multiclock_latch_information.pl /usr/bin/restore_multiclock_latch_information
 RUN sed -i "1iforce_color_prompt=yes" /root/.bashrc
 
-CMD [ "/bin/bash" ]
+CMD ["bash"]
