@@ -44,4 +44,4 @@ Fourthed and last step is to implement this on the FPGA with VPR. This will proc
 vpr <architecture-file> <outputfile.pre-vpr.blif>
 ```
 
-You can get an gui by adding `--disp on`
+You can get an gui by adding `--disp on`. But before running this you need to run `xauth +` to enable the container to connect to your display
