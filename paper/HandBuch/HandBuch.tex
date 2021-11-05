@@ -74,7 +74,7 @@ Mehr zur Registeranzahl in \autoref{section:comment:register_number}
 			$1$ & IP & Instruction Pointer, zeigt auf aktuell auszuführende Instruktion\\
 			$2$ & SP & Stack Pointer, zeigt auf obersten Wert des Stacks, siehe \ref{section:stack} \\
 			$3$ & A & Allzweck Register ohne besonderen Aufgaben \\
-			$4$ & B & " \\
+			$4$ & B & Allzweck " \\
 			$5$ & C & " \\
 			$6$ & D & " \\
 			$7$ & FLAG & Enthält alle wichtigen Flaggen, siehe \autoref{section:flags} \\
@@ -294,9 +294,6 @@ Die Pins Iin und Din werden dabei durch den Computer für einen Clock-Tick geset
 Das setzen des Dout-pins wird vom Computer als Interupt( \autoref{section:interrupts}) bearbeitet.
 Der fall, dass gleichzeitig der Computer und das I/O-Gerät die Datenpins versuchen zu beschreiben wird dadurch gelöst, dass meinstens die instruktionen definieren, wann das I/O-Gerät schreiben darf. Bei geräten, wie z.B. Peripherie-Geräten, die standartmäßig schreiben dürfen sollen ist von dem I/O-Gerät der Dout-pin schon eine Instruktion vor beginn des beschreibens des auf den Daten-pins zu setzen.
 
-Berechtigungen: der Supervisor-mode hat die berechtigungen zu allen I/O-Interaktionen, für normale prozesse wird die Berechtigungsliste in einer reihe an RAM-chips gespeichert, deren Addressen sich mit dem wechseln zwischen den verschiedenen Banks ändern.
-gesetzt werden können sie nur durch den Supervisor, wobei auch dieser die RAM-Addressen nicht manuel ändern kann (\autoref{section:insSet})
-
 die Momentan bestehenden I/O-Instruktionen sind die folgenden, aber diese sind im Programm frei veränderlich, solange das externe Gerät die gleiche Interpretation der Anweisungen hat.
 
 \begin{center}
@@ -341,6 +338,15 @@ die Momentan bestehenden I/O-Instruktionen sind die folgenden, aber diese sind i
 	\end{longtable}
 \end{center}
 
+
+\subsubsection{\label{section:persmissionIO}Berechtigungsliste}
+
+Berechtigungen: der Supervisor-mode hat die berechtigungen zu allen I/O-Interaktionen, für normale prozesse wird die Berechtigungsliste in einer reihe an RAM-chips gespeichert, deren Addressen sich mit dem wechseln zwischen den verschiedenen Banks ändern.
+gesetzt werden können sie nur durch den Supervisor, wobei auch dieser die RAM-Addressen nicht manuel ändern kann (\autoref{section:insSet})
+
+
+
+
 \subsection{\label{section:interrupts}Interrupts}
 
 Interrupts sind Unterbrechungen im Programmablauf. Wenn ein Interrupt meldet wird. Wird dieser im nächsten Instruktions-Zyklus bearbeitet. Für diesen Zyklus, wird, je nach Interrupt-Quelle, nicht die Instruktion ander Stelle von IP sondern von IV (Interrupt Vektor) geladen.
@@ -379,7 +385,7 @@ Der Computer hatte ein eingebautes Rechte-System. Er kann dabei in zwei Modi ope
 	\item Lesen und/oder schreiben in den Bereichen von \texttt{0x0000} - \texttt{0x3fff} und \texttt{0xd000} - \texttt{0xffff}
 	\item Änderung der Banken
 	\item Die IO-Berechtigungsliste zu modifizieren
-	\item Zugriff auf IO-Geräte, welche nicht in der Berechtigungsliste gespeichert sind
+	\item Zugriff auf IO-Geräte, welche nicht in der Berechtigungsliste gespeichert sind (siehe \autoref{section:persmissionIO})
 \end{itemize}
 
 Der Modes des Computers (Supervisor or User) wird dabei in der SUP Flagge gespeichert. Eine gesetzte SUP Flagge entspricht dem Supervisormode und eine nicht gesetzte SUP dem Usermode Der Computer started dabei mit gestetzter SUP Flagge.
