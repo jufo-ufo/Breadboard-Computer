@@ -6,6 +6,7 @@
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage[T1]{fontenc}
 \usepackage{xcolor}
 \usepackage{tikz}
@@ -40,26 +41,26 @@
 
 \section{Einführung}
 \subsection{Ziel diese Dokuments}
-Diese Dokument soll die Funktionionsweiße unserers Computer beschreiben. Dabei soll nicht auf die tatsächliche auf Implementation wertgelegt werden, wobei wir an machen stellen in genau dies tun müssen wie z.B. bei der Codierung der Instruktion, aber viel mehr auf die einzelnen Features und Funktionen. Diese Spezifikation wurde vor dem Bau des Computer bzw des Emulators geschrieben um eine Grundlage für alle weiteren Konstruktions Schritte zu haben. 
+Dieses Dokument soll die Funktionsweise unseres Platinencomputers beschreiben. Dabei soll nicht auf die tatsächliche auf Implementation wertgelegt werden, aber viel mehr auf die einzelnen Features und Funktionen. Diese Spezifikation wurde vor dem Bau des Computers bzw. des Emulators geschrieben, um eine Grundlage für alle weiteren Konstruktionsschritte zu haben. 
 
 \subsection{Geschichte}
-Dieses Dokument hat dabei sehr viel Änderung durchleben müssen, diese können sich \url{https://github.com/jufo-ufo/Breadboard-Computer} eingesehen werden. Zudem hatte diese Spezifikation zwei, wenn auch nicht vollständige, Vorgänger: \url{https://github.com/jufo-ufo/Breadboard-Computer/blob/master/specification_v0.1.txt} und \url{https://github.com/jufo-ufo/Breadboard-Computer/blob/master/specification_v0.2.txt}. Wobei die zweite Fassung als Basis diese Dokuments dient.
+Dieses Dokument hat sehr viel Änderung durchleben müssen, diese kann unter \url{https://github.com/jufo-ufo/Breadboard-Computer} eingesehen werden. Zudem hatte diese Spezifikation zwei, wenn auch nicht vollständige, Vorgänger: \url{https://github.com/jufo-ufo/Breadboard-Computer/blob/master/specification_v0.1.txt} und \url{https://github.com/jufo-ufo/Breadboard-Computer/blob/master/specification_v0.2.txt}. Wobei die zweite Fassung als Basis dieses Dokuments diente.
 
 
 
 
 \section{Spezifikation des Computers}
-Eine Computer hat eine Reihe verschiedener ``high-level`` Aufgaben und Features, die es ihm erlauben seiner Tätigkeiten nach zu gehen! 
-Diese Features können wie folgt auf gegliedert werden: Register, Memory, Banking, Input/Output, Flaggen, Hardware Stack, Interrupts, Supervisor-Mode und das Instructuion Set.
+Ein Computer hat eine Reihe verschiedener ``high-level`` Aufgaben und Features, die es ihm erlauben, seiner Tätigkeiten nach zu gehen! 
+Diese Features können wie folgt auf gegliedert werden: Register, Memory, Input/Output, Interrupts, Supervisor-/Usermode und der Instruktionssatz.
 
-Aber um zuerst ein paar Standarts festzulegen: der Computer hat eine Daten/Adressen Länge von 16 bit, d.h. er kann maximal 16 bit auf einmal operieren bzw. können maximal 16 bit an Daten/Adressen im Computer auf einmal bewegt werden. Mehr dazu in \autoref{section:comment:datalength}
+Aber um zuerst ein paar Standards festzulegen: Der Computer hat eine Daten-/Adressenlänge von 16 Bit, d.h. er kann maximal 16 Bit auf einmal operieren bzw. können maximal 16 Bit an Daten/Adressen im Computer auf einmal bewegt werden. Mehr dazu in \autoref{section:comment:datalength}
 
 
 
 \subsection{Registers}
-Register sind kleine sehr schnelle Speichereinheiten, die genutzt werden können um Zwischenergebnisse, lokal Variablen, Argumenten für Funktionen zu speichern oder um Daten im Computer zwischen den einzelnen Komponenten zu verschieben. Aus jedem Register kann \emph{gelesen} (\emph{Kopierten} des alten Wertes an eine anderen Ort) oder \emph{geschrieben} werden (den alten Wert mit einem neuen Wert \emph{überschreiben})
+Register sind kleine, sehr schnelle Speichereinheiten, die genutzt werden können, um Zwischenergebnisse, lokal Variablen, Argumenten für Funktionen zu speichern oder um Daten im Computer zwischen den einzelnen Komponenten zu verschieben. Aus jedem Register kann \emph{gelesen} (\emph{Kopierten} des alten Wertes an einen anderen Ort) oder \emph{geschrieben} werden (den alten Wert mit einem neuen Wert \emph{überschreiben})
 
-Der Computers besitzt bei uns $8$ verschiedene, jeweils $16$ bit lange Register. Jedes Register hat dabei eine eigene Registernumber (= RN). Machen Register erfüllen zudem noch spezielle Aufgaben und sollten auch nur so verwendet werden. Diese Funktionen sind in \autoref{table:register} zu sehen.
+Der Computer besitzt $8$ verschiedene, jeweils $16$ Bit lange Register. Jedes Register hat dabei eine eigene Registernummer (RN). Machen Register erfüllen zudem noch spezielle Aufgaben und sollten auch nur so verwendet werden. Diese Funktionen sind in \autoref{table:register} zu sehen.
 
 Mehr zur Registeranzahl in \autoref{section:comment:register_number}
 
@@ -81,14 +82,17 @@ Mehr zur Registeranzahl in \autoref{section:comment:register_number}
 	\end{table}
 \end{center}
 
-Die Register A-D sind dabei die Register, welche frei für jede Nutzung zur Verfügung stehen. Es ist \emph{stark zu empfehlen} die spezialregister (ZERO, IP, SP und FLAG) \emph{nicht} für die Speicherung von Daten zu verwenden, da dies evt. Programmabläufe stark stören könnte. Sie sind ausdrücklich nur für ihre zugewiesenen Aufgaben da.
+Die Register A-D sind dabei Register, welche frei für jede Nutzung zur Verfügung stehen. Es ist \emph{stark zu empfehlen}, die Spezialregister (ZERO, IP, SP und FLAG) \emph{nicht} für die Speicherung von Daten zu verwenden, da dies evtl. Programmabläufe stark stören könnte oder im Falle von ZERO nicht möglich ist. Sie sind ausdrücklich nur für ihre zugewiesenen Aufgaben da.
 
+Das Kopierten eines Wertes in ein Register ist mit der MOV-Instruktion möglich. Die MOV-Instruktion nimmt dabei als ersten Operanden das Ziel Register und als zweiten Operanden das Quellenregister oder eine Konstante an. MOV kopiert nun den Wert des zweiten Operanden in den des Ersten. Die Notation ist dabei wie folgt: 
 
+\text{MOV <Ziel-Register> <Qullen-Register/Konstante>}
 
+Eine Übersicht über alle Instruktion ist in \autoref{section:insSet} vermerkt.
 
 \subsubsection{\label{section:flags}Flaggen}
 
-Das Register FLAG enthält alle Statusflaggen. Eine Flagge kann entweder gesetzt oder nicht gesetzt sein, daher kann jede Flagge als ein Bit repräsentiert werden. Jedes Bit in FLAG stellt daher eine Flagge da. Flaggen werden bei unterschiedlichen Ereignissen geschaltet. Dies und welche Flaggen es gibt ist in \autoref{table:flag} zusehen
+Das Register FLAG enthält alle Statusflaggen. Eine Flagge kann entweder gesetzt oder nicht gesetzt sein, daher kann jede Flagge als ein Bit repräsentiert werden. Jedes Bit in FLAG stellt daher eine Flagge da. Flaggen werden bei unterschiedlichen Ereignissen geschaltet. Dies und welche Flaggen es gibt, ist in \autoref{table:flag} zusehen.
 
 \begin{center}
 	\begin{table}[h]
@@ -112,18 +116,30 @@ Das Register FLAG enthält alle Statusflaggen. Eine Flagge kann entweder gesetzt
 			13 &  &  &  \\
 			14 &  &  &  \\
 			15 & OINT & Overwride Interruption, siehe \autoref{section:interrupts} &  \\
-			15 & SUP & Supervisor-/Usermode & siehe \autoref{section:interrupts} 
+			15 & SUP & Supervisor-/Usermode & siehe \autoref{section:supervisor} 
 		\end{tabular}
 	\end{table}
 \end{center}
 
 
-Alle Flaggen, die mit TEST als Schaltung gekennzeichnet werden, werden bei der Ausführung der TEST Operation geschaltet.
+Alle Flaggen, die mit TEST als Schaltung gekennzeichnet sind, werden bei der Ausführung der TEST Operation geschaltet.
 
-Das FLAG Register verhält sich ebenfalls wie ein Register, daher können Flagge auch per Hand gesetzt oder nicht gesetzt werden. Eine Ausnahme macht SUP und OINT die nur manuel geschaltet werden kann wenn SUP gesetzt ist, siehe \autoref{section:supervisor}
+Das FLAG Register verhält sich ebenfalls wie ein Register, daher können Flagge auch per Hand gesetzt oder nicht gesetzt werden. Eine Ausnahme macht SUP und OINT die nur geschaltet werden können, wenn der Computer sich im Supervisormode befindet, siehe \autoref{section:supervisor}. Ein Schalten im Usermode hat keinen Effekt.
 
 
-\subsubsection{\label{section:arthimatik}Arithmetische Operationen}
+\subsubsection{\label{section:arthimatik}Arithmetische Operationen und Bitmanipulation}
+
+Der Computer hat zudem die Fähigkeit, arithmetische Operation und Bit-Manipulation durchzuführen. Alle Operationen sind dabei binär daher Kombinieren zwei Eingangswerte oder Operanden zu einem Ausgangswert. Die Ausnahme macht dabei die NOT-Instruktion, die nur einen Eingangswert annimmt und auf diesen ein Bitweises Nicht durchführt. 
+
+Alle arithmetischen Operationen und Bit-Manipulation funktionieren dabei immer gleich: Sie kombinieren das erste Quelle-Register mit dem zweiten Quellen-Register und schreiben das Ergebnis in das Ziel-Register. Dabei ist zu beachten, dass das zweite Quellen-Register durch einen konstanten Wert ersetzt werden kann. Die Notation dafür sie wie folgt aus:
+
+\text{<Operation> <Ziel-Register> <Quellen-Register 1> <Quellen-Register 2/Konstante>}
+
+Der Computer unterstützt dabei folgende Operationen: Addition (ADD), Subtraktion (SUB), Multiplikation (MUL), Division (DIV), Bitweises exklusives Oder (XOR), Bitweise Und (AND), Bitweises Oder (OR), Bitweises Nicht (NOT)
+
+Eine Übersicht über alle Instruktion ist in \autoref{section:insSet} vermerkt.
+
+Wichtig zusagen ist bei das alle Operationen ($f(x_1, x_2) = y \mod 65536$) gilt $65535 \ge y \ge 0$ ist wo bei gilt $y \in \mathbb{N}$. Der springende Punk ist bei, dass bei einer Rechnung wie $65535 + 1$ das Ergebnis nicht $65536$ ist, sondern $0$. Bei so einem “Overflow“ wird die OF-Flagge gesetzt. Dieses Problem tritt auf da wir nur $16$ Bit als Datenlänge zu Verfügung haben, mehr dazu in \autoref{section:comment:datalength}
 
 \subsubsection{\label{section:controllflow}Kontrollfluss Instruktionen}
 
