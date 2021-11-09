@@ -11,3 +11,5 @@ Let's build an Computer form ICs!
   - [ ] Insert test results
 - [ ] Get familiary with EAGLE/Target3001
 - [ ] Build Circet Designs
+
+https://www.youtube.com/watch?v=9aUsTlBjspE
