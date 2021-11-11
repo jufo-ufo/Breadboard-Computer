@@ -1,17 +1,22 @@
-paper/*.aux
-paper/*.bbl
-paper/*.bcf
-paper/*.blg
-paper/*.fdb_latexmk
-paper/*.fls
-paper/*.synctex.gz
-paper/*.toc
-paper/*.run.xml
-out/*.*
-WIP/*.*
-wip/*.*
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.toc
+*.run.xml
 
+out
+WIP/*
+WIP/IO_Protocoll_v1.txt
+.idea/runConfigurations/HandBuch.xml
+
+.idea
 .vscode
+cmake-build-debug
+
 tools/VTR-toolchain/VTR/*
 
 *.out
