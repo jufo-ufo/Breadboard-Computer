@@ -55,6 +55,7 @@ Diese Features können wie folgt auf gegliedert werden: Register, Memory, Input/
 
 Aber um zuerst ein paar Standards festzulegen: Der Computer hat eine Daten-/Adressenlänge von 16 Bit, d.h. er kann maximal 16 Bit auf einmal operieren bzw. können maximal 16 Bit an Daten/Adressen im Computer auf einmal bewegt werden. Mehr dazu in \autoref{section:comment:datalength}
 
+Unsere Computer ist eine von Neuman-Maschine, d.h. sowol Daten als auch Programm während in einem Hauptspeicher (Memory) gespeichert
 
 
 \subsection{Registers}
@@ -126,6 +127,13 @@ Alle Flaggen, die mit TEST als Schaltung gekennzeichnet sind, werden bei der Aus
 
 Das FLAG Register verhält sich ebenfalls wie ein Register, daher können Flagge auch per Hand gesetzt oder nicht gesetzt werden. Eine Ausnahme macht SUP und OINT die nur geschaltet werden können, wenn der Computer sich im Supervisormode befindet, siehe \autoref{section:supervisor}. Ein Schalten im Usermode hat keinen Effekt.
 
+Neben der MOV-Instruktion gibt es auch die sogentannten kondizionallen MOV-Instruktionen. Diese funktionieren genauso wie die MOV-Instruktion, indem sie das Quellen-Register/Konstante in das Ziel-Register kopiert, aber dies jedoch nur tun, wenn die entsprechende Flagge gesetzt ist. Die Notation dafür ist wie folgt:
+
+\text{M<Flagge> <Ziel-Register> <Quellen-Register/Konstante>}
+
+Daher ergeben sich folgende kondizionallen MOV-Instruktionen: ME (E Flagge), MOF (Flagge OF), MG (G Flagge), ML (L Flagge), MI (ONIT Flagge), MS (SUP Flagge).
+
+Eine Übersicht über alle Instruktion ist in \autoref{section:insSet} vermerkt.
 
 \subsubsection{\label{section:arthimatik}Arithmetische Operationen und Bitmanipulation}
 
@@ -141,8 +149,6 @@ Eine Übersicht über alle Instruktion ist in \autoref{section:insSet} vermerkt.
 
 Wichtig zusagen ist bei das alle Operationen ($f(x_1, x_2) = y \mod 65536$) gilt $65535 \ge y \ge 0$ ist wo bei gilt $y \in \mathbb{N}$. Der springende Punk ist bei, dass bei einer Rechnung wie $65535 + 1$ das Ergebnis nicht $65536$ ist, sondern $0$. Bei so einem “Overflow“ wird die OF-Flagge gesetzt. Dieses Problem tritt auf da wir nur $16$ Bit als Datenlänge zu Verfügung haben, mehr dazu in \autoref{section:comment:datalength}
 
-\subsubsection{\label{section:controllflow}Kontrollfluss Instruktionen}
-
 
 
 
@@ -150,14 +156,21 @@ Wichtig zusagen ist bei das alle Operationen ($f(x_1, x_2) = y \mod 65536$) gilt
 
 Während die Register für lokale Variablen und Zwischenergebnisse gedacht sind, ist Memory (Arbeitsspeicher) für die Speicherung von größeren Datenmengen gedacht.
 
-Es ist in 65536 einzelne und unabhängige Speicherzellen (Jede 16 bit große) aufgeteilt. Jeder Zelle ist einer Addresse, welche von 0 bis 65535 reicht, zugeordnet. Der Computer kann damit auf $65536 \text{words}$ oder $131072 \text{bytes}$ ($\approx 131.0 \text{kb}$) gleichzeitig zugreifen.
-\footnote{Die Größe messen wir in words (w) oder in kilowords (kw), wobei $1 \text{word} = 2 \text{bytes} = 16 \text{bit}$.}. Wichtig ist das die Gesamt Größe theoretisch weitaus größer sein kann, dank Banking siehe \autoref{section:banking}.
+Es ist in 65536 einzelne und unabhängige Speicherzellen (Jede 16 Bit große) aufgeteilt. Jeder Zelle ist einer Adresse, welche von 0 bis 65535 reicht, zugeordnet. Der Computer kann damit auf $65536 \text{ words}$ oder $131072 \text{ bytes}$ ($\approx 131.0 \text{kb}$) zugreifen.
+\footnote{Die Größe messen wir in words (w) oder in kilowords (kw), wobei $1 \text{ word} = 2 \text{ bytes} = 16 \text{ Bit}$.}. Wichtig ist das die Gesamt Größe theoretisch weitaus größer sein kann, dank Banking siehe \autoref{section:banking}.
 
-Memory wird dabei über LD- und STR-Instruktionen gesteuert. Die LD-Instruktion kopiert einen Wert aus Memory und schreibt ihn in ein Register, während STR an der angebenen Addresse den Wert mit dem eines Register überschreibt.
+Memory wird dabei über LD- und STR-Instruktionen gesteuert. Die LD-Instruktion kopiert einen Wert aus Memory und schreibt ihn in ein Ziel-Register, während STR an der angegebenen Adresse den Wert mit dem Wert des Quellen-Register überschreibt. Die Adresse wird zusammen gesetzt durch die Addition des Address-Register1 und entweder in dem Address-Register2 oder einer Konstante. Die Notation sieht dabei wie folgt aus:
 
-Dabei ist die Memory Karte in \autoref{fig:memoryMap} zu stehen. Die zwei Hardware Stacks sind dort gekenzeichnet mit $\uparrow$, mehr dazu in \autoref{section:stack}
+\text{LD <Ziel-Register> <Address-Register1> <Address-Register2/Konstante>}
 
-Die mit Supervisor gekennzeichneten Bereich können nur dann gelesen oder geschrieben werden, wenn die SUP Flagge gesetzt ist. Der Bereich, der mit ROM versehen wurde, ist dabei nicht beschreibbar, sondern kann nur gelesen werden. Eine STR Instruktion hat keine Wirkung.
+
+\text{STR <Quellen-Register> <Address-Register1> <Address-Register2/Konstante>}
+
+Eine Übersicht über alle Instruktion ist in \autoref{section:insSet} vermerkt.
+
+Zudem wurden bestimmte Bereichen bestimmte Aufgaben bzw. Funktionen zugewiesen, wie in \autoref{fig:memoryMap} zu stehen. Die zwei Hardware Stacks sind dort gekenzeichnet mit $\uparrow$, mehr dazu Stacks in \autoref{section:stack}
+
+Die mit Supervisor gekennzeichneten Bereich können nur dann gelesen oder geschrieben werden, wenn sich der Computer im Supervisormode befindet. Mehr zu Supervisormode in \autoref{section:supervisor}. Der Bereich, der mit ROM versehen wurde, ist dabei nicht beschreibbar, sondern kann nur gelesen werden. Eine STR-Instruktion hat keine Wirkung. Eine Änderung des Inhalts der ROM Bereiche ist nur durch den Austausch des darunterliegen physikalischen ROM-Chips möglich.
 
 \begin{figure}[h]
 	\centering
@@ -210,25 +223,68 @@ Die mit Supervisor gekennzeichneten Bereich können nur dann gelesen oder geschr
 
 Banken sind externe Memory Module, die eingesteckt werden können. Alle Banken sind gleich groß ($~18.4\text{kw} = 36.8\text{kb}$) und der Computer unterstützt maximal $65536$ unterschiedliche Banken. Jede Bank hat dabei eine ID (BID), die von $0$ bis $65535$ reicht.
 
-Der Computer hat zwei Bank-Slots (Slot 1 \texttt{0x4000 - 0x3fff} und Slot 2 \texttt{0x4000 - 0x57ff}). Er kann nun auf jenden dieser Slots eine der theoretisch $65536$ Bank legen
-\footnote{Es ist dabei möglich die gleiche Bank auf beide Slots zu legen, auch wenn das nur bedingt nützlich ist.}. Das Banken legen lässt sich über die SBK1- (Select Bank 1) und SBK2- (Select Bank 2) Instruktion erreichen.
-Wenn man somit an diese entsprechende Memory Addressen schreibt, schreibt man in die Bank hinein.
+Der Computer hat zwei Bank-Slots (Slot 1 \texttt{0x4000 - 0x3fff} und Slot 2 \texttt{0x4000 - 0x57ff}). Er kann nun auf jede dieser Slots eine der theoretisch $65536$ Bank legen
+\footnote{Es ist dabei möglich, die gleiche Bank auf beide Slots zu legen, auch wenn das nur bedingt nützlich ist.}. Das Banken legen lässt sich über die SBK1- (Select Bank 1) und SBK2- (Select Bank 2) Instruktion erreichen. Die BIN kann dabei als Konstante oder als Register vorliegen. Die Notation ist dabei wie folgt:
 
-Durch dieses System lassen sich $65536 * ~18.4\text{kw} = 1.2\text{Gw} = 2.4\text{GB}$ ansprechen.
+\text{SBK<1/2> <BIN-Register/Konstante>}
 
-Das Bankensystem dient zudem dazu Prozesse von einander zu isolieren, da bei nicht gesetzter SUP-Flagge Computer die Bank nicht änderen kann, siehe \autoref{section:supervisor}.
+Eine Übersicht über alle Instruktion ist in \autoref{section:insSet} vermerkt.
+
+Somit führt das Beschreiben/Lesen an einer Adresse welche einem Bank-Slot zugeordnet ist, zudem Beschreiben/Lesen der ausgewählte Bank.
+
+Durch dieses System lassen sich $65536 * ~18.4\text{kw} = 1.2\text{Gw} = 2.4\text{GB}$ an Arbeitsspeicher ansprechen.
+
+Das Bankensystem dient zudem dazu, Prozesse voneinander zu isolieren, da im Usermode der Computer die Bank nicht verändern kann, siehe \autoref{section:supervisor}.
 
 \subsubsection{\label{section:stack}Hardware Stack}
 
-Der Stack (oder auch Stapelspeicher) ist eine LIFO (Last In First Out) Datenstruktur. Sie dient hauptsächlich dazu Subroutinen zu verwalten. 
+Der Stack (oder, auch Stapelspeicher) ist eine LIFO (Last In First Out) Datenstruktur. Sie dient hauptsächlich dazu, Subroutinen zu verwalten. 
 
-Er funktioniert dabei wie ein Münztappel. Es kann ein Wert auf den Stack gelegt werden (PUSH-Instruktion) oder ein Wert von oben abgehoben werden (POP-Instruktion).
+Er funktioniert dabei wie ein Papierstapel. Es kann ein Wert auf den Stack gelegt, werden (PUSH-Instruktion) oder ein Wert von oben abgehoben werden (POP-Instruktion). Wobei der Wert, der auf den Stack gelegt bzw. abgehoben werden soll, entweder im Quellen-Register bzw. Zeil-Register oder als Konstante vorliegt. Die Notation ist dabei wie folgt:
 
-Der Stack liegt dabei physisch in Memory vor. Jedes Element des Stacks okkupiert dabei eine Memoryzelle. Das Stack-Point Register-(SP) hält die Addresse, welche auf den oberste Wert des Stacks zeigt. Der Stack wächst dabei von hohen Addressen zu niedrigen Addressen. PUSH entspricht dabei der Dekrementierung des Stack Pointers um $1$ und POP der Inkrementierung um $1$.
+\text{PUSH <Quellen-Register/Konstante>}
 
-Fundamental hat der Computer zwei Stacks. Der Supervisor-Stack beginnt bei \texttt{0xffff} und wird genutzt wenn die SUP Flagge gesetzt ist. Der User-Stack beginnt bei \texttt{0x57ff}, also am Ende des Bank-Slots 1 und wird genutzt, wenn die SUP Flagge nicht gesetzt ist.
+\text{POP  <Ziel-Register>}
 
-POP und PUSH schalten automatisch zwischen Supervisor-Stack und User-Stack bei Änderung der SUP-Flagge.
+Der Stack liegt dabei physisch in Memory vor. Jedes Element des Stacks okkupiert dabei eine Memory-Zelle (16 Bit). Das Stack-Point Register-(SP) hält die Adresse, welche die nächste freie Memory-Zelle zeigt, die eins über dem obersten Wert des Stacks liegt. Der Stack wächst dabei von hohen Adressen zu niedrigen Adressen, wie in \autoref{fig:stack-dir} zusehen. 
+
+Bei einer PUSH Instruktion wird zuerst an die Stelle auf die SP zeigt der Wert des Qullen-Register/Konstante geschrieben und darauf der SP um $1$ inkriminiert. POP dagegen dekrementiert zuerst den SP um $1$ und kopiert dann den Wert von der Stelle auf welche SP zeigt in das Ziel-Register.
+
+Zudem gibt es noch die RET- und CALL-Instruktionen. \text{RET} ist äquivalent zu \text(POP IP) und CALL ist äquivalent zu \text{PUSH IP; MOV IP <Quellen-Register/Konstante>}. Die Notation ist dabei wie folgt:
+
+\text{RET}
+
+\text{CALL <Quellen-Register/Konstante>}
+
+Fundamental hat der Computer zwei Stacks. Der Supervisor-Stack beginnt bei \texttt{0xffff} und wird genutzt, wenn die SUP Flagge gesetzt ist. Der User-Stack beginnt bei \texttt{0x57ff}, also am Ende des Bank-Slots 1 und wird genutzt, wenn die SUP Flagge nicht gesetzt ist.
+
+POP, PUSH, CALL und RET schalten automatisch zwischen Supervisor-Stack und User-Stack bei Änderung der SUP-Flagge.
+
+\begin{figure}[h]
+	\centering
+	\caption{Stack Aufbau}
+	\label{fig:stack-dir}
+
+	\begin{bytefield}[leftcurly=., rightcurly=.]{16}
+		\begin{rightwordgroup}{\small niedrige Addressen}
+			\wordbox[lrb]{1}{}
+		\end{rightwordgroup} \\
+		\begin{leftwordgroup}{\small SP $\rightarrow$}
+			\wordbox[lrb]{1}{}
+		\end{leftwordgroup} \\
+		\wordbox[lrb]{1}{Wert n} \\
+		\begin{rightwordgroup}{\small $\uparrow$ Stack-Richtung}
+			\wordbox[lrb]{1}{...}
+		\end{rightwordgroup} \\
+		\wordbox[lrb]{1}{Wert 1} \\
+		\wordbox[lrb]{1}{Wert 0} \\
+		\begin{rightwordgroup}{\small hohe Adressen}
+			\wordbox[lr]{1}{}
+		\end{rightwordgroup}
+	\end{bytefield}
+
+\end{figure}
+
 
 
 
@@ -406,7 +462,7 @@ Alle zuverfügenung stehenden Instruktion sind in \autoref{table:instructions}. 
 			\hline
 			\texttt{0x00} & NOP  &  &  &  & Kein Effekt  \\
 			\hline
-			\texttt{0x01} & MOV  & reg1 & reg2/c &  & reg1 $=$ reg2/c\\
+			\texttt{0x01} & MOV  & reg1 &  & reg3/c & reg1 $=$ reg3/c\\
 			\texttt{0x02} & ADD  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $+$ reg3/c \\
 			\texttt{0x03} & SUB  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $-$ reg3/c \\
 			\texttt{0x04} & MUL? & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $*$ reg3/c \\
@@ -414,35 +470,36 @@ Alle zuverfügenung stehenden Instruktion sind in \autoref{table:instructions}. 
 			\texttt{0x06} & XOR  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $\oplus$ reg3/c \\
 			\texttt{0x07} & AND  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $\land$ reg3/c \\
 			\texttt{0x08} & OR   & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $\lor$ reg3/c \\
-			\texttt{0x09} & NOT  & reg1 & reg2/c &      & reg1 $=$ $\lnot$reg2/c \\
+			\texttt{0x09} & NOT  & reg1 &  & reg3/c & reg1 $=$ $\lnot$reg3/c \\
 			\hline 
 			\texttt{0x0a} & STR  & reg1 & reg2 & reg3/c & memory[reg2 + reg3/c] = reg1  \\
 			\texttt{0x0b} & LD   & reg1 & reg2 & reg3/c & reg1 = memory[reg2 + reg3/c] \\
-			\texttt{0x0c} & BNK1 & reg1/c &  &  & Setzt BID für Bank-Slot1 \\
-			\texttt{0x0d} & BNK2 & reg1/c &  &  & Setzt BID für Bank-Slot2 \\
+			\texttt{0x0c} & BNK1 &  &  & reg3/c & Setzt BID für Bank-Slot1 \\
+			\texttt{0x0d} & BNK2 &  &  & reg3/c & Setzt BID für Bank-Slot2 \\
 			\hline
-			\texttt{0x0e} & PUSH & reg1/c &  &  & SP--; memory[SP] = reg1 \\
-			\texttt{0x0f} & POP  & reg1 &  &  & reg1 = memory[SP]; SP++ \\
-			\texttt{0x10} & PEEK & reg1 &  &  & reg1 = memory[SP] \\
-			\texttt{0x11} & CALL & reg1/c &  &  & \vtop{
+			\texttt{0x0e} & PUSH &  &  & reg3/c & SP--; memory[SP] = reg1 \\
+			\texttt{0x0f} & POP  &  &  & reg3 & reg3 = memory[SP]; SP++ \\
+			\texttt{0x10} & CALL &  &  & reg3/c & \vtop{
 				\hbox{\strut memory[SP] = IP; SP++;}
 				\hbox{\strut IP = reg1/c}} \\
-			\texttt{0x1b} & RET  &  &  &  & IP = memory[SP]; SP++ \\
+			\texttt{0x11} & RET  &  &  &  & IP = memory[SP]; SP++ \\
 			\hline
-			\texttt{0x12} & TEST & reg1 & reg2/c &  & Vergleicht reg1 und reg2/c \\
-			\texttt{0x13} & JE   & reg1/c &  &  & IP = reg1/c if E \\
-			\texttt{0x14} & JO   & reg1/c &  &  & IP = reg1/c if O \\
-			\texttt{0x15} & JG   & reg1/c &  &  & IP = reg1/c if G \\
-			\texttt{0x16} & JL   & reg1/c &  &  & IP = reg1/c if L \\
+			\texttt{0x12} & TEST & reg1 &  & reg3/c & Vergleicht reg1 und reg3/c \\
+			\texttt{0x13} & ME   & reg1 &  & reg3/c & reg1 = reg3/c if E \\
+			\texttt{0x14} & MOF  & reg1 &  & reg3/c & reg1 = reg3/c if O \\
+			\texttt{0x15} & MG   & reg1 &  & reg3/c & reg1 = reg3/c if G \\
+			\texttt{0x16} & ML   & reg1 &  & reg3/c & reg1 = reg3/c if L \\
+			\texttt{0x17} & MS & reg1 &  & reg3/c & reg1 = reg3/c if SUP \\
+			\texttt{0x18} & MI & reg1 &  & reg3/c & reg1 = reg3/c if OINT \\
 			\hline
-			\texttt{0x17} & IN   & reg1 & reg2 &  & reg1 = IO[reg2] \\
-			\texttt{0x18} & OUT  & reg1/c & reg2 &  & IO[reg2] = reg1/c \\
-			\texttt{0x19} & AIO  & reg1 &  &  & Aktiviert IO[reg1] \\
-			\texttt{0x1a} & DIO  & reg1 &  &  & Deaktivieren IO[reg1] \\
-			\texttt{0x1b} & TYPE & reg1 & reg2 &  & reg1 = Type von IO[reg2] \\
+			\texttt{0x19} & IOUT & reg1 &  & reg3/c & IIO[reg1] = reg3/c \\
+			\texttt{0x1a} & DOUT & reg1 &  & reg3/c & DIO[reg1] = reg3/c \\
+			\texttt{0x1b} & DIN  & reg1 &  & reg3 & reg3 = DIO[reg1] \\
+			\texttt{0x1c} & AIO  & reg1 &  &  & Aktiviert IO[reg1] \\
+			\texttt{0x1d} & DIO  & reg1 &  &  & Deaktivieren IO[reg1] \\
 			\hline
-			\texttt{0x1c} & INT  & & & & Löst einen Interrupt aus \\
-			\texttt{0x1d} & STI  & reg1/c & & & Setzt Timed Interrupt für reg1/c \\
+			\texttt{0x1e} & INT  & & & & Löst einen Interrupt aus \\
+			\texttt{0x1f} & STI  & & & reg3/c & Setzt Timed Interrupt für reg1/c \\
 			\hline
 		\end{tabular}
 	\end{table*}
