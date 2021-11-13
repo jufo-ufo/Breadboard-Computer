@@ -6,7 +6,7 @@ Let's build an Computer form ICs!
 - [ ] Write Specification for V0.4
   - [X] Add Instructionset to "Handbuch"
   - [ ] Rework Interupts
-  - [ ] I/O Specification
+  - [X] I/O Specification
   - [ ] Update Flags
   - [ ] Insert test results
 - [ ] Get familiary with EAGLE/Target3001
