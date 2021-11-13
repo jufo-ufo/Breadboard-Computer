@@ -15,6 +15,7 @@
 \usepackage[style=numeric, backend=biber]{biblatex}
 \usepackage{listings}
 \usepackage{bytefield}
+\usepackage{longtable}
 
 \lstdefinestyle{asm}{
 }
@@ -204,31 +205,11 @@ POP und PUSH schalten automatisch zwischen Supervisor-Stack und User-Stack bei �
 
 \subsection{\label{section:io}Input/Output}
 
-Der Computer hat zudem die Möglichkeit mit verschieden IO-Geräte zu interagieren. Diese läuft über die sogenaten IO-Ports.
-Der Computer hat physische Slots wo IO-Geräte angesteckt werden können.
-Dabei bekommt jedes IO-Geräte eine eigene ID (IO-ID), welche im Bereich von $0$ bis $65535$ liegt.
-Die Interaktion funktioniert dabei ähnlich wie Memory.
+Der Computer hat zudem die Möglichkeit mit verschieden IO-Geräte zu interagieren.
+Die Komunikation läuft über die sogenannten IO-Ports.
+Der Computer hat physische Anschlüsse an denen IO-Geräte angesteckt werden können.
+Die Struktur dieser Anschlüsse sieht wir folgt aus:
 
-
-Schema der Instruktionen (Iin = InstruktionEingang(Computer->I/O-Gerät); Din = DatenEingang(Computer->I/O-Gerät); Dout = DatenOutput(I/O-Gerät -> Computer) ) an I/O Geräte:
-
-\begin{center}
-	\begin{table}[h]
-		\caption{\label{table:IO_Schem}}
-		\begin{tabular}{l | l | l | l | l | l | l}
-			 Bereich & Instr 1 & Instr 2 & ... & Instr n & Instr $n+1$ & ... \\
-			\hline
-			Iin & 1 & 0 &   & 0 & \\
-			Din & 0 & 1 &   & 0 & \\
-			Dout & 0 & 0 &   & 1 & \\
-			Data$0-7$ & InstructionID & Variable &   & Rückgabewert & Rückgabewert \\
-			Data$8-15$ & 8b Variable & Variable &   & Rückgabewert & Rückgabewert
- 		\end{tabular}
-	\end{table}
-\end{center}
-
-
-I/O-Pinbelegung:
 \begin{center}
 	\begin{table}[h]
 		\caption{\label{table:IOPins}}
@@ -246,32 +227,89 @@ I/O-Pinbelegung:
 	\end{table}
 \end{center}
 
+Dabei bekommt jedes IO-Gerät eine eigene ID (IO-ID), welche im Bereich von $0$ bis $65535$ liegen darf, wobei davon aufgrund von physikalischen beschränkungen vermutlich nur die ersten -zig verwendet werden.
+Die Interaktion funktioniert dabei über drei Instruktionen:
 
 \begin{center}
 	\begin{table}[h]
+		\caption{\label{table:IOInstructions}}
+		\begin{tabular}{r | r | l}
+			kurzform & Ausgeschrieben & funktion \\
+			\hline
+			Iin & Instruktion Eingang & Computer schreibt eine Instruktion ans I/O-Gerät \\
+			Din & Daten Eingang & Computer schreibt 16-Bit Daten ans I/O-Gerät \\
+			Dout &  Daten Output & Computer liest 16-Bit Daten vom I/O-Gerät
+ 		\end{tabular}
+	\end{table}
+\end{center}
+
+Jede Interaktion benötigt dabei mehrere Schritte, die genaue Definition der Kommunikationsschritte wird dabei durch jede instruktion eigen festgelegt.
+Ein allgemeiner standart Ablauf (wie z.B. der der später definierten IO-Instruktion "rmn") sieht wir folgt aus:
+
+\begin{center}
+	\begin{table}[h]
+		\caption{\label{table:IO_Schem}}
+		\begin{tabular}{l | l | l | l | l | l | l}
+			 Bereich & Instr 1 & Instr 2 & ... & Instr n & Instr $n+1$ & ... \\
+			\hline
+			Iin & 1 & 0 &   & 0 & \\
+			Din & 0 & 1 &   & 0 & \\
+			Dout & 0 & 0 &   & 1 & \\
+			Data$0-7$ & InstructionID & Variable &   & Rückgabewert & Rückgabewert \\
+			Data$8-15$ & 8b Variable & Variable &   & Rückgabewert & Rückgabewert
+ 		\end{tabular}
+	\end{table}
+\end{center}
+
+Die Pins Iin und Din werden dabei durch den Computer für einen Clock-Tick gesetzt, sobald die Daten/Instruktionsinformationen am Dateneingang an liegen; der Dout Pin wird durch das I/O-Gerät selbst gesetzt, sobald dieses seinerseits die Rückgabeinformation auf die Daten-pins anlegt.
+Das setzen des Dout-pins wird vom Computer als Interupt( \autoref{section:interrupts}) bearbeitet.
+Der fall, dass gleichzeitig der Computer und das I/O-Gerät die Datenpins versuchen zu beschreiben wird dadurch gelöst, dass meinstens die instruktionen definieren, wann das I/O-Gerät schreiben darf. Bei geräten, wie z.B. Peripherie-Geräten, die standartmäßig schreiben dürfen sollen ist von dem I/O-Gerät der Dout-pin schon eine Instruktion vor beginn des beschreibens des auf den Daten-pins zu setzen.
+
+Berechtigungen: der Supervisor-mode hat die berechtigungen zu allen I/O-Interaktionen, für normale prozesse wird die Berechtigungsliste in einer reihe an RAM-chips gespeichert, deren Addressen sich mit dem wechseln zwischen den verschiedenen Banks ändern.
+gesetzt werden können sie nur durch den Supervisor, wobei auch dieser die RAM-Addressen nicht manuel ändern kann (\autoref{section:insSet})
+
+die Momentan bestehenden I/O-Instruktionen sind die folgenden, aber diese sind im Programm frei veränderlich, solange das externe Gerät die gleiche Interpretation der Anweisungen hat.
+
+\begin{center}
+	\begin{longtable}{p{0.045\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.40\textwidth} | p{0.22\textwidth}}[h]
+	\kill
 		\caption{\label{table:IOins}I/O-Instruktionen}
-		\begin{tabular}{p{0.045\textwidth} | p{0.1\textwidth} | p{0.12\textwidth} | p{0.40\textwidth} | p{0.22\textwidth}}
+		\endhead
 			ID & Gerätetyp & Name & Funktion & Verhalten \\
 			\hline
 			 $0\text{x}00$ & All & ls & gibt alle normalen Funktionen des Geräts zurück & Iin; n$*$Dout\\
 			\hline
 			 $0\text{x}01$ & All  & ll & gibt ALLE (auch die, die man nicht verwenden sollte) Funktionen zurück & Iin(Instruktion); n$*$Dout(Antworten)\\
 			\hline
-			 $0\text{x}02$ & Drive & nsr (normal singel read) & Lesen eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); 1$*$Dout(Antwort) \\
+			 $0\text{x}02$ & Drive & rsn (read singel normal) & Lesen eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); 1$*$Dout(Antwort) \\
 			\hline
-			 $0\text{x}03$ & Drive & nmr (normal multiple read) & Lesen einer reihe an 16-Bit werten von 24-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(Länge); n$*$Dout(Antworten) \\
+			 $0\text{x}03$ & Drive & rmn (read multiple normal) & Lesen einer reihe an 16-Bit werten von 24-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(Länge); n$*$Dout(Antworten) \\
 			\hline
-			 $0\text{x}04$ & Drive & nsw (normal singel write) & Schreiben eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Daten); Dout(bestätigung) \\
+			 $0\text{x}04$ & Drive & wsn (write singel normal) & Schreiben eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Daten); Dout(bestätigung) \\
 			\hline
-			 $0\text{x}05$ & Drive & bsr (big singel read) & Lesen eines einzelnen 16-Bit werts von einer 40-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Addresse); 1$*$Dout(Antwort) \\
+			 $0\text{x}05$ & Drive & wmn (write multiple normal) & Schreiben einer reihe an 16-Bit werten an 24-Bit Addressen & Iin(Instruktion); Din(startAddresse); n$*$Din(Daten); Dout(bestätigung) \\
 			\hline
-			 $0\text{x}06$ & Drive & bmr (big multiple write) & Lesen einer reihe an 16-Bit werten von 40-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(startAddresse2); Din(Länge); n$*$Dout(Antworten) \\
+			 $0\text{x}06$ & Drive & rsb (singel read big) & Lesen eines einzelnen 16-Bit werts von einer 40-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Addresse); 1$*$Dout(Antwort) \\
 			\hline
-			 $0\text{x}07$ & Drive & bmw (big singel write) & Schreiben eines einzelnen 16-Bit werts von einer 40-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Addresse);Din(Daten); 1$*$Dout(bestätigung) \\
+			 $0\text{x}07$ & Drive & rmb (multiple write big) & Lesen einer reihe an 16-Bit werten von 40-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(startAddresse2); Din(Länge); n$*$Dout(Antworten) \\
 			\hline
-			 $0\text{x}08$ &  & & &
-		\end{tabular}
-	\end{table}
+			 $0\text{x}08$ & Drive & wmb (singel write big) & Schreiben eines einzelnen 16-Bit werts von einer 40-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Addresse);Din(Daten); 1$*$Dout(bestätigung) \\
+			\hline
+			 $0\text{x}09$ & Drive & wmb (write multiple big) & Schreiben einer reihe an 16-Bit werten an 40-Bit Addressen & Iin(Instruktion); Din(startAddresse); n$*$Din(Daten); Dout(bestätigung) \\
+			\hline
+			 $0\text{x}0a$ & Drive & rfn (read file normal) & Lesen einer gesamten Datei (24-bit Namen)  & Iin(Instruction); Din(Name); n$*$Dout(Antwort) \\
+			\hline
+			 $0\text{x}0b$ & Drive & wfn (write file normal) & Schreiben einer neuen Datei (24-bit Namen) & Iin(instruction); Din(Name); n$*$Din(daten); Dout(bestätigung) \\
+			\hline
+			 $0\text{x}0c$ & Drive & rfpb (read file-part big) & Lesen eines teils einer Datei (24-bit Namen) & Iin(instruction); Din(Name); 2$*$Din(läge); n$*$Dout(Daten) \\
+			\hline
+			 $0\text{x}0d$ & Drive & wfpb (write file-part big) & Anhängen von Daten an eine Datei(24-bit Namen) & Iin(instruction); Din(Name); Din(länge); n$*$Din(Daten); Dout(bestätigung) \\
+			\hline
+			 $0\text{x}0e$ &  & & & \\
+			\hline
+			 $0\text{x}0f$ &  & & &
+
+	\end{longtable}
 \end{center}
 
 \subsection{\label{section:interrupts}Interrupts}
@@ -402,25 +440,7 @@ Fünf lässt sich nicht mehr mit $2$ bits repräsentieren ($2^2 = 4$), daher mus
 
 \subsection{\label{com:insEnc}Alternative Instruktion Encodierung}
 
-\section{Grundlegen Tests der Einzelnen Komponenten}
-
-\section{\label{section:security}Security}
-
-\section{\label{section:devices}Perepheriegeräte}
-
-\begin{center}
-	\begin{table}
-		\caption{\label{table:device_types}Typennummern}
-		\begin{tabular}{ l | l | l}
-			Typennummer & Typename & Hinweis \\
-			\hline
-			$0\texttt{x}0000$ & NC & Keine Verbindung \\
-			$0\texttt{x}0001$ & & \\
-			... & & Nicht Besetzt \\
-			$0\texttt{xffff}$ & & \\
-		\end{tabular}
-	\end{table}
-\end{center}
+\section{\label{section:security}}
 
 \section{Quellenverzeichnis}
 
