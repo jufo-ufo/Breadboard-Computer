@@ -76,14 +76,16 @@ Mehr zur Registeranzahl in \autoref{section:comment:register_number}
 			$2$ & SP & Stack Pointer, zeigt auf obersten Wert des Stacks, siehe \ref{section:stack} \\
 			$3$ & A & Allzweck Register ohne besonderen Aufgaben \\
 			$4$ & B & Allzweck " \\
-			$5$ & C & " \\
-			$6$ & D & " \\
+			$5$ & C & Allzweck " \\
+			$6$ & D & Allzweck " \\
 			$7$ & FLAG & Enthält alle wichtigen Flaggen, siehe \autoref{section:flags} \\
 		\end{tabular}
 	\end{table}
 \end{center}
 
-Die Register A-D sind dabei Register, welche frei für jede Nutzung zur Verfügung stehen. Es ist \emph{stark zu empfehlen}, die Spezialregister (ZERO, IP, SP und FLAG) \emph{nicht} für die Speicherung von Daten zu verwenden, da dies evtl. Programmabläufe stark stören könnte oder im Falle von ZERO nicht möglich ist. Sie sind ausdrücklich nur für ihre zugewiesenen Aufgaben da.
+Die Register A-D sind dabei Register, welche frei für jede Nutzung zur Verfügung stehen. Es ist \emph{stark zu empfehlen}, die Spezialregister (ZERO, IP, SP und FLAG) \emph{nicht} für die Speicherung von Daten zu verwenden, da dies evtl. Programmabläufe stark stören könnte oder im Falle von ZERO oder den letzten 8 bit des Flaggen Registers im Usermode nicht möglich ist. Sie sind ausdrücklich nur für ihre zugewiesenen Aufgaben da.
+
+\subsubsection{\label{section:DataMov} Kopieren und Bewegen von Daten}
 
 Das Kopierten eines Wertes in ein Register ist mit der MOV-Instruktion möglich. Die MOV-Instruktion nimmt dabei als ersten Operanden das Ziel Register und als zweiten Operanden das Quellenregister oder eine Konstante an. MOV kopiert nun den Wert des zweiten Operanden in den des Ersten. Die Notation ist dabei wie folgt: 
 
@@ -117,7 +119,7 @@ Das Register FLAG enthält alle Statusflaggen. Eine Flagge kann entweder gesetzt
 			13 &  &  &  \\
 			14 &  &  &  \\
 			15 & OINT & Overwride Interruption, siehe \autoref{section:interrupts} &  \\
-			15 & SUP & Supervisor-/Usermode & siehe \autoref{section:supervisor} 
+			15 & SUP & Supervisor-/Usermode, siehe \autoref{section:supervisor} & 
 		\end{tabular}
 	\end{table}
 \end{center}
@@ -125,13 +127,13 @@ Das Register FLAG enthält alle Statusflaggen. Eine Flagge kann entweder gesetzt
 
 Alle Flaggen, die mit TEST als Schaltung gekennzeichnet sind, werden bei der Ausführung der TEST Operation geschaltet.
 
-Das FLAG Register verhält sich ebenfalls wie ein Register, daher können Flagge auch per Hand gesetzt oder nicht gesetzt werden. Eine Ausnahme macht SUP und OINT die nur geschaltet werden können, wenn der Computer sich im Supervisormode befindet, siehe \autoref{section:supervisor}. Ein Schalten im Usermode hat keinen Effekt.
+Das FLAG Register verhält sich ebenfalls wie ein Register, daher können Flagge auch per Hand gesetzt oder nicht gesetzt werden. Eine Ausnahme machen die letzten 8 Flaggen darunter SUP und OINT die nur geschaltet werden können, wenn der Computer sich im Supervisormode befindet, siehe \autoref{section:supervisor}. Ein Schalten im Usermode hat keinen Effekt.
 
 Neben der MOV-Instruktion gibt es auch die sogentannten kondizionallen MOV-Instruktionen. Diese funktionieren genauso wie die MOV-Instruktion, indem sie das Quellen-Register/Konstante in das Ziel-Register kopiert, aber dies jedoch nur tun, wenn die entsprechende Flagge gesetzt ist. Die Notation dafür ist wie folgt:
 
 \text{M<Flagge> <Ziel-Register> <Quellen-Register/Konstante>}
 
-Daher ergeben sich folgende kondizionallen MOV-Instruktionen: ME (E Flagge), MOF (Flagge OF), MG (G Flagge), ML (L Flagge), MI (ONIT Flagge), MS (SUP Flagge).
+Daher ergeben sich folgende kondizionallen MOV-Instruktionen: ME (E Flagge), MOF (OF Flagge), MG (G Flagge), ML (L Flagge), MI (ONIT Flagge), MS (SUP Flagge).
 
 Eine Übersicht über alle Instruktion ist in \autoref{section:insSet} vermerkt.
 
