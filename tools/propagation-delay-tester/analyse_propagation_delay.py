@@ -127,9 +127,9 @@ for j in range(number_of_channels-1):
     average = 0
     max_delay = 0
     min_delay = 10**100
+    delays_value = [i[j] for i in delays]
 
-    for i in range(number_of_samples):
-        v = delays[i][j]
+    for v in delays_value:
         max_delay = v if v > max_delay else max_delay
         min_delay = v if v < min_delay else min_delay
         average += v
@@ -160,7 +160,7 @@ for j in range(number_of_channels-1):
     # Ploting Delays
     ax = plt.subplot(number_of_channels, 3, (j+1)*3 + 3, sharex=last_ax_bar)
     ax.yaxis.set_major_formatter(formatter_time)
-    plt.bar(list(range(1, number_of_samples+1)), delays[j])
+    plt.bar(list(range(1, number_of_samples+1)), [i[j] for i in delays])
     last_ax_bar = ax
     plt.title("Channel #{} - Delays".format(j+1), x=0.5)
 
@@ -168,4 +168,6 @@ for j in range(number_of_channels-1):
 print("="*47)
 
 plt.suptitle("Propergation-Delay - {}".format(data["meta_info"]))
-plt.show()
+
+if not "--no-display" in sys.argv:
+    plt.show()
