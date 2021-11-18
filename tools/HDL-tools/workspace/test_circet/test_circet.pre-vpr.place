@@ -1,0 +1,9 @@
+Netlist_File: test_circet.pre-vpr.net Netlist_ID: SHA256:e5e601c5a47279389a2d55eaef85b4bb30fc7aee33a11c95bb455b5d9b36b100
+Array size: 3 x 3 logic blocks
+
+#block name	x	y	subblk	block number
+#----------	--	--	------	------------
+blink^ADD~2-0[0]	1	1	0	#0
+out:blink^o_led	1	0	2	#1
+blink^clk	0	1	7	#2
+blink^i_reset	1	0	7	#3
