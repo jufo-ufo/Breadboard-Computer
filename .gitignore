@@ -10,8 +10,8 @@ paper/*.run.xml
 out
 WIP/*
 WIP/IO_Protocoll_v1.txt
-.idea/runConfigurations/HandBuch.xml
 
+.idea/*
 .vscode
 tools/VTR-toolchain/VTR/*
 
