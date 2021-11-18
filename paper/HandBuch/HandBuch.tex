@@ -18,6 +18,8 @@
 \usepackage{bytefield}
 \usepackage{longtable}
 
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
 \lstdefinestyle{asm}{
 }
 
@@ -58,6 +60,113 @@ Aber um zuerst ein paar Standards festzulegen: Der Computer hat eine Daten-/Adre
 Unsere Computer ist eine von Neuman-Maschine, d.h. sowol Daten als auch Programm während in einem Hauptspeicher (Memory) gespeichert
 
 
+
+\subsection{\label{section:insSet}Instruktions-Satz}
+
+Das Programm, welches den Computer vorschreibt, was er abzuarbeiten hat, besteht aus Instruktionen. Jede Instruktion enthält die $6$ Bit langen Ins-ID, ein $16$ Bit Konstante und $3$ gewählte Register in Form einer $3$ Bit Register Nummer (RN). Damit ergibt sich eine $32$ Bit, also $2$ words, lange Instruktion. Die Codierung ist dabei in \autoref{fig:InsEncoding} festgehalten.
+
+\begin{figure}[h]
+	\label{fig:InsEncoding}
+	\centering
+	\begin{bytefield}{32}
+		\bitheader{0,5,6,7,9,10,12,13,15,16,31}\\
+		\bitbox[ltb]{6}[]{Ins-ID}
+		\bitbox[ltb]{1}[]{E}
+		\bitbox[ltb]{3}[]{op1}
+		\bitbox[ltb]{3}[]{op2}
+		\bitbox[ltb]{3}[]{op3}
+		\bitbox[lrtb]{16}[]{Konstante}
+	\end{bytefield}
+\end{figure}
+
+
+Jeder zur Verfügung stehenden Instruktion ist dabei exakt einer oben erwähnten Ins-ID zugeordnet. Alle Ins-ID und dazugehörige Instruktion ist in \autoref{table:instructions}
+
+Jede Instruktion hat 3 Operatanten (op), welche Register sind. Im Falle des dritten Operatanten kann auch eine Konstante verwendet werden. Das E Bit gibt dabei an, welches von beiden genutzt werden soll. Bei gesetztem E Bit wird die Konstante verwendet, bei nicht gesetztem E Bit das Register.
+
+
+\begin{center}
+	\begin{table*}
+		\caption{\label{table:instructions}Instruktions-Satz}
+		\begin{tabular}{l | l l l l | l}
+			Ins-ID & Name & op1 & op2 & op3 & Beschreibung \\
+			\hline
+			\texttt{0x00} & NOP  &  &  &  & Kein Effekt  \\
+			\hline
+			\texttt{0x01} & MOV  & reg &  & reg/c & op1 $=$ op3\\
+			\texttt{0x02} & ADD  & reg & reg & reg/c & op1 $=$ op2 $+$ op3 \\
+			\texttt{0x03} & SUB  & reg & reg & reg/c & op1 $=$ op2 $-$ op3 \\
+			\texttt{0x04} & MUL? & reg & reg & reg/c & op1 $=$ op2 $*$ op3 \\
+			\texttt{0x05} & DIV? & reg & reg & reg/c & op1 $=$ op2 $/$ op3 \\
+			\texttt{0x06} & XOR  & reg & reg & reg/c & op1 $=$ op2 $\oplus$ op3 \\
+			\texttt{0x07} & AND  & reg & reg & reg/c & op1 $=$ op2 $\land$ op3 \\
+			\texttt{0x08} & OR   & reg & reg & reg/c & op1 $=$ op2 $\lor$ op3 \\
+			\texttt{0x09} & NOT  & reg &  & reg/c & op1 $=$ $\lnot$op3 \\
+			\hline 
+			\texttt{0x0a} & STR  & reg & reg & reg/c & memory[op2 + op3] = op1  \\
+			\texttt{0x0b} & LD   & reg & reg & reg/c & op1 = memory[op2 + op3] \\
+			\texttt{0x0c} & BNK1 &  &  & reg/c & Setzt BID für Bank-Slot1 \\
+			\texttt{0x0d} & BNK2 &  &  & reg/c & Setzt BID für Bank-Slot2 \\
+			\hline
+			\texttt{0x0e} & PUSH &  &  & reg/c & SP--; memory[SP] = op1 \\
+			\texttt{0x0f} & POP  &  &  & reg & op3 = memory[SP]; SP++ \\
+			\texttt{0x10} & CALL &  &  & reg/c & \vtop{
+				\hbox{\strut memory[SP] = IP; SP++;}
+				\hbox{\strut IP = op3}} \\
+			\texttt{0x11} & RET  &  &  &  & IP = memory[SP]; SP++ \\
+			\hline
+			\texttt{0x12} & TEST & reg &  & reg/c & Vergleicht op1 und op3 \\
+			\texttt{0x13} & ME   & reg &  & reg/c & op1 = op3 if E \\
+			\texttt{0x14} & MOF  & reg &  & reg/c & op1 = op3 if O \\
+			\texttt{0x15} & MG   & reg &  & reg/c & op1 = op3 if G \\
+			\texttt{0x16} & ML   & reg &  & reg/c & op1 = op3 if L \\
+			\texttt{0x17} & MS & reg &  & reg/c & op1 = op3 if SUP \\
+			\texttt{0x18} & MI & reg &  & reg/c & op1 = op3 if OINT \\
+			\hline
+			\texttt{0x19} & IOUT & reg &  & reg/c & IIO[op1] = op3/c \\
+			\texttt{0x1a} & DOUT & reg &  & reg/c & DIO[op1] = op3/c \\
+			\texttt{0x1b} & DIN  & reg &  & reg & op3 = DIO[op1] \\
+			\texttt{0x1c} & AIO  & reg &  &  & Aktiviert IO[op1] \\
+			\texttt{0x1d} & DIO  & reg &  &  & Deaktivieren IO[op1] \\
+			\hline
+			\texttt{0x1e} & INT  & & & & Löst einen Interrupt aus \\
+			\texttt{0x1f} & MT1  & & & reg/c & Modi Timer1 = op3 \\
+			\texttt{0x20} & MT2  & & & reg/c & Modi Timer2 = op3 \\
+			\texttt{0x21} & SSTL1 & & & reg/c & lower Stop Timer1 = op3 \\
+			\texttt{0x22} & SSTL2 & & & reg/c & lower Stop Timer2 = op3 \\
+			\texttt{0x23} & SSTH1 & & & reg/c & higher Stop Timer1 = op3 \\			
+			\texttt{0x24} & SSTH2 & & & reg/c & higher Stop Timer2 = op3 \\
+			\texttt{0x25} & CFL  & reg & & & op1 = lower Clock Freq \\
+			\texttt{0x26} & CFH  & reg & & & op1 = higher Clock Freq \\
+			
+			\hline
+		\end{tabular}
+	\end{table*}
+\end{center}
+
+
+\subsection{\label{section:supervisor}Supervisor-/Usermode}
+
+Der Computer hatte ein eingebautes Rechte-System. Er kann dabei in zwei Modi operieren: dem Supervisormode und Usermode. Im Supervisormode kann der Computer alle Funktion ohne Einschränkungen nutzen. Im Usermode hingegen ist der Computer in einigen Funktion eingeschränkt. Folgendes kann der Computer im Usermode \emph{nicht} machen:
+
+\begin{itemize}
+	\item Setzen der SUP Flagge
+	\item Änderung der OINT Flagge
+	\item Lesen und/oder schreiben im Bereich von \texttt{0xd000} - \texttt{0xffff}
+	\item Lesen im Bereich von \texttt{0x0000} - \texttt{0x3fff}
+	\item Änderung der Banken
+	\item Die Modifikation der IO-Berechtigungsliste
+	\item Zugriff auf IO-Geräte, welche nicht in der Berechtigungsliste gespeichert sind (siehe \autoref{section:persmissionIO})
+\end{itemize}
+
+Der Modus des Computers (Supervisor or User) wird dabei in der SUP Flagge gespeichert. Eine gesetzte SUP Flagge entspricht dem Supervisormode und eine nicht gesetzte SUP dem Usermode Der Computer started dabei mit gestetzter SUP Flagge.
+
+Zudem änderet sich je nach Modus des Computer die Start position des Stacks wie in \autoref{section:stack} erleutert.
+
+Mehr zu der Motivation hinter diesem System in \autoref{com:sup}
+
+
+
 \subsection{Registers}
 Register sind kleine, sehr schnelle Speichereinheiten, die genutzt werden können, um Zwischenergebnisse, lokal Variablen, Argumenten für Funktionen zu speichern oder um Daten im Computer zwischen den einzelnen Komponenten zu verschieben. Aus jedem Register kann \emph{gelesen} (\emph{Kopierten} des alten Wertes an einen anderen Ort) oder \emph{geschrieben} werden (den alten Wert mit einem neuen Wert \emph{überschreiben})
 
@@ -91,7 +200,7 @@ Das Kopierten eines Wertes in ein Register ist mit der MOV-Instruktion möglich.
 
 \text{MOV <Ziel-Register> <Qullen-Register/Konstante>}
 
-Eine Übersicht über alle Instruktion ist in \autoref{section:insSet} vermerkt.
+
 
 \subsubsection{\label{section:flags}Flaggen}
 
@@ -111,14 +220,14 @@ Das Register FLAG enthält alle Statusflaggen. Eine Flagge kann entweder gesetzt
 			 5 &  &  &  \\
 			 6 &  &  &  \\
 			 7 &  &  &  \\
-			 8 &  &  &  \\
-			 9 &  &  &  \\
-			10 &  &  &  \\
+			 8 & OVTI1 & Overwride Timed-Interrupt1, siehe \autoref{section:interrupts} &  \\
+			 9 & OVTI2 & Overwride Timed-Interrupt2, siehe \autoref{section:interrupts} &  \\
+			10 & OVIOI & Overwride IO-Interrupt, siehe \autoref{section:interrupts} &  \\
 			11 &  &  &  \\
 			12 &  &  &  \\
 			13 &  &  &  \\
 			14 &  &  &  \\
-			15 & OINT & Overwride Interruption, siehe \autoref{section:interrupts} &  \\
+			15 & OINT & Overwride Interruption &  \\
 			15 & SUP & Supervisor-/Usermode, siehe \autoref{section:supervisor} & 
 		\end{tabular}
 	\end{table}
@@ -135,21 +244,21 @@ Neben der MOV-Instruktion gibt es auch die sogentannten kondizionallen MOV-Instr
 
 Daher ergeben sich folgende kondizionallen MOV-Instruktionen: ME (E Flagge), MOF (OF Flagge), MG (G Flagge), ML (L Flagge), MI (ONIT Flagge), MS (SUP Flagge).
 
-Eine Übersicht über alle Instruktion ist in \autoref{section:insSet} vermerkt.
 
-\subsubsection{\label{section:arthimatik}Arithmetische Operationen und Bitmanipulation}
 
-Der Computer hat zudem die Fähigkeit, arithmetische Operation und Bit-Manipulation durchzuführen. Alle Operationen sind dabei binär daher Kombinieren zwei Eingangswerte oder Operanden zu einem Ausgangswert. Die Ausnahme macht dabei die NOT-Instruktion, die nur einen Eingangswert annimmt und auf diesen ein Bitweises Nicht durchführt. 
+\subsubsection{\label{section:arthimatik}Arithmetische und Logische Operationen}
 
-Alle arithmetischen Operationen und Bit-Manipulation funktionieren dabei immer gleich: Sie kombinieren das erste Quelle-Register mit dem zweiten Quellen-Register und schreiben das Ergebnis in das Ziel-Register. Dabei ist zu beachten, dass das zweite Quellen-Register durch einen konstanten Wert ersetzt werden kann. Die Notation dafür sie wie folgt aus:
+Der Computer hat zudem die Fähigkeit, arithmetische und logische Operation durchzuführen. Alle Operationen sind dabei binär daher Kombinieren zwei Eingangswerte oder Operanden zu einem Ausgangswert. Die Ausnahme macht dabei die NOT-Instruktion, die nur einen Eingangswert annimmt und auf diesen ein Bitweises Nicht durchführt. 
+
+Alle arithmetischen und logische Operationen funktionieren dabei immer gleich: Sie kombinieren das erste Quelle-Register mit dem zweiten Quellen-Register und schreiben das Ergebnis in das Ziel-Register. Dabei ist zu beachten, dass das zweite Quellen-Register durch einen konstanten Wert ersetzt werden kann. Die Notation dafür sie wie folgt aus:
 
 \text{<Operation> <Ziel-Register> <Quellen-Register 1> <Quellen-Register 2/Konstante>}
 
 Der Computer unterstützt dabei folgende Operationen: Addition (ADD), Subtraktion (SUB), Multiplikation (MUL), Division (DIV), Bitweises exklusives Oder (XOR), Bitweise Und (AND), Bitweises Oder (OR), Bitweises Nicht (NOT)
 
-Eine Übersicht über alle Instruktion ist in \autoref{section:insSet} vermerkt.
 
-Wichtig zusagen ist bei das alle Operationen ($f(x_1, x_2) = y \mod 65536$) gilt $65535 \ge y \ge 0$ ist wo bei gilt $y \in \mathbb{N}$. Der springende Punk ist bei, dass bei einer Rechnung wie $65535 + 1$ das Ergebnis nicht $65536$ ist, sondern $0$. Bei so einem “Overflow“ wird die OF-Flagge gesetzt. Dieses Problem tritt auf da wir nur $16$ Bit als Datenlänge zu Verfügung haben, mehr dazu in \autoref{section:comment:datalength}
+
+Wichtig zu sagen ist, dass bei alle Operationen ($f(x_1, x_2) = y \mod 65536$) gilt $65535 \ge y \ge 0$ ist wo bei gilt $y \in \mathbb{N}$. Der springende Punk ist, dass bei einer Rechnung wie $65535 + 1$ das Ergebnis nicht $65536$ ist, sondern $0$. Bei so einem “Overflow“ wird die OF-Flagge gesetzt. Dieses Problem tritt auf da wir nur $16$ Bit als Datenlänge zu Verfügung haben, mehr dazu in \autoref{section:comment:datalength}
 
 
 
@@ -158,8 +267,8 @@ Wichtig zusagen ist bei das alle Operationen ($f(x_1, x_2) = y \mod 65536$) gilt
 
 Während die Register für lokale Variablen und Zwischenergebnisse gedacht sind, ist Memory (Arbeitsspeicher) für die Speicherung von größeren Datenmengen gedacht.
 
-Es ist in 65536 einzelne und unabhängige Speicherzellen (Jede 16 Bit große) aufgeteilt. Jeder Zelle ist einer Adresse, welche von 0 bis 65535 reicht, zugeordnet. Der Computer kann damit auf $65536 \text{ words}$ oder $131072 \text{ bytes}$ ($\approx 131.0 \text{kb}$) zugreifen.
-\footnote{Die Größe messen wir in words (w) oder in kilowords (kw), wobei $1 \text{ word} = 2 \text{ bytes} = 16 \text{ Bit}$.}. Wichtig ist das die Gesamt Größe theoretisch weitaus größer sein kann, dank Banking siehe \autoref{section:banking}.
+Es ist in 65536 einzelne und unabhängige Speicherzellen (Jede 16 Bit große) aufgeteilt. Jeder Zelle ist einer Adresse, welche von 0 bis 65535 reicht, zugeordnet. Der Computer kann damit auf $65536 \text{ words}$ oder $131072 \text{ bytes}$ ($\approx 131 \text{ kb}$) zugreifen
+\footnote{Die Größe messen wir in words (w) oder in kilowords (kw), wobei $1 \text{ word} = 2 \text{ bytes} = 16 \text{ Bit}$.}. Wichtig ist, dass die Gesamt Größe, dank Banking siehe \autoref{section:banking} theoretisch weitaus größer sein kann.
 
 Memory wird dabei über LD- und STR-Instruktionen gesteuert. Die LD-Instruktion kopiert einen Wert aus Memory und schreibt ihn in ein Ziel-Register, während STR an der angegebenen Adresse den Wert mit dem Wert des Quellen-Register überschreibt. Die Adresse wird zusammen gesetzt durch die Addition des Address-Register1 und entweder in dem Address-Register2 oder einer Konstante. Die Notation sieht dabei wie folgt aus:
 
@@ -168,7 +277,7 @@ Memory wird dabei über LD- und STR-Instruktionen gesteuert. Die LD-Instruktion 
 
 \text{STR <Quellen-Register> <Address-Register1> <Address-Register2/Konstante>}
 
-Eine Übersicht über alle Instruktion ist in \autoref{section:insSet} vermerkt.
+
 
 Zudem wurden bestimmte Bereichen bestimmte Aufgaben bzw. Funktionen zugewiesen, wie in \autoref{fig:memoryMap} zu stehen. Die zwei Hardware Stacks sind dort gekenzeichnet mit $\uparrow$, mehr dazu Stacks in \autoref{section:stack}
 
@@ -223,20 +332,18 @@ Die mit Supervisor gekennzeichneten Bereich können nur dann gelesen oder geschr
 \subsubsection{\label{section:banking}Banking}
 
 
-Banken sind externe Memory Module, die eingesteckt werden können. Alle Banken sind gleich groß ($~18.4\text{kw} = 36.8\text{kb}$) und der Computer unterstützt maximal $65536$ unterschiedliche Banken. Jede Bank hat dabei eine ID (BID), die von $0$ bis $65535$ reicht.
+Banken sind externe Memory Module, die eingesteckt werden können. Alle Banken sind gleich groß ($18.4\text{kw} = 36.8\text{ kb}$) und der Computer unterstützt maximal $65536$ unterschiedliche Banken. Jede Bank hat dabei eine ID (BID), die von $0$ bis $65535$ reicht.
 
-Der Computer hat zwei Bank-Slots (Slot 1 \texttt{0x4000 - 0x3fff} und Slot 2 \texttt{0x4000 - 0x57ff}). Er kann nun auf jede dieser Slots eine der theoretisch $65536$ Bank legen
-\footnote{Es ist dabei möglich, die gleiche Bank auf beide Slots zu legen, auch wenn das nur bedingt nützlich ist.}. Das Banken legen lässt sich über die SBK1- (Select Bank 1) und SBK2- (Select Bank 2) Instruktion erreichen. Die BIN kann dabei als Konstante oder als Register vorliegen. Die Notation ist dabei wie folgt:
+Der Computer hat zwei Bank-Slots (Slot 1 \texttt{0x4000 - 0x57ff} und Slot 2 \texttt{0x5800 - 0xcfff}). Er kann nun auf jede dieser Slots eine der theoretisch $65536$ Bank legen
+\footnote{Es ist dabei möglich, die gleiche Bank auf beide Slots zu legen, auch wenn das nur bedingt nützlich ist.}. Das Banken legen lässt sich über die SBK1- (Select Bank Slot 1) und SBK2- (Select Bank Slot 2) Instruktion erreichen. Die BIN kann dabei als Konstante oder als Register vorliegen. Die Notation ist dabei wie folgt:
 
 \text{SBK<1/2> <BIN-Register/Konstante>}
 
-Eine Übersicht über alle Instruktion ist in \autoref{section:insSet} vermerkt.
+Somit führt das Beschreiben/Lesen an einer Adresse welche einem Bank-Slot zugeordnet ist, zum Beschreiben/Lesen der ausgewählte Bank.
 
-Somit führt das Beschreiben/Lesen an einer Adresse welche einem Bank-Slot zugeordnet ist, zudem Beschreiben/Lesen der ausgewählte Bank.
+Durch dieses System lassen sich $65536 * ~18.4\text{ kw} = 1.2\text{ Gw} = 2.4\text{ Gb}$ an Arbeitsspeicher ansprechen.
 
-Durch dieses System lassen sich $65536 * ~18.4\text{kw} = 1.2\text{Gw} = 2.4\text{GB}$ an Arbeitsspeicher ansprechen.
-
-Das Bankensystem dient zudem dazu, Prozesse voneinander zu isolieren, da im Usermode der Computer die Bank nicht verändern kann, siehe \autoref{section:supervisor}.
+Das Bankensystem dient zudem dazu, Prozesse voneinander zu isolieren, da der Computer im Usermode  die Bank nicht verändern kann, siehe \autoref{section:supervisor}.
 
 \subsubsection{\label{section:stack}Hardware Stack}
 
@@ -250,7 +357,7 @@ Er funktioniert dabei wie ein Papierstapel. Es kann ein Wert auf den Stack geleg
 
 Der Stack liegt dabei physisch in Memory vor. Jedes Element des Stacks okkupiert dabei eine Memory-Zelle (16 Bit). Das Stack-Point Register-(SP) hält die Adresse, welche die nächste freie Memory-Zelle zeigt, die eins über dem obersten Wert des Stacks liegt. Der Stack wächst dabei von hohen Adressen zu niedrigen Adressen, wie in \autoref{fig:stack-dir} zusehen. 
 
-Bei einer PUSH Instruktion wird zuerst an die Stelle auf die SP zeigt der Wert des Qullen-Register/Konstante geschrieben und darauf der SP um $1$ inkriminiert. POP dagegen dekrementiert zuerst den SP um $1$ und kopiert dann den Wert von der Stelle auf welche SP zeigt in das Ziel-Register.
+Bei einer PUSH Instruktion wird zuerst an die Stelle auf die SP zeigt der Wert des Qullen-Register/Konstante geschrieben und darauf der SP um $1$ dekrementiert. POP dagegen inkriminiert zuerst den SP um $1$ und kopiert dann den Wert von der Stelle auf welche SP zeigt in das Ziel-Register.
 
 Zudem gibt es noch die RET- und CALL-Instruktionen. \text{RET} ist äquivalent zu \text(POP IP) und CALL ist äquivalent zu \text{PUSH IP; MOV IP <Quellen-Register/Konstante>}. Die Notation ist dabei wie folgt:
 
@@ -258,9 +365,7 @@ Zudem gibt es noch die RET- und CALL-Instruktionen. \text{RET} ist äquivalent z
 
 \text{CALL <Quellen-Register/Konstante>}
 
-Fundamental hat der Computer zwei Stacks. Der Supervisor-Stack beginnt bei \texttt{0xffff} und wird genutzt, wenn die SUP Flagge gesetzt ist. Der User-Stack beginnt bei \texttt{0x57ff}, also am Ende des Bank-Slots 1 und wird genutzt, wenn die SUP Flagge nicht gesetzt ist.
-
-POP, PUSH, CALL und RET schalten automatisch zwischen Supervisor-Stack und User-Stack bei Änderung der SUP-Flagge.
+Fundamental hat der Computer zwei Stacks. Der Supervisor-Stack beginnt bei \texttt{0xffff} und wird genutzt, wenn die SUP Flagge gesetzt ist. Der User-Stack beginnt bei \texttt{0xcfff}, also am Ende des Bank Slots 2 und wird genutzt, wenn die SUP Flagge nicht gesetzt ist.
 
 \begin{figure}[h]
 	\centering
@@ -314,8 +419,8 @@ Die Struktur dieser Anschlüsse sieht wir folgt aus:
 	\end{table}
 \end{center}
 
-Dabei bekommt jedes IO-Gerät eine eigene ID (IO-ID), welche im Bereich von $0$ bis $65535$ liegen darf, wobei davon aufgrund von physikalischen beschränkungen vermutlich nur die ersten -zig verwendet werden.
-Die Interaktion funktioniert dabei über drei Instruktionen:
+Dabei bekommt jedes IO-Gerät eine eigene ID (IO-ID), welche im Bereich von $0$ bis $65535$ liegen darf, (wobei davon aufgrund von physikalischen beschränkungen vermutlich nur die ersten -zig verwendet werden).
+Die Interaktion funktioniert dabei über drei Instruktionen, wie in \autoref{table:IOInstructions} zusehen ist.
 
 \begin{center}
 	\begin{table}[h]
@@ -331,7 +436,7 @@ Die Interaktion funktioniert dabei über drei Instruktionen:
 \end{center}
 
 Jede Interaktion benötigt dabei mehrere Schritte, die genaue Definition der Kommunikationsschritte wird dabei durch jede instruktion eigen festgelegt.
-Ein allgemeiner standart Ablauf (wie z.B. der der später definierten IO-Instruktion "rmn") sieht wir folgt aus:
+Ein allgemeiner standart Ablauf (wie z.B. der der später definierten IO-Instruktion "rmn") ist in \autoref{table:IO_Schem} zusehen.
 
 \begin{center}
 	\begin{table}[h]
@@ -348,11 +453,9 @@ Ein allgemeiner standart Ablauf (wie z.B. der der später definierten IO-Instruk
 	\end{table}
 \end{center}
 
-Die Pins Iin und Din werden dabei durch den Computer für einen Clock-Tick gesetzt, sobald die Daten/Instruktionsinformationen am Dateneingang an liegen; der Dout Pin wird durch das I/O-Gerät selbst gesetzt, sobald dieses seinerseits die Rückgabeinformation auf die Daten-pins anlegt.
-Das setzen des Dout-pins wird vom Computer als Interupt( \autoref{section:interrupts}) bearbeitet.
-Der fall, dass gleichzeitig der Computer und das I/O-Gerät die Datenpins versuchen zu beschreiben wird dadurch gelöst, dass meinstens die instruktionen definieren, wann das I/O-Gerät schreiben darf. Bei geräten, wie z.B. Peripherie-Geräten, die standartmäßig schreiben dürfen sollen ist von dem I/O-Gerät der Dout-pin schon eine Instruktion vor beginn des beschreibens des auf den Daten-pins zu setzen.
+Die Pins Iin und Din werden dabei durch den Computer für einen Clock-Tick gesetzt, sobald die Daten/instruktionsinformation am Dateneingang an liegen; der Dout Pin wird eine Clock-Cyclus durch das I/O-Gerät selbst gesetzt, wenn die Daten geschreiben werden.
 
-die Momentan bestehenden I/O-Instruktionen sind die folgenden, aber diese sind im Programm frei veränderlich, solange das externe Gerät die gleiche Interpretation der Anweisungen hat.
+Die Momentan bestehenden I/O-Instruktionen sind in \autoref{table:IOInstructions}, aber diese sind im Programm frei veränderlich, solange das externe Gerät die gleiche Interpretation der Anweisungen hat.
 
 \begin{center}
 	\begin{longtable}{p{0.045\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.40\textwidth} | p{0.22\textwidth}}[h]
@@ -361,151 +464,103 @@ die Momentan bestehenden I/O-Instruktionen sind die folgenden, aber diese sind i
 		\endhead
 			ID & Gerätetyp & Name & Funktion & Verhalten \\
 			\hline
-			 $0\text{x}00$ & All & ls & gibt alle normalen Funktionen des Geräts zurück & Iin; n$*$Dout\\
+			\texttt{0x00} & All & ls & gibt alle normalen Funktionen des Geräts zurück & Iin(Instruktion); n$*$Dout(Antworten)\\
 			\hline
-			 $0\text{x}01$ & All  & ll & gibt ALLE (auch die, die man nicht verwenden sollte) Funktionen zurück & Iin(Instruktion); n$*$Dout(Antworten)\\
+			\texttt{0x01} & Drive & rsn (read singel normal) & Lesen eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); 1$*$Dout(Antwort) \\
 			\hline
-			 $0\text{x}02$ & Drive & rsn (read singel normal) & Lesen eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); 1$*$Dout(Antwort) \\
+			\texttt{0x02} & Drive & rmn (read multiple normal) & Lesen einer reihe von bis zu $65535$ 16 Bit Werten von 24-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(Länge); n$*$Dout(Antworten) \\
 			\hline
-			 $0\text{x}03$ & Drive & rmn (read multiple normal) & Lesen einer reihe an 16-Bit werten von 24-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(Länge); n$*$Dout(Antworten) \\
+			\texttt{0x03} & Drive & wsn (write singel normal) & Schreiben eines einzelnen 16 Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Daten); Dout(bestätigung) \\
 			\hline
-			 $0\text{x}04$ & Drive & wsn (write singel normal) & Schreiben eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Daten); Dout(bestätigung) \\
+			\texttt{0x04} & Drive & wmn (write multiple normal) & Schreiben einer reihe von bis zu $65535$ Werten an 24-Bit Addressen & Iin(Instruktion); Din(startAddresse); n$*$Din(Daten); Dout(bestätigung) \\
 			\hline
-			 $0\text{x}05$ & Drive & wmn (write multiple normal) & Schreiben einer reihe an 16-Bit werten an 24-Bit Addressen & Iin(Instruktion); Din(startAddresse); n$*$Din(Daten); Dout(bestätigung) \\
+			\texttt{0x05} & Drive & rsb (singel read big) & Lesen eines einzelnen 16-Bit werts von einer 40-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Addresse); 1$*$Dout(Antwort) \\
 			\hline
-			 $0\text{x}06$ & Drive & rsb (singel read big) & Lesen eines einzelnen 16-Bit werts von einer 40-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Addresse); 1$*$Dout(Antwort) \\
+			\texttt{0x06} & Drive & rmb (multiple write big) & Lesen einer reihe an von bis zu $65535$ Werten von 40-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(startAddresse2); Din(Länge); n$*$Dout(Antworten) \\
 			\hline
-			 $0\text{x}07$ & Drive & rmb (multiple write big) & Lesen einer reihe an 16-Bit werten von 40-Bit Addressen aus & Iin(Instruktion); Din(startAddresse); Din(startAddresse2); Din(Länge); n$*$Dout(Antworten) \\
+			\texttt{0x07} & Drive & wmb (singel write big) & Schreiben eines einzelnen 16-Bit werts von einer 40-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Addresse);Din(Daten); 1$*$Dout(bestätigung) \\
 			\hline
-			 $0\text{x}08$ & Drive & wmb (singel write big) & Schreiben eines einzelnen 16-Bit werts von einer 40-Bit Addresse & Iin(Instruktion); Din(Addresse); Din(Addresse);Din(Daten); 1$*$Dout(bestätigung) \\
+			\texttt{0x08} & Drive & wmb (write multiple big) & Schreiben einer reihe von bis zu $65535$ Werten 16 Bit werten an 40-Bit Addressen & Iin(Instruktion); Din(startAddresse); n$*$Din(Daten); Dout(bestätigung) \\
 			\hline
-			 $0\text{x}09$ & Drive & wmb (write multiple big) & Schreiben einer reihe an 16-Bit werten an 40-Bit Addressen & Iin(Instruktion); Din(startAddresse); n$*$Din(Daten); Dout(bestätigung) \\
+			\texttt{0x09} & Drive & rfn (read file normal) & Lesen einer gesamten Datei (24-bit Namen)  & Iin(Instruction); Din(Name); n$*$Dout(Antwort) \\
 			\hline
-			 $0\text{x}0a$ & Drive & rfn (read file normal) & Lesen einer gesamten Datei (24-bit Namen)  & Iin(Instruction); Din(Name); n$*$Dout(Antwort) \\
+			\texttt{0x0a} & Drive & wfn (write file normal) & Schreiben einer neuen Datei (24-bit Namen) & Iin(instruction); Din(Name); n$*$Din(daten); Dout(bestätigung) \\
 			\hline
-			 $0\text{x}0b$ & Drive & wfn (write file normal) & Schreiben einer neuen Datei (24-bit Namen) & Iin(instruction); Din(Name); n$*$Din(daten); Dout(bestätigung) \\
+			\texttt{0x0b} & Drive & rfpb (read file-part big) & Lesen eines teils einer Datei (24-bit Namen) & Iin(instruction); Din(Name); 2$*$Din(läge); n$*$Dout(Daten) \\
 			\hline
-			 $0\text{x}0c$ & Drive & rfpb (read file-part big) & Lesen eines teils einer Datei (24-bit Namen) & Iin(instruction); Din(Name); 2$*$Din(läge); n$*$Dout(Daten) \\
-			\hline
-			 $0\text{x}0d$ & Drive & wfpb (write file-part big) & Anhängen von Daten an eine Datei(24-bit Namen) & Iin(instruction); Din(Name); Din(länge); n$*$Din(Daten); Dout(bestätigung) \\
-			\hline
-			 $0\text{x}0e$ &  & & & \\
-			\hline
-			 $0\text{x}0f$ &  & & &
-
+			\texttt{0x0c} & Drive & wfpb (write file-part big) & Anhängen von Daten an eine Datei(24-bit Namen) & Iin(instruction); Din(Name); Din(länge); n$*$Din(Daten); Dout(bestätigung)
 	\end{longtable}
 \end{center}
 
 
 \subsubsection{\label{section:persmissionIO}Berechtigungsliste}
 
-Berechtigungen: der Supervisor-mode hat die berechtigungen zu allen I/O-Interaktionen, für normale prozesse wird die Berechtigungsliste in einer reihe an RAM-chips gespeichert, deren Addressen sich mit dem wechseln zwischen den verschiedenen Banks ändern.
-gesetzt werden können sie nur durch den Supervisor, wobei auch dieser die RAM-Addressen nicht manuel ändern kann (\autoref{section:insSet})
+Der Supervisor-mode hat die berechtigungen zu allen I/O-Interaktionen, für normale Prozesse wird die Berechtigungsliste in einer reihe an RAM-chips gespeichert, deren Addressen sich mit dem wechseln zwischen den verschiedenen Banks ändern.
+gesetzt werden können sie nur durch den Supervisor, wobei auch dieser die RAM-Addressen nicht manuel ändern kann 
 
-
+Der Supervisor-mode hat die berechtigungen zu allen I/O-Interaktionen, für normale Prozesse wird die Berechtigungsliste in einem separaten Speicher gespeichert, welcher an die BIN des ersten Bank Slots geknüpft ist. Der Supervisor kann nun einzelne IO-IDs frei geben oder diese wieder sperren.
 
 
 \subsection{\label{section:interrupts}Interrupts}
 
-Interrupts sind Unterbrechungen im Programmablauf. Wenn ein Interrupt meldet wird. Wird dieser im nächsten Instruktions-Zyklus bearbeitet. Für diesen Zyklus, wird, je nach Interrupt-Quelle, nicht die Instruktion ander Stelle von IP sondern von IV (Interrupt Vektor) geladen.
+Interrupts sind Unterbrechungen im Programmablauf. Wenn ein Interrupt gemeldet wird, wird dieser im nächsten Instruktions-Zyklus bearbeitet. Für diesen Zyklus, wird, je nach Interrupt-Quelle, nicht die Instruktion ander Stelle von IP sondern von einem IV (Interrupt Vektor) geladen. Es gibt im Computer vier verschieden Interrupt Quellen, wobei jede ein hard-gewired IV hat, dies ist in \autoref{table:iv} zusehen.
 
-Alle Interrupts werden blockiert wenn die OINT Flagge gesetzt ist. Blockiert heißt dabei das alle Interrupts nicht behandelt werden. Diese Flagge kann nur gesetzt werden wenn sicher der Computer im Supervisormode befindet. siehe \ref*{section:supervisor}
+Interrupts können general (sowohl im Usermode als auch im Supervisormode) deaktiviert werden, mit Ausnahme von Software-Interrupts, durch das setzen der OINT Flagge. Für ein feinere Einstellung gibt es die OVIOI, OVTI1, OVTI2 Flaggen welche wie in \autoref{table:iv} zusehen, einnige spezielle Flaggen deaktivieren. Diese findet aber nur im Supervisormode stadt. Im Usermode hingegen lassen sich Interrupts nur über die OINT-Flagge deaktivieren. Alle diese Flaggen befinden sich übrigens in den letzten 8 Bit des FLAG Register, was sie nur für den Supervisor veränderbar macht.
 
-Wir unterscheiden dabei zwischen drei verschiedenen Interrupt-Quelle, wobei jede Quelle einen eigenen IV hat, wie in \autoref{table:iv}
+Die INT Instruktion welche keine Operatanten annmmit löst ein Software-Interrupt aus. Dieser kann nicht deaktiviert werden, da dieser Interrupt von laufenden Prozess ausgeführt werden muss und das Prozess somit selber weiß wann und ob es eine Interrupt auslösen soll. Wenn ein Prozess ungestört seine Arbeit machen will, ist er somit selbst verantwortlich ob er eine INT-Operation ausführen soll. 
 
 \begin{center}	
 	\begin{table}[h]
 		\caption{\label{table:iv}}
-		\begin{tabular}{l | l l}
-			Interrupt-Quelle & IV Name & IV Standard Wert \\
+		\begin{tabular}{l | l l | l}
+			Interrupt-Quelle & IV Name & IV Standard Wert & Flagge zum Deaktivieren \\
 			\hline
-			IO-Interrupts & IV-IO & $0\texttt{x}0000$ \\
-			INT-Instruktion & IV-INT & $0\texttt{x}0000$ \\
-			Timed-Interrupts & IV-TI & $0\texttt{x}0000$ \\
+			IO-Interrupts & IV-IO & \texttt{0x3fff8} & OVIOI \\
+			INT-Instruktion & IV-INT & \texttt{0x3fffa} &  \\
+			Timed-Interrupts & IV-TI1 & \texttt{0x3fffc} & OVTI1 \\
+			Timed-Interrupts & IV-TI2 & \texttt{0x3fffe} & OVTI2
 		\end{tabular}
 	\end{table}
 \end{center}
 
 \subsubsection{Timed-Interrupts}
 
-Der Timed-Intrrupt funktioniert wie ein Wecker. Nachdem Ausführen der STI (Set Timed Interrupt) Instruktion, wird nach angebender Anzahl an ausgeführten Instruktion ein Intrrupt ausgelöst. So 
-würde \texttt{STI 0x00ff} in 256 Instruktion einen Interrupt auslösen. Wenn ein Timed-Interrupt mit der Zeit \texttt{0x0000} gesetzt wird, so wird der Timed-Intrrupt deaktiviert.
+Der Computer besitzt zwei interne Timer je 32 Bit groß. Jeder Timer started bei $0$ und zählt (bei jedem Clock Schlag) um $1$ bis zuseinem eingestellten End Wert. Bei erreichen dieses Werts löst der Timer einen dementsprechenden Interrupt aus. 
+
+Jeder Timer kann in drei Modi Arbeit, wie in \autoref{table:TimerModi} zusehen. Der Timer Modus kann über die TM1 und TM2 (für Timer1 Mode, Timer2 Mode steht) Instruktion gesetzt werden, welcher entweder ein Quellen Register oder eine Konstante an nimmt, wobei die Notation wie folgt aus sieht:
+
+\text{MT<1/2> <Quellen-Register/Konstante>}
+
+Der Entwert wird über die SSTL1, SSTL2 und SSTH1, SSTH2 erledigt. Wobei SSTL<1/2> die ersten 16 Bit und SSTH die letzten 16 Bit des Endwert-Registers setzt. Der Entwert kann dabei als Konstante oder als Quellen-Register vorliegen. Die Notation ist dabei wie folgt:
+
+\text{SSTL<1/2> <Quellen-Register/Konstante>}
+
+\text{SSTH<1/2> <Quellen-Register/Konstante>}
+
+Die aktuell Clock Geschwindigkeit, ist in mit CFL und CFH instruktion zu bekommen. CFL lädt die ersten 16 bit der Clock Geschwindigkeit in das Ziel-Register und CFH die letzten 16 bit in das Ziel-Register. Die Frequenz ist dabei In Herz (Schläge pro Sekunde) angegeben. Die Notation ist wie folgt:
+
+\text{CFL <Ziel-Register>}
+
+\text{CFH <Ziel-Register>}
+
+\begin{center}
+	\begin{table}
+		\caption{\label{table:TimerModi}}
+		\begin{tabular}{l  l | L{9cm}}
+			Timer Modus & Modus ID & Funktion \\
+			\hline
+			Off & \texttt{0x0} & Timer ist Inaktive \\
+			Continues & \texttt{0x1} & Timer zählt hoch; bei ereichen des Ziels, löst Interrupt aus und fängt von vorne an zuzählen. \\
+			Singel & \texttt{0x2} & Timer zählt hoch; bei ereichen des Ziels, löst Interrupt aus und schalte in Off Modus um
+		\end{tabular}
+	\end{table}
+\end{center}
 
 \subsubsection{IO-Interrupts}
 
-\subsection{\label{section:supervisor}Supervisor-/Usermode}
+TODO: Das Ist noch net fertig!!!!
 
-Der Computer hatte ein eingebautes Rechte-System. Er kann dabei in zwei Modi operieren: dem Supervisormode und Usermode. Im Supervisormode kann der Computer alle Funktion, ohne einschreckung, nutzen. Im Usermode hingegen ist der Computer in einigen Funktion eingeschrenckt. Folgendes kann der Computer im Usermode \emph{nicht} machen:
 
-\begin{itemize}
-	\item Setzen der SUP Flagge
-	\item Änderung der OINT Flagge
-	\item Lesen und/oder schreiben in den Bereichen von \texttt{0x0000} - \texttt{0x3fff} und \texttt{0xd000} - \texttt{0xffff}
-	\item Änderung der Banken
-	\item Die IO-Berechtigungsliste zu modifizieren
-	\item Zugriff auf IO-Geräte, welche nicht in der Berechtigungsliste gespeichert sind (siehe \autoref{section:persmissionIO})
-\end{itemize}
-
-Der Modes des Computers (Supervisor or User) wird dabei in der SUP Flagge gespeichert. Eine gesetzte SUP Flagge entspricht dem Supervisormode und eine nicht gesetzte SUP dem Usermode Der Computer started dabei mit gestetzter SUP Flagge.
-
-Zudem änderet sich je nach Modus des Computer die Start position des Stacks wie in \autoref{section:stack} erleutert.
-
-Mehr zu der Motivation hinter diesem System in \autoref{com:sup}
-
-\subsection{\label{section:insSet}Instruktions-Satz}
-
-Alle zuverfügenung stehenden Instruktion sind in \autoref{table:instructions}. Die Ins-ID, steht für Instruktions-ID, welecher jeder Instruktion eine zugeordnet ist. op1, op2 und op3 sind dabei die möglich parameter der Instruktion. Sie können dabei Register (reg1, reg2 oder reg3) sein oder ein Konstante (c).
-
-\begin{center}
-	\begin{table*}
-		\caption{\label{table:instructions}Instruktions-Satz}
-		\begin{tabular}{l | l l l l | l}
-			Ins-ID & Name & op1 & op2 & op3 & Beschreibung \\
-			\hline
-			\texttt{0x00} & NOP  &  &  &  & Kein Effekt  \\
-			\hline
-			\texttt{0x01} & MOV  & reg1 &  & reg3/c & reg1 $=$ reg3/c\\
-			\texttt{0x02} & ADD  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $+$ reg3/c \\
-			\texttt{0x03} & SUB  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $-$ reg3/c \\
-			\texttt{0x04} & MUL? & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $*$ reg3/c \\
-			\texttt{0x05} & DIV? & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $/$ reg3/c \\
-			\texttt{0x06} & XOR  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $\oplus$ reg3/c \\
-			\texttt{0x07} & AND  & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $\land$ reg3/c \\
-			\texttt{0x08} & OR   & reg1 & reg2 & reg3/c & reg1 $=$ reg2 $\lor$ reg3/c \\
-			\texttt{0x09} & NOT  & reg1 &  & reg3/c & reg1 $=$ $\lnot$reg3/c \\
-			\hline 
-			\texttt{0x0a} & STR  & reg1 & reg2 & reg3/c & memory[reg2 + reg3/c] = reg1  \\
-			\texttt{0x0b} & LD   & reg1 & reg2 & reg3/c & reg1 = memory[reg2 + reg3/c] \\
-			\texttt{0x0c} & BNK1 &  &  & reg3/c & Setzt BID für Bank-Slot1 \\
-			\texttt{0x0d} & BNK2 &  &  & reg3/c & Setzt BID für Bank-Slot2 \\
-			\hline
-			\texttt{0x0e} & PUSH &  &  & reg3/c & SP--; memory[SP] = reg1 \\
-			\texttt{0x0f} & POP  &  &  & reg3 & reg3 = memory[SP]; SP++ \\
-			\texttt{0x10} & CALL &  &  & reg3/c & \vtop{
-				\hbox{\strut memory[SP] = IP; SP++;}
-				\hbox{\strut IP = reg1/c}} \\
-			\texttt{0x11} & RET  &  &  &  & IP = memory[SP]; SP++ \\
-			\hline
-			\texttt{0x12} & TEST & reg1 &  & reg3/c & Vergleicht reg1 und reg3/c \\
-			\texttt{0x13} & ME   & reg1 &  & reg3/c & reg1 = reg3/c if E \\
-			\texttt{0x14} & MOF  & reg1 &  & reg3/c & reg1 = reg3/c if O \\
-			\texttt{0x15} & MG   & reg1 &  & reg3/c & reg1 = reg3/c if G \\
-			\texttt{0x16} & ML   & reg1 &  & reg3/c & reg1 = reg3/c if L \\
-			\texttt{0x17} & MS & reg1 &  & reg3/c & reg1 = reg3/c if SUP \\
-			\texttt{0x18} & MI & reg1 &  & reg3/c & reg1 = reg3/c if OINT \\
-			\hline
-			\texttt{0x19} & IOUT & reg1 &  & reg3/c & IIO[reg1] = reg3/c \\
-			\texttt{0x1a} & DOUT & reg1 &  & reg3/c & DIO[reg1] = reg3/c \\
-			\texttt{0x1b} & DIN  & reg1 &  & reg3 & reg3 = DIO[reg1] \\
-			\texttt{0x1c} & AIO  & reg1 &  &  & Aktiviert IO[reg1] \\
-			\texttt{0x1d} & DIO  & reg1 &  &  & Deaktivieren IO[reg1] \\
-			\hline
-			\texttt{0x1e} & INT  & & & & Löst einen Interrupt aus \\
-			\texttt{0x1f} & STI  & & & reg3/c & Setzt Timed Interrupt für reg1/c \\
-			\hline
-		\end{tabular}
-	\end{table*}
-\end{center}
 
 \section{Kommentar zur Specification}
 
@@ -547,11 +602,31 @@ Zu erst die minimale Anzahl anregisteren die wirklich gebraucht würde, ist $5$!
 
 Fünf lässt sich nicht mehr mit $2$ bits repräsentieren ($2^2 = 4$), daher muss man $3$ bit ($2^2 = 8$) nehmen. Der Grund warum wir nicht mehr genomen haben hat mit der Encodierung von Instruktionen zutun siehe \autoref{com:insEnc}. Somit haben sich $8$ Register als das Optimum ergeben
 
-\subsection{\label{com:insEnc}Alternative Instruktion Encodierung}
-
 \subsection{\label{com:sup}Gedanken Hinter dem Supervisormode}
 
-\section{Quellenverzeichnis}
+Wir haben uns entschieden eine Artberechtigungs System in der Computer einzubaunen. Eine Rechner der nur einfache Programm ausführt um zu Beispiel eine LED oder ein LCD-Display zusteueren, wie es z.B. ein ESP32 oder ein ATMega328p macht, ist so ein System nicht nötig. Wir hatten jedoch vor mit unserem Computer die Möglichkeit zuschaffen Betriebsystem änliches Programm (Supervisor) laufen zulassen. 
+
+Hier für hat man einemal den Supervisor, der bei Start des Computer anfängt zulaufen, und Programme, welche im Usermode ausgeführt werden, sogenannte Prozesse. Dabei sieht ein typischer Programmablauf wie folgt aus:
+
+
+Wichtig ist, das sobald ein Prozess benendedt wurde, der Supervisor an dieser Stelle wieder anfängt und den nächsten Prozess started. 
+
+Ein Prozess kann auch Funktionen des Supervisor nutzten über Software Interrupts, da bei einem Interrupt, der Computer in den Supervisormode wechselt. So kann der Prozess, bevor er den Interrupt auslegt, ein oder mehrer Register nutzten um Werte an den Supervisor zu übergeben. Z.B. kann er eine Register nutzten um dem Supervisor zusagen was er tun soll, z.B. dem Prozess zugang zu einem IO-Gerät zugeben oder etwas in eine Datei zuschreiben. Diese Art von Kommuntiation werden auch System-Calls genannt und sind die Basis für jedes moderne Betriebssystem.
+
+Ein solcher Supervisor kann sehr mächtig sein:
+
+\begin{enumerate}
+	\item Abstratkion der Hardware: Oft ist die IO-Configuration von Setup zu Setup sehr verschieden. Ein Prozess was IO-Nutzen möchte hat oft den Nachteil dass es für ein bestimmte Hardware setup geschrieben wurde. So z.B. ein Prozess was Daten einer SD-Karte ausließt und diese anzeigt. Wenn jedoch man jetzt eine Floppy-Laufwerk anschließt, so kann man das Prozess zum Auslesen nicht verwenden, da es nur die Kommuntiation mit einer SD-Karte kennt. Der Supervisor könnte an dieser Stelle ein Interface über System-Calls bieten welches unabhänige von dem Gerät ist. So im diesem Beispiel ein Dateisystem, auf welches Prozesse zugreifen können. Somit übernimmt der Supervisor die Kommuntiation mit der Hardware.
+	
+	\item Teilung der Rechenzeit: Der Computer so viele Features er doch hat, ist stark limitiert vorallem was Rechengeschwindigkeit betrifft. Wenn man nun mehrer Programm hat, welche ausgeführt werden sollen, so wäre es natürlich sehr einfach sie der Reihe nach auszuführen. Jedoch gibt es bessere Wege, so z.B. das der Computer jedem Prozess nur eine Bestimmte Rechenzeit gibt und dann den nächsten Prozess ausführt. Das kann erreicht werden durch folgenden Ablauf: Der Supervisor setellt vor dem ausführen des Prozesse eine Timed-Interrupt. Dann übergibt der Supervisor den Computer dem Prozess, welcher dann seine Programm ausführt. Dies machter bis der Timed-Interrupt ausgelöst wird und der Computer wieder in den Supervisormode wechselt. Dieser speichert nun alle Register und Banken Configuration des Prozesse und übergibt einem anderen Prozesse den Computer. Wenn nun ein schon angefanger Prozess wieder gestarted werden soll läd der Supervisor wieder die Register und Banken des Prozesse und übergibt die Außführung wieder an den Prozess. Somit kann der Computer zwischen Prozessen hin und herschallten, was die Illusion gibt, das der Computer diese gleichzeitig ausführt.
+	
+	\item Isolation von Prozessen: Programme sind meist nie perfekt. Vorallem sowas wie Bufferoverflows und andere Fehler dieser Art tretten in Low-Level Systeme gerne auf. Aus diesem Grund ist es wichtig Prozesse von einander zu isolieren. Nehmen wir an Prozess A hat ein Fehler welcher dafür sorgt das er den gesammten RAM anfängt voll zuschreiben. Um jetzt Prozess A daran zuhinern Prozess B zu überschreiben, ist es dem Prozess nicht gestattet auf den Arbeitsspeicher von Prozess B zuzugreifen. Nur der Supervisor kann zwischen den Prozessen wechseln
+	\footnote{Natürlich kann auch der Supervisor fehlerhaft sein. Jedoch hatten wir bei dieser Maßnahme nicht nur fehlerhaft sonderen auch schlicht böswillige Prozesse im Kopf. Natürlich ist dies unwahrscheinlich dass so etwas jemals eintretten wird, jedoch war unsere Idee von Anfang an eine Computer zu bauen der im Internet stehen könnte und die dementsprechenden Sicherheitsmaßnahmen hat}.
+\end{enumerate}
+
+Wenn man so etwas will kann dass auch auf einem ATMega328p gemacht werden, jedoch nicht ohne massive Leistungs Verluste. Wenn so ein Berechtigungssystem jedoch direkt in die Hardware des Computers einfleßt sorgt das für eine viel schnellern Computer. 
+
+Wenn man tatsächliche nur Programme schreiben will welche \"nur\" ein LED oder LCD-Display steuern soll, kann man das mit unserem Computer auch machen, indem man einfach diese Programm im Supervisor laufen lässt.
 
 \printbibliography{}
 
