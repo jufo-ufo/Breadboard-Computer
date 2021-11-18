@@ -15,8 +15,8 @@ WIP/IO_Protocoll_v1.txt
 
 .idea
 .vscode
-cmake-build-debug
 
+cmake-build-debug
 tools/VTR-toolchain/VTR/*
 
 *.out
