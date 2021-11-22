@@ -1,6 +1,0 @@
-MOV A, 0x10
-MOV B 10
-ADD C, A B
-MOV D, C
-MUL C, C, 0b10
-SUB A, C, D
