@@ -152,8 +152,7 @@ Der Computer hatte ein eingebautes Rechte-System. Er kann dabei in zwei Modi ope
 \begin{itemize}
 	\item Setzen der SUP Flagge
 	\item Änderung der OINT Flagge
-	\item Lesen und/oder schreiben im Bereich von \texttt{0xd000} - \texttt{0xffff}
-	\item Lesen im Bereich von \texttt{0x0000} - \texttt{0x3fff}
+	\item Lesen und/oder schreiben im Bereich von \texttt{0x0000} - \texttt{0x7fff}
 	\item Änderung der Banken
 	\item Die Modifikation der IO-Berechtigungsliste
 	\item Zugriff auf IO-Geräte, welche nicht in der Berechtigungsliste gespeichert sind (siehe \autoref{section:persmissionIO})
@@ -258,7 +257,7 @@ Der Computer unterstützt dabei folgende Operationen: Addition (ADD), Subtraktio
 
 
 
-Wichtig zu sagen ist, dass bei alle Operationen ($f(x_1, x_2) = y \mod 65536$) gilt $65535 \ge y \ge 0$ ist wo bei gilt $y \in \mathbb{N}$. Der springende Punk ist, dass bei einer Rechnung wie $65535 + 1$ das Ergebnis nicht $65536$ ist, sondern $0$. Bei so einem “Overflow“ wird die OF-Flagge gesetzt. Dieses Problem tritt auf da wir nur $16$ Bit als Datenlänge zu Verfügung haben, mehr dazu in \autoref{section:comment:datalength}
+Wichtig zu sagen ist, dass bei alle Operationen ($f(x_1, x_2) = y \mod 65536$) gilt $65535 \ge y \ge 0$ ist wo bei gilt $y \in \mathbb{N}$. Der springende Punk ist, dass bei einer Rechnung wie $65535 + 1$ das Ergebnis nicht $65536$ ist, sondern $0$. Bei so einem “Overflow“ wird die OF-Flagge gesetzt. Wenn diese bei einer Rechenopeation nicht eintritt, dann wird die OF-Flagge gelöscht. Dieses Problem tritt auf da wir nur $16$ Bit als Datenlänge zu Verfügung haben, mehr dazu in \autoref{section:comment:datalength}
 
 
 
@@ -300,26 +299,26 @@ Die mit Supervisor gekennzeichneten Bereich können nur dann gelesen oder geschr
 		\begin{leftwordgroup}{\small \texttt{0x4000}}
 			\bitbox[lrt]{16}{}
 		\end{leftwordgroup}\\
-		\begin{rightwordgroup}{\large $\uparrow$ User Stack}
-			\wordbox[lr]{3}{RAM (Bank Slot 1)\\$18431 \text{w} \approx 18.4 \text{kw}$} \\
-		\end{rightwordgroup}
-		\begin{leftwordgroup}{\small \texttt{0x57ff}}
-			\bitbox[lr]{16}{}
-		\end{leftwordgroup}\\
-
-		\begin{leftwordgroup}{\small \texttt{0x5800}}
-			\bitbox[lrt]{16}{}
-		\end{leftwordgroup}\\
-		\wordbox[lr]{3}{RAM (Bank Slot 2)\\$18431 \text{w} \approx 18.4 \text{kw}$} \\
-		\begin{leftwordgroup}{\small \texttt{0xcfff}}
-			\bitbox[lr]{16}{}
-		\end{leftwordgroup}\\
-
-		\begin{leftwordgroup}{\small \texttt{0xd000}}
-			\bitbox[lrt]{16}{}
-		\end{leftwordgroup}\\
 		\begin{rightwordgroup}{\large $\uparrow$ Supervisor Stack}
-			\wordbox[lr]{2}{RAM Supervisor\\$12287 \text{w} \approx 12.3 \text{kw}$} \\
+			\wordbox[lr]{2}{RAM Supervisor\\$16384 \text{w} \approx 16.3 \text{kw}$} \\
+		\end{rightwordgroup}
+		\begin{leftwordgroup}{\small \texttt{0x7fff}}
+			\bitbox[lr]{16}{}
+		\end{leftwordgroup}\\
+
+		\begin{leftwordgroup}{\small \texttt{0x8000}}
+			\bitbox[lrt]{16}{}
+		\end{leftwordgroup}\\
+			\wordbox[lr]{2}{Bank 1 (User Programm)\\$16384 \text{w} \approx 16.3 \text{kw}$} \\
+		\begin{leftwordgroup}{\small \texttt{0xbfff}}
+			\bitbox[lr]{16}{}
+		\end{leftwordgroup}\\
+
+		\begin{leftwordgroup}{\small \texttt{0xc000}}
+			\bitbox[lrt]{16}{}
+		\end{leftwordgroup}\\
+		\begin{rightwordgroup}{\large $\uparrow$ User Stack}
+			\wordbox[lr]{2}{Bank 2 (User Data)\\$16384 \text{w} \approx 16.3 \text{kw}$} \\
 		\end{rightwordgroup}
 		\begin{leftwordgroup}{\small \texttt{0xffff}}
 			\bitbox[lrb]{16}{}
@@ -332,16 +331,16 @@ Die mit Supervisor gekennzeichneten Bereich können nur dann gelesen oder geschr
 \subsubsection{\label{section:banking}Banking}
 
 
-Banken sind externe Memory Module, die eingesteckt werden können. Alle Banken sind gleich groß ($18.4\text{kw} = 36.8\text{ kb}$) und der Computer unterstützt maximal $65536$ unterschiedliche Banken. Jede Bank hat dabei eine ID (BID), die von $0$ bis $65535$ reicht.
+Banken sind externe Memory Module, die eingesteckt werden können. Alle Banken sind gleich groß ($16.3\text{kw} = 32.6\text{ kb}$) und der Computer unterstützt maximal $65536$ unterschiedliche Banken. Jede Bank hat dabei eine ID (BID), die von $0$ bis $65535$ reicht.
 
-Der Computer hat zwei Bank-Slots (Slot 1 \texttt{0x4000 - 0x57ff} und Slot 2 \texttt{0x5800 - 0xcfff}). Er kann nun auf jede dieser Slots eine der theoretisch $65536$ Bank legen
+Der Computer hat zwei Bank-Slots (Slot 1 \texttt{0x8000 - 0xbfff} und Slot 2 \texttt{0xc000 - 0xffff}). Er kann nun auf jede dieser Slots eine der theoretisch $65536$ Bank legen
 \footnote{Es ist dabei möglich, die gleiche Bank auf beide Slots zu legen, auch wenn das nur bedingt nützlich ist.}. Das Banken legen lässt sich über die SBK1- (Select Bank Slot 1) und SBK2- (Select Bank Slot 2) Instruktion erreichen. Die BIN kann dabei als Konstante oder als Register vorliegen. Die Notation ist dabei wie folgt:
 
 \text{SBK<1/2> <BIN-Register/Konstante>}
 
 Somit führt das Beschreiben/Lesen an einer Adresse welche einem Bank-Slot zugeordnet ist, zum Beschreiben/Lesen der ausgewählte Bank.
 
-Durch dieses System lassen sich $65536 * ~18.4\text{ kw} = 1.2\text{ Gw} = 2.4\text{ Gb}$ an Arbeitsspeicher ansprechen.
+Durch dieses System lassen sich $65536 \cdot 16.3\text{ kw} = 1.06\text{ Gw} = 2.12\text{ Gb}$ an Arbeitsspeicher ansprechen.
 
 Das Bankensystem dient zudem dazu, Prozesse voneinander zu isolieren, da der Computer im Usermode  die Bank nicht verändern kann, siehe \autoref{section:supervisor}.
 
@@ -365,7 +364,7 @@ Zudem gibt es noch die RET- und CALL-Instruktionen. \text{RET} ist äquivalent z
 
 \text{CALL <Quellen-Register/Konstante>}
 
-Fundamental hat der Computer zwei Stacks. Der Supervisor-Stack beginnt bei \texttt{0xffff} und wird genutzt, wenn die SUP Flagge gesetzt ist. Der User-Stack beginnt bei \texttt{0xcfff}, also am Ende des Bank Slots 2 und wird genutzt, wenn die SUP Flagge nicht gesetzt ist.
+Fundamental hat der Computer zwei Stacks. Der Supervisor-Stack beginnt bei \texttt{0xc7fff} und wird genutzt, wenn die SUP Flagge gesetzt ist. Der User-Stack beginnt bei \texttt{0xffff}, also am Ende des Bank Slots 2 und wird genutzt, wenn die SUP Flagge nicht gesetzt ist.
 
 \begin{figure}[h]
 	\centering
@@ -556,11 +555,9 @@ Die aktuell Clock Geschwindigkeit, ist in mit CFL und CFH instruktion zu bekomme
 	\end{table}
 \end{center}
 
-\subsubsection{IO-Interrupts}
+\subsubsection{\label{section:ioInterrupt}}
 
-TODO: Das Ist noch net fertig!!!!
-
-
+Auch IO-Geräte können als Interrupt-Quelle fungieren. Dabei gibt es keine Möglichkeit, vom Computer her Interrupt eines IO-Geräts zu deaktivieren oder aktivieren. Dies muss gegebenenfalls über das IO-Protokoll, siehe \autoref{section:io}, gemacht werden. Es können natürlich alle IO-Interrupts auf einmal mit der OVIOI-Flagge gemacht werden.
 
 \section{Kommentar zur Specification}
 
