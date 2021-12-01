@@ -11,9 +11,8 @@
 out
 WIP/*
 WIP/IO_Protocoll_v1.txt
-.idea/runConfigurations/HandBuch.xml
 
-.idea
+.idea/*
 .vscode
 
 cmake-build-debug
