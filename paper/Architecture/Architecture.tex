@@ -1,0 +1,58 @@
+\documentclass{scrartcl}
+
+\usepackage{graphicx}
+\usepackage[siunitx, RPvoltages, european]{circuitikz}
+
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[babel,german=quotes]{csquotes}
+\usepackage[style=numeric, backend=biber]{biblatex}
+\usepackage{listings}
+\usepackage{bytefield}
+\usepackage{longtable}
+
+\addbibresource{ref.bib}
+
+\graphicspath{ {../images} }
+
+\KOMAoptions{parskip=full}
+
+
+\begin{document}
+
+    \title{Platinencomputer - Architektur}
+    \author{Alexander Wersching und Simon Walter}
+    \date{2021}
+    \maketitle
+
+    \newpage
+    \tableofcontents
+    \newpage
+
+    \section{Einführung}
+
+    \section{Grundlegende Design-Prinzipien}
+    
+    \subsection{Laufzeitverzögerung}
+    
+    \subsection{Synchrone Speicherung von Daten}
+
+    Im Computer finden sich jedoch nicht nur simple combintatorische Logik-Schaltungen wie Addition oder XOR. Viel mehr speicher und veränder der Computer Daten. Jede (oder ein großer Teil) der Schalungen lassen sich auf einen Aufbau wie ... zusammenfassen.
+
+    Die Frage ist nur noch wie das Beschreiben des Register funktioniniert. Wir nutzen dafür ein Clock (einen periodisch wieder kehrenden Pulsschlag). Wobei wir das Beschreiben auf dieses Clock-Schlag abstimmen. Die einfachste Methode wäre es das Register zubeschreiben, wenn das Clock-Singal eine logische $1$ darstellt. So ein Aufbau ist in ... gezeigt.
+
+    Das Problem mit ... ist leider nur das es zu einer Oszillation kommt. Die kombinatiorische Schaltung, indem Fall ein bit-wiese NOT, hat, wie alle kombinatiorischen Schaltunen ein Laufzeitverzögerung. Das wenn sich, nach abgelaufender Laufzeitverzögerung, das Singal am Ausgang der kombinatorschen Schaltung ändert, wird diese Änderung direkt in das Register, geschrieben, bei welchem sicher der Ausgang veränder. Diese ändert wieder den Eingangswert der kombinatiorischen Schaltung, welcher wieder nach abgelaufender Laufzeitverzögerung den Ausgang der kombinatiorische Schaltung änderet, usw. 
+    
+    Dabei ergibt sich für die Oszilation ein simple Regel. Nehmen wir an wir nutzen ein Singal wie in ... gezeigt. Sogilt für die Anzahl der Änderungen im Register
+
+    \section{Architektur des Computers}
+
+
+\end{document}
