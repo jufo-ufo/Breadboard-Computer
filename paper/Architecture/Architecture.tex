@@ -52,6 +52,25 @@
     
     Dabei ergibt sich für die Oszilation ein simple Regel. Nehmen wir an wir nutzen ein Singal wie in ... gezeigt. Sogilt für die Anzahl der Änderungen im Register
 
+    \section{Komponenten des Computers}
+
+    \subsubsection{Activation Module}
+
+    Das Activation Module (kurz AM) ist eine wichtige Komponenten welche zur Steuerung der Datenfluss Richtung dient. Der Schmatische Aufbau ist in \autoref{fig:AM_schem} gezeigt. Das AM wird an der ctrl\_line entweder in die Write- oder Read-Kontrolllinie eines Buses eingesteckt.
+    
+    Auf diesem Module sind Dip-Schalter befestigt, welche an den ctrl\_seq Eingang angeschlossen sind, mit welchen sich einstellen lässt auf welches signal das AM hören soll. Wenn nun die Eingestellt Kontrollsequenz auf den Kontrolllinien anliegt, gibt das AM einen Signal an die Angeschlossene Komponente ab. 
+    
+    Zudem lässt sich über ein weiteren Dip-Schalter, welcher an Mode angeschlossen ist, einstellen ob das Module im Read oder Write Modus arbeiten soll. Im Read Modus gibt das Module auf seinem Signal\_Pin\_1 und Signal\_Pin\_2 solange eine Read Signal aus, bist die Sequenz nicht mehr auf dem Bus anliegt. Bei Write, wird ein Kurzer Puls auf Signal\_Pin\_1 abgegeben wenn das AM eine steigende Kannte des Clock Signals regestiert und die richtige Kontrolsequenz auf dem Kontrolllinen anliegt. Auf Singal\_Pin\_2 wird eine kurzer Puls abgegeben wenn das AM eine Fallende Kannte regestiert und die richtige Kontrollsequenz auf den Kontroll linien Anliegt.
+
+    Wichtig zu wissen ist, das das AM eine rein kobinatorsche Schaltung ist. Daher hat es auch eine feste $t_{PD}$. Dieser kann wie folgt rechent werden: Wie in ... gezeigt, ist der Durschnittlich gemessen $t_{PD} = \text{some value}$. Wobei das gemessen maximum und minimum sind.
+    
+    \begin{figure}
+        \centering
+        \resizebox{14cm}{!}{\input{../../circets/ActivationModule/logic_schematic.tex}}
+        \caption{Schematik des Activation Module\label{fig:AM_schem}}
+    \end{figure}
+
+
     \section{Architektur des Computers}
 
 
