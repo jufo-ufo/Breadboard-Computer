@@ -130,8 +130,8 @@ Jede Instruktion hat 3 Operatanten (op), welche Register sind. Im Falle des drit
 			\texttt{0x1d} & DIO  & reg &  &  & Deaktivieren IO[op1] \\
 			\hline
 			\texttt{0x1e} & INT  & & & & Löst einen Interrupt aus \\
-			\texttt{0x1f} & MT1  & & & reg/c & Modi Timer1 = op3 \\
-			\texttt{0x20} & MT2  & & & reg/c & Modi Timer2 = op3 \\
+			\texttt{0x1f} & TM1  & & & reg/c & Modi Timer1 = op3 \\
+			\texttt{0x20} & TM2  & & & reg/c & Modi Timer2 = op3 \\
 			\texttt{0x21} & SSTL1 & & & reg/c & lower Stop Timer1 = op3 \\
 			\texttt{0x22} & SSTL2 & & & reg/c & lower Stop Timer2 = op3 \\
 			\texttt{0x23} & SSTH1 & & & reg/c & higher Stop Timer1 = op3 \\			
@@ -528,7 +528,7 @@ Der Computer besitzt zwei interne Timer je 32 Bit groß. Jeder Timer started bei
 
 Jeder Timer kann in drei Modi Arbeit, wie in \autoref{table:TimerModi} zusehen. Der Timer Modus kann über die TM1 und TM2 (für Timer1 Mode, Timer2 Mode steht) Instruktion gesetzt werden, welcher entweder ein Quellen Register oder eine Konstante an nimmt, wobei die Notation wie folgt aus sieht:
 
-\text{MT<1/2> <Quellen-Register/Konstante>}
+\text{TM<1/2> <Quellen-Register/Konstante>}
 
 Der Entwert wird über die SSTL1, SSTL2 und SSTH1, SSTH2 erledigt. Wobei SSTL<1/2> die ersten 16 Bit und SSTH die letzten 16 Bit des Endwert-Registers setzt. Der Entwert kann dabei als Konstante oder als Quellen-Register vorliegen. Die Notation ist dabei wie folgt:
 
