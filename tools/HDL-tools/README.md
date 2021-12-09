@@ -7,7 +7,7 @@ In this case I'm using VTR version 8.0.0, the latest release at 17.8.2021
 DISCLAMER: This is all test under Garuda Linux (Arch). This may or may not work for you. I had a lot of throuble getting this all to work so good luck, have fun!
 
 ## Installation
-The installation is quite a pain, so I build a docker container, wtich installs all of the necessary libarys and complies very thing Simply run the following command in the tools/HDL-tools folder to build the container (this may take a while, in my case 31min)
+The installation is quite a pain, so I build a docker container, which installs all of the necessary libarys and complies very thing Simply run the following command in the tools/HDL-tools folder to build the container (this may take a while, in my case 31min)
 ```bash
 docker build -t vtr-toolchain:v8.0.0 .
 ```
