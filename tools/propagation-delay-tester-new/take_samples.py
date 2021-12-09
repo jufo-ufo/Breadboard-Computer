@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     start = time.time()
     for i in range(NUMBER_OF_SAMPLES):
-        storage.save_sample(i, measurement_utile.acquire_sample(osc, active_channels), timescale, active_channels)
+        storage.save_sample(i, measurement_utile.acquire_sample(osc, active_channels), timescale, active_channels, temp=22.0)
         measurement_utile.progressbar(NUMBER_OF_SAMPLES, i+1, "Progress", "Time remaining {}".format(measurement_utile.format_seconds((time.time()-start)/(i+1) * (NUMBER_OF_SAMPLES-1-i))))
 
     storage.save_sample_index()
