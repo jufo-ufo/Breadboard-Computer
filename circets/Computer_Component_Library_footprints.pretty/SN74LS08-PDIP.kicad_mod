@@ -1,0 +1,8 @@
+(module SN74LS08-PDIP (layer F.Cu) (tedit 61AF18B1)
+  (fp_text reference REF** (at 0 -11.43) (layer F.SilkS)
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
+  (fp_text value SN74LS08-PDIP (at -0.254 11.176) (layer F.Fab)
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
+)
