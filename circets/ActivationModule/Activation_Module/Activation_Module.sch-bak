@@ -446,8 +446,8 @@ F 3 "http://www.ti.com/lit/gpn/sn74hc00" H 15450 1600 50  0001 C CNN
 	5    15450 1600
 	0    -1   -1   0   
 $EndComp
-Text Notes 11550 1750 0    197  ~ 0
-Read
+Text Notes 11350 1050 0    118  ~ 0
+Read-Enable-Dection
 $Comp
 L 74xx:74LS32 U7
 U 4 1 625D356A
@@ -1501,8 +1501,8 @@ Wire Wire Line
 	6250 3550 6350 3550
 Wire Wire Line
 	6250 3200 6250 3550
-Text Notes 3300 1750 0    197  ~ 0
-Write
+Text Notes 3250 1100 0    118  ~ 0
+Write-Enable-Detection
 $Comp
 L 74xx:74HC00 U9
 U 4 1 61CAAECC
@@ -2178,12 +2178,6 @@ Wire Wire Line
 Wire Wire Line
 	1000 5800 12300 5800
 Wire Wire Line
-	15700 8000 15700 8200
-Connection ~ 15700 8000
-Wire Wire Line
-	15650 8050 15650 8200
-Connection ~ 15650 8050
-Wire Wire Line
 	15600 8100 15600 8200
 Connection ~ 15600 8100
 Wire Wire Line
@@ -2193,12 +2187,6 @@ Wire Wire Line
 Wire Wire Line
 	13300 8100 13300 8200
 Connection ~ 13300 8100
-Wire Wire Line
-	13350 8050 13350 8200
-Connection ~ 13350 8050
-Wire Wire Line
-	13400 8000 13400 8200
-Connection ~ 13400 8000
 Wire Wire Line
 	11250 7050 11250 5300
 Wire Wire Line
@@ -2482,11 +2470,11 @@ Wire Wire Line
 Wire Wire Line
 	6500 4600 6500 4550
 $Comp
-L Computer_Component_Library:Bus_Connector J?
+L Computer_Component_Library:Bus_Connector J4
 U 1 1 6DC16388
 P 6700 4750
-F 0 "J?" H 6359 5125 50  0000 C CNN
-F 1 "Bus_Connector" H 6359 5034 50  0000 C CNN
+F 0 "J4" H 5826 4801 50  0000 R CNN
+F 1 "Bus_Connector" H 5826 4710 50  0000 R CNN
 F 2 "" H 5400 4100 50  0001 C CNN
 F 3 "" H 5400 4100 50  0001 C CNN
 	1    6700 4750
@@ -2535,4 +2523,50 @@ Text Label 8200 3600 1    50   ~ 0
 RE
 Wire Wire Line
 	6000 4900 6550 4900
+Wire Wire Line
+	15650 8050 15700 8050
+Wire Wire Line
+	15700 8050 15700 8200
+Connection ~ 15650 8050
+Wire Wire Line
+	15700 8000 15800 8000
+Wire Wire Line
+	15800 8000 15800 8200
+Connection ~ 15700 8000
+Wire Wire Line
+	13350 8050 13400 8050
+Wire Wire Line
+	13400 8050 13400 8200
+Connection ~ 13350 8050
+Wire Wire Line
+	13400 8000 13500 8000
+Wire Wire Line
+	13500 8000 13500 8200
+Connection ~ 13400 8000
+$Comp
+L Connector:Conn_01x03_Female J5
+U 1 1 6F517F4D
+P 13400 8400
+F 0 "J5" V 13550 8250 50  0000 L CNN
+F 1 "Mode_R" V 13450 8250 50  0000 L CNN
+F 2 "" H 13400 8400 50  0001 C CNN
+F 3 "~" H 13400 8400 50  0001 C CNN
+	1    13400 8400
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector:Conn_01x03_Female J6
+U 1 1 6F578562
+P 15700 8400
+F 0 "J6" V 15850 8250 50  0000 L CNN
+F 1 "Mode_W" V 15750 8250 50  0000 L CNN
+F 2 "" H 15700 8400 50  0001 C CNN
+F 3 "~" H 15700 8400 50  0001 C CNN
+	1    15700 8400
+	0    1    1    0   
+$EndComp
+Text Notes 14850 6400 0    118  ~ 0
+Mode-Router
+Text Notes 6100 6400 0    118  ~ 0
+Data-Routing
 $EndSCHEMATC
