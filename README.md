@@ -1,15 +1,15 @@
 # Breadboard-Computer
-Let's build an Computer form ICs!
+Let's build a computer from ICs!
 
 ## TODO
-- [ ] Test out NAND vs NOT, AND, OR
-- [ ] Write Specification for V0.4
+- [X] Test out NAND vs NOT, AND, OR
+- [X] Write specification for V0.4
   - [X] Add Instructionset to "Handbuch"
-  - [ ] Rework Interupts
-  - [X] I/O Specification
-  - [ ] Update Flags
-  - [ ] Insert test results
-- [ ] Get familiary with EAGLE/Target3001
-- [ ] Build Circet Designs
+  - [X] Rework Interrupts
+  - [X] I/O specification
+  - [X] Update Flags
+  - [ ] ~~Insert test results~~
+- [ ] Get familiar with ~~EAGLE/Target3001~~ Kicad/Logisim
+- [ ] Build circuit designs
 
 https://www.youtube.com/watch?v=9aUsTlBjspE
