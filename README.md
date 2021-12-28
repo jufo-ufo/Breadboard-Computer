@@ -12,21 +12,20 @@ Let's build a computer from ICs!
 - [ ] Get familiar with ~~EAGLE/Target3001~~ Kicad/Logisim
 - [ ] Build circuit designs
 
-| Part:                | Schematics | Layout | Breadboard | Etching |
-|----------------------|------------|--------|------------|---------|
-| Bank_controller      | [ ]        | [ ]    | [ ]        | [ ]     |  
-| Memory               | [ ]        | [ ]    | [ ]        | [ ]     |  
-| BID_Register         | [ ]        | [ ]    | [ ]        | [ ]     |  
-| Register_File        | [ ]        | [ ]    | [ ]        | [ ]     |  
-| ALU                  | [ ]        | [ ]    | [ ]        | [ ]     |  
-| IV_Storage           | [ ]        | [ ]    | [ ]        | [ ]     |  
-| Interrupt_Controller | [ ]        | [ ]    | [ ]        | [ ]     | 
-| Timer                | [ ]        | [ ]    | [ ]        | [ ]     | 
-| Freq_Counter         | [ ]        | [ ]    | [ ]        | [ ]     | 
-| IR                   | [ ]        | [ ]    | [ ]        | [ ]     | 
-| Instruction_Decoder  | [ ]        | [ ]    | [ ]        | [ ]     | 
-| IO_Controller        | [ ]        | [ ]    | [ ]        | [ ]     |   
-| Activation_Module    | [ ]        | [ ]    | [ ]        | [ ]     |  
-|                      | [ ]        | [ ]    | [ ]        | [ ]     | 
+| Part                  | Logic | Schematic | Layout | Breadboard | Etching | Soldering | Documenation | Engineer |
+|-----------------------|-------|-----------|--------|------------|---------|-----------|--------------|----------|
+| Bank\_controller      | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
+| Memory                | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
+| BID\_Register         | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
+| Register\_File        | [X]   | [X]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
+| ALU                   | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    |
+| IV\_Storage           | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
+| Interrupt\_Controller | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    |
+| Timer                 | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
+| Freq\_Counter         | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    |
+| IR                    | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
+| Instruction\_Decoder  | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
+| IO\_Controller        | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    |
+| Activation\_Module    | [X]   | [X]       | [ ]    | [X]        | [ ]     | [ ]       | [ ]          | alex     |
 
 https://www.youtube.com/watch?v=9aUsTlBjspE
