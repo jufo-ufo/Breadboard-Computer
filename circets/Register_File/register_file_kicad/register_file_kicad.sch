@@ -6681,7 +6681,7 @@ Wire Wire Line
 Wire Wire Line
 	7900 12950 7900 13200
 $Comp
-L Computer_Component_Library:Bus_Connector J?
+L register_file_kicad-rescue:Bus_Connector-Computer_Component_Library J?
 U 1 1 F4535150
 P 4050 900
 F 0 "J?" H 3650 950 50  0000 C CNN

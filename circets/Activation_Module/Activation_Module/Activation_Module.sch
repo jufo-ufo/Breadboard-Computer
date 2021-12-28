@@ -949,7 +949,7 @@ Wire Wire Line
 Wire Wire Line
 	4700 10500 4700 9650
 $Comp
-L Computer_Component_Library:Bus_Connector J1
+L Activation_Module-rescue:Bus_Connector-Computer_Component_Library J1
 U 2 1 62E54F07
 P 4750 10650
 F 0 "J1" V 4514 11488 50  0000 L CNN
@@ -960,7 +960,7 @@ F 3 "" H 3450 10000 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Computer_Component_Library:Bus_Connector J1
+L Activation_Module-rescue:Bus_Connector-Computer_Component_Library J1
 U 3 1 62E59683
 P 10000 10650
 F 0 "J1" V 9764 11488 50  0000 L CNN
@@ -1586,7 +1586,7 @@ Wire Wire Line
 Wire Wire Line
 	2700 4850 600  4850
 $Comp
-L Computer_Component_Library:Bus_Connector J1
+L Activation_Module-rescue:Bus_Connector-Computer_Component_Library J1
 U 4 1 63F6778F
 P 1750 1000
 F 0 "J1" V 1350 900 50  0000 L CNN
@@ -1597,18 +1597,7 @@ F 3 "" H 450 350 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Computer_Component_Library:Bus_Connector J1
-U 5 1 63F6A1B9
-P 900 1000
-F 0 "J1" V 500 950 50  0000 L CNN
-F 1 "Bus_Connector" V 600 900 50  0000 L CNN
-F 2 "Computer_Component_Library:BusConnector" H -400 350 50  0001 C CNN
-F 3 "" H -400 350 50  0001 C CNN
-	5    900  1000
-	0    1    1    0   
-$EndComp
-$Comp
-L Computer_Component_Library:Bus_Connector J1
+L Activation_Module-rescue:Bus_Connector-Computer_Component_Library J1
 U 6 1 63F6D143
 P 9750 1000
 F 0 "J1" V 9350 950 50  0000 L CNN
@@ -1616,17 +1605,6 @@ F 1 "Bus_Connector" V 9450 900 50  0000 L CNN
 F 2 "Computer_Component_Library:BusConnector" H 8450 350 50  0001 C CNN
 F 3 "" H 8450 350 50  0001 C CNN
 	6    9750 1000
-	0    1    1    0   
-$EndComp
-$Comp
-L Computer_Component_Library:Bus_Connector J1
-U 7 1 63F6FE35
-P 8850 1000
-F 0 "J1" V 8450 950 50  0000 L CNN
-F 1 "Bus_Connector" V 8550 900 50  0000 L CNN
-F 2 "Computer_Component_Library:BusConnector" H 7550 350 50  0001 C CNN
-F 3 "" H 7550 350 50  0001 C CNN
-	7    8850 1000
 	0    1    1    0   
 $EndComp
 Wire Wire Line
@@ -1972,7 +1950,7 @@ Wire Wire Line
 Wire Wire Line
 	6500 5100 6500 5050
 $Comp
-L Computer_Component_Library:Bus_Connector J1
+L Activation_Module-rescue:Bus_Connector-Computer_Component_Library J1
 U 1 1 6DC16388
 P 6700 5250
 F 0 "J1" H 5826 5301 50  0000 R CNN
@@ -2861,4 +2839,26 @@ Wire Wire Line
 	5500 2150 5500 2200
 Wire Wire Line
 	5850 2200 5850 2150
+$Comp
+L Computer_Component_Library:Bus_Connector J?
+U 5 1 61D797A8
+P 900 1000
+F 0 "J?" V 726 1388 50  0000 L CNN
+F 1 "Bus_Connector" V 817 1388 50  0000 L CNN
+F 2 "" H -400 350 50  0001 C CNN
+F 3 "" H -400 350 50  0001 C CNN
+	5    900  1000
+	0    1    1    0   
+$EndComp
+$Comp
+L Computer_Component_Library:Bus_Connector J?
+U 7 1 61D96A01
+P 8850 1000
+F 0 "J?" V 8450 950 50  0000 L CNN
+F 1 "Bus_Connector" V 8550 900 50  0000 L CNN
+F 2 "" H 7550 350 50  0001 C CNN
+F 3 "" H 7550 350 50  0001 C CNN
+	7    8850 1000
+	0    1    1    0   
+$EndComp
 $EndSCHEMATC
