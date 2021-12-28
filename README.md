@@ -12,15 +12,21 @@ Let's build a computer from ICs!
 - [ ] Get familiar with ~~EAGLE/Target3001~~ Kicad/Logisim
 - [ ] Build circuit designs
 
-| Part:             | Schematics      | Layout | Breadboard | Etching |
-|-------------------|-----------------|--------|------------|---------|
-| Bank controller   | <li>- [x] </li> | [ ]    | [ ]        | [ ]     |  
-| ALU               | [ ]             | [ ]    | [ ]        | [ ]     |  
-| Memory            | [ ]             | [ ]    | [ ]        | [ ]     |  
-| Register          | [ ]             | [ ]    | [ ]        | [ ]     |  
-| Activation module | [ ]             | [ ]    | [ ]        | [ ]     |  
-| I/O               | [ ]             | [ ]    | [ ]        | [ ]     |   
-|                   | [ ]             | [ ]    | [ ]        | [ ]     |   
-|                   | [ ]             | [ ]    | [ ]        | [ ]     | 
+| Part:                | Schematics | Layout | Breadboard | Etching |
+|----------------------|------------|--------|------------|---------|
+| Bank_controller      | [ ]        | [ ]    | [ ]        | [ ]     |  
+| Memory               | [ ]        | [ ]    | [ ]        | [ ]     |  
+| BID_Register         | [ ]        | [ ]    | [ ]        | [ ]     |  
+| Register_File        | [ ]        | [ ]    | [ ]        | [ ]     |  
+| ALU                  | [ ]        | [ ]    | [ ]        | [ ]     |  
+| IV_Storage           | [ ]        | [ ]    | [ ]        | [ ]     |  
+| Interrupt_Controller | [ ]        | [ ]    | [ ]        | [ ]     | 
+| Timer                | [ ]        | [ ]    | [ ]        | [ ]     | 
+| Freq_Counter         | [ ]        | [ ]    | [ ]        | [ ]     | 
+| IR                   | [ ]        | [ ]    | [ ]        | [ ]     | 
+| Instruction_Decoder  | [ ]        | [ ]    | [ ]        | [ ]     | 
+| IO_Controller        | [ ]        | [ ]    | [ ]        | [ ]     |   
+| Activation_Module    | [ ]        | [ ]    | [ ]        | [ ]     |  
+|                      | [ ]        | [ ]    | [ ]        | [ ]     | 
 
 https://www.youtube.com/watch?v=9aUsTlBjspE
