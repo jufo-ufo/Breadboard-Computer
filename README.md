@@ -12,15 +12,15 @@ Let's build a computer from ICs!
 - [ ] Get familiar with ~~EAGLE/Target3001~~ Kicad/Logisim
 - [ ] Build circuit designs
 
-| Part:             | Schematics          | Layout | Breadboard | Etching |
-|-------------------|---------------------|--------|------------|---------|
-| Bank controller   | <ul><li>- [x] </li> | [ ]    | [ ]        | [ ]     |  
-| ALU               | [ ]                 | [ ]    | [ ]        | [ ]     |  
-| Memory            | [ ]                 | [ ]    | [ ]        | [ ]     |  
-| Register          | [ ]                 | [ ]    | [ ]        | [ ]     |  
-| Activation module | [ ]                 | [ ]    | [ ]        | [ ]     |  
-| I/O               | [ ]                 | [ ]    | [ ]        | [ ]     |   
-|                   | [ ]                 | [ ]    | [ ]        | [ ]     |   
-|                   | [ ]                 | [ ]    | [ ]        | [ ]     | 
+| Part:             | Schematics      | Layout | Breadboard | Etching |
+|-------------------|-----------------|--------|------------|---------|
+| Bank controller   | <li>- [x] </li> | [ ]    | [ ]        | [ ]     |  
+| ALU               | [ ]             | [ ]    | [ ]        | [ ]     |  
+| Memory            | [ ]             | [ ]    | [ ]        | [ ]     |  
+| Register          | [ ]             | [ ]    | [ ]        | [ ]     |  
+| Activation module | [ ]             | [ ]    | [ ]        | [ ]     |  
+| I/O               | [ ]             | [ ]    | [ ]        | [ ]     |   
+|                   | [ ]             | [ ]    | [ ]        | [ ]     |   
+|                   | [ ]             | [ ]    | [ ]        | [ ]     | 
 
 https://www.youtube.com/watch?v=9aUsTlBjspE
