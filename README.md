@@ -22,8 +22,8 @@ Let's build a computer from ICs!
 | ALU                   | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    |
 | IV\_Storage           | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
 | Interrupt\_Controller | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    |
-| Timer                 | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
-| Freq\_Counter         | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    |
+| Timer                 | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
+| Freq\_Counter         | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    |
 | IR                    | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
 | Instruction\_Decoder  | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
 | IO\_Controller        | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    |
