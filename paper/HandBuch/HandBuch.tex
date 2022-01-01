@@ -450,8 +450,8 @@ Ein allgemeiner standart Ablauf (wie z.B. der der später definierten IO-Instruk
 			Iin & 1 & 0 &   & 0 & \\
 			Din & 0 & 1 &   & 0 & \\
 			Dout & 0 & 0 &   & 1 & \\
-			Data$0-7$ & InstructionID & Variable &   & Rückgabewert & Rückgabewert \\
-			Data$8-15$ & 8b Variable & Variable &   & Rückgabewert & Rückgabewert
+			Data$0-7$ & InstructionID & Variable &   &   & Rückgabewert \\
+			Data$8-15$ & 8b Variable & Variable &   &   & Rückgabewert
  		\end{tabular}
 	\end{table}
 \end{center}
@@ -564,27 +564,36 @@ Die aktuell Clock Geschwindigkeit, ist in mit CFL und CFH instruktion zu bekomme
 
 \subsubsection{\label{section:ioInterrupt}}
 
-Auch IO-Geräte können als Interrupt-Quelle fungieren. Dabei gibt es keine Möglichkeit, vom Computer her Interrupt eines IO-Geräts zu deaktivieren oder aktivieren. Dies muss gegebenenfalls über das IO-Protokoll, siehe \autoref{section:io}, gemacht werden. Es können natürlich alle IO-Interrupts auf einmal mit der OVIOI-Flagge gemacht werden.
+Auch IO-Geräte können als Interrupt-Quelle fungieren.
+Dabei gibt es keine Möglichkeit, vom Computer her Interrupt eines IO-Geräts zu deaktivieren oder aktivieren.
+Dies muss gegebenenfalls über das IO-Protokoll, siehe \autoref{section:io}, gemacht werden.
+Es können natürlich alle IO-Interrupts auf einmal mit der OVIOI-Flagge gemacht werden.
 
 \section{Kommentar zur Specification}
 
 \subsection{\label{section:comment:datalength}16 bit Daten/Address Länge}
 
-Die Address- und Datenlänge besagt viele Binäre Ziffern (bits) für eine Address und Daten verwendet werden. Je mehr Ziffern man verwendet desto größere Zahlen können in einer Operation verarbeitet werden wobei die maximal repräsentierbare Zahle $2^n - 1$ ist wenn $n$ die Anzahl der Binary Ziffern (= Bits) ist und wenn man mit $0$ anfängt zu zählen. Sie \autoref{table:max_zahlen}
+Die Address- und Datenlänge besagt viele Binäre Ziffern (bits) für eine Address und Daten verwendet werden.
+Je mehr Ziffern man verwendet desto größere Zahlen können in einer Operation verarbeitet werden wobei die maximal repräsentierbare Zahle $2^n - 1$ ist wenn $n$ die Anzahl der Binary Ziffern (= Bits) ist und wenn man mit $0$ anfängt zu zählen.
+Siehe \autoref{table:max_zahlen}
 
-Ein eine $n$ stellige Binär Zahl wobei $n$ teilbar durch $8$ ist, ist dabei relative angenehm, $8$ bit = $1$ byte. Das byte ist dabei die Basis Einheit für so gut wie alle informationstechnischen Standards. Daher ist es gute eine solches $n$ zu wählen.
+Ein eine $n$ stellige Binär Zahl wobei $n$ teilbar durch $8$ ist, ist dabei relative angenehm, $8$ bit = $1$ byte. Das byte ist dabei die Basis Einheit für so gut wie alle informationstechnischen Standards.
+Daher ist es gute eine solches $n$ zu wählen.
 Zudem kommen einige elementar ICs, z.B. Buffer oder Register, immer mit 8 bits.
 
-Jedoch gilt je mehr Bits man verwendet, desto mehr Schaltung brauchen man, desto mehr Stromverbrauch. Da wir wie zwar nicht speziell auf Platz und Stromverbrauch optimieren, aber trozdem ein limitiertes Buget haben, können wir auch nicht eine belibig große Daten/Address Länge wählen.
+Jedoch gilt je mehr Bits man verwendet, desto mehr Schaltung brauchen man, desto mehr Stromverbrauch.
+Da wir wie zwar nicht speziell auf Platz und Stromverbrauch optimieren, aber trotzdem ein limitiertes Budget haben, können wir auch nicht eine beliebig große Daten/Address Länge wählen.
 
-Wir haben uns daher für $16$ bit entschieden, der Codea man laut \autoref{table:max_zahlen} Zahlen bis zwischen $0$ und $65535$ darstellen kann. Diese Menge ist gerade große genug, um für die meisten Programme große genüge Zahl abzubilden
-\footnote{Für Programme die Zahlen welche $> 65535$ darstellen wohlen ist es ratsam immer zwei oder mehr Spreichereinheiten zunehmen oder bei Berechnungen, selbige auf zwei oder mehr Schritte auf zuteilen}.
+Wir haben uns daher für $16$ bit entschieden, der laut \autoref{table:max_zahlen} Zahlen bis zwischen $0$ und $65535$ darstellen kann.
+Diese Menge ist gerade große genug, um für die meisten Programme große genüge Zahl abzubilden
+\footnote{Für Programme die Zahlen welche $> 65535$ darstellen wohlen ist es ratsam immer zwei oder mehr Speichereinheiten zunehmen oder bei Berechnungen, selbige auf zwei oder mehr Schritte auf zuteilen}.
 
-Die Entscheidung zur größe der Daten/Address Länge ist eine sehr ausschlag gebende, daher haben wir diese zuerst festgelegt. Sie wird für viele weitere Entscheidung eine wichtige Rolle spielen. Wichtig ist nur das wir maximal $65536$ Zustände oder Zahlen von $0$ bis $65535$ darstellen können mit unseren $16$ bit
+Die Entscheidung zur größe der Daten/Address Länge ist eine sehr ausschlag gebende, daher haben wir diese zuerst festgelegt.
+Sie wird für viele weitere Entscheidung eine wichtige Rolle spielen. Wichtig ist nur das wir maximal $65536$ Zustände oder Zahlen von $0$ bis $65535$ darstellen können mit unseren $16$ bit.
 
 \begin{center}
 	\begin{table}[h]
-		\caption{\label{table:max_zahlen} Maximalerepersäntierbare Zahlen (startend mit 0)}
+		\caption{\label{table:max_zahlen} Maximale repräsentierbare Zahlen (startend mit 0)}
 		\begin{tabular}{ l | l }
  		$n$ & $n^2 - 1$ \\
 		\hline 
@@ -601,45 +610,53 @@ Die Entscheidung zur größe der Daten/Address Länge ist eine sehr ausschlag ge
 \subsection{\label{section:comment:register_number}Register Anzahl}
 
 Der Computer hat 8 Register. Wir haben uns für Acht ausfolgenden Gründen entschieden:
-Zu erst die minimale Anzahl anregisteren die wirklich gebraucht würde, ist $5$! Man braucht mindestens zwei all Zweck Register um binäre Rechenoperation durch zu führen, einen Stackpointer, einen Instruktion Point und einen Ort wo man die Flaggen speichern kann
-\footnote{Theorthisch ist es möglich das Flaggen Register wegzulassen, wir haben uns aber für eine solches Register entschieden siehe \autoref{com:conditionals}}.
+Zu erst die minimale Anzahl an Registern die wirklich gebraucht würde, ist $5$! Man braucht mindestens zwei all Zweck Register um binäre Rechenoperation durch zu führen, einen Stackpointer, einen Instruktion Point und einen Ort wo man die Flaggen speichern kann.
+\footnote{Theoretisch ist es möglich das Flaggen Register wegzulassen, wir haben uns aber für eine solches Register entschieden siehe \autoref{com:conditionals}}.
 
-Fünf lässt sich nicht mehr mit $2$ bits repräsentieren ($2^2 = 4$), daher muss man $3$ bit ($2^2 = 8$) nehmen. Der Grund warum wir nicht mehr genomen haben hat mit der Encodierung von Instruktionen zutun siehe \autoref{com:insEnc}. Somit haben sich $8$ Register als das Optimum ergeben
+Fünf lässt sich nicht mehr mit $2$ bits repräsentieren ($2^2 = 4$), daher muss man $3$ bit ($2^2 = 8$) nehmen.
+Der Grund warum wir nicht mehr genomen haben hat mit der Encodierung von Instruktionen zutun siehe \autoref{com:insEnc}.
+Somit haben sich $8$ Register als das Optimum ergeben
 
 \subsection{\label{com:sup}Gedanken Hinter dem Supervisormode}
 
-Wir haben uns entschieden eine Art Berechtigungs System in der Computer einzubaunen. Eine Rechner der nur einfache Programm ausführt um zu Beispiel eine LED oder ein LCD-Display zusteueren, wie es z.B. ein ESP32 oder ein ATMega328p macht, ist so ein System nicht nötig. Wir hatten jedoch vor mit unserem Computer die Möglichkeit zuschaffen Betriebsystem änliches Programm (Supervisor) laufen zulassen. 
+Wir haben uns entschieden eine Art Berechtigungssystem in der Computer einzubauen.
+Eine Rechner der nur einfache Programm ausführt um zu Beispiel eine LED oder ein LCD-Display zusteueren, wie es z.B. ein ESP32 oder ein ATMega328p macht, ist so ein System nicht nötig.
+Wir hatten jedoch vor mit unserem Computer die Möglichkeit zuschaffen Betriebsystem änliches Programm (Supervisor) laufen zulassen.
 
-Hier für hat man einemal den Supervisor, der bei Start des Computer anfängt zulaufen, und Programme, welche im Usermode ausgeführt werden, sogenannte Prozesse. Dabei sieht ein typischer Programmablauf ist dabei in gezeigt.
+Hier für hat man ein mal den Supervisor, der bei Start des Computer anfängt zulaufen, und Programme, welche im Usermode ausgeführt werden, sogenannte Prozesse.
+Dabei sieht ein typischer Programmablauf ist dabei in gezeigt.
 
 
 
-Wichtig ist, das sobald ein Prozess benendedt wurde, der Supervisor an dieser Stelle wieder anfängt und den nächsten Prozess started. 
+Wichtig ist, das sobald ein Prozess beendet wurde, der Supervisor an dieser Stelle wieder anfängt und den nächsten Prozess started.
 
 Ein Prozess kann auch Funktionen des Supervisor nutzten über Software Interrupts, da bei einem Interrupt, der Computer in den Supervisormode wechselt. So kann der Prozess, bevor er den Interrupt auslegt, ein oder mehrer Register nutzten um Werte an den Supervisor zu übergeben. Z.B. kann er eine Register nutzten um dem Supervisor zusagen was er tun soll, z.B. dem Prozess zugang zu einem IO-Gerät zugeben oder etwas in eine Datei zuschreiben. Diese Art von Kommuntiation werden auch System-Calls genannt und sind die Basis für jedes moderne Betriebssystem.
 
 Ein solcher Supervisor kann sehr mächtig sein:
 
 \begin{enumerate}
-	\item Abstratkion der Hardware: Oft ist die IO-Configuration von Setup zu Setup sehr verschieden. Ein Prozess was IO-Nutzen möchte hat oft den Nachteil dass es für ein bestimmte Hardware setup geschrieben wurde. So z.B. ein Prozess was Daten einer SD-Karte ausließt und diese anzeigt. Wenn jedoch man jetzt eine Floppy-Laufwerk anschließt, so kann man das Prozess zum Auslesen nicht verwenden, da es nur die Kommuntiation mit einer SD-Karte kennt. Der Supervisor könnte an dieser Stelle ein Interface über System-Calls bieten welches unabhänige von dem Gerät ist. So im diesem Beispiel ein Dateisystem, auf welches Prozesse zugreifen können. Somit übernimmt der Supervisor die Kommuntiation mit der Hardware.
+	\item Abstraktion der Hardware: Oft ist die IO-Configuration von Setup zu Setup sehr verschieden. Ein Prozess was IO-Nutzen möchte hat oft den Nachteil dass es für ein bestimmte Hardware setup geschrieben wurde. So z.B. ein Prozess was Daten einer SD-Karte ausließt und diese anzeigt. Wenn jedoch man jetzt eine Floppy-Laufwerk anschließt, so kann man das Prozess zum Auslesen nicht verwenden, da es nur die Kommuntiation mit einer SD-Karte kennt. Der Supervisor könnte an dieser Stelle ein Interface über System-Calls bieten welches unabhänige von dem Gerät ist. So im diesem Beispiel ein Dateisystem, auf welches Prozesse zugreifen können. Somit übernimmt der Supervisor die Kommuntiation mit der Hardware.
 	
-	\item Teilung der Rechenzeit: Der Computer so viele Features er doch hat, ist stark limitiert vorallem was Rechengeschwindigkeit betrifft. Wenn man nun mehrer Programm hat, welche ausgeführt werden sollen, so wäre es natürlich sehr einfach sie der Reihe nach auszuführen. Jedoch gibt es bessere Wege, so z.B. das der Computer jedem Prozess nur eine Bestimmte Rechenzeit gibt und dann den nächsten Prozess ausführt. Das kann erreicht werden durch folgenden Ablauf: Der Supervisor setellt vor dem ausführen des Prozesse eine Timed-Interrupt. Dann übergibt der Supervisor den Computer dem Prozess, welcher dann seine Programm ausführt. Dies machter bis der Timed-Interrupt ausgelöst wird und der Computer wieder in den Supervisormode wechselt. Dieser speichert nun alle Register und Banken Configuration des Prozesse und übergibt einem anderen Prozesse den Computer. Wenn nun ein schon angefanger Prozess wieder gestarted werden soll läd der Supervisor wieder die Register und Banken des Prozesse und übergibt die Außführung wieder an den Prozess. Somit kann der Computer zwischen Prozessen hin und herschallten, was die Illusion gibt, das der Computer diese gleichzeitig ausführt.
+	\item Teilung der Rechenzeit: Der Computer so viele Features er doch hat, ist stark limitiert vor allem was Rechengeschwindigkeit betrifft. Wenn man nun mehrer Programm hat, welche ausgeführt werden sollen, so wäre es natürlich sehr einfach sie der Reihe nach auszuführen. Jedoch gibt es bessere Wege, so z.B. das der Computer jedem Prozess nur eine Bestimmte Rechenzeit gibt und dann den nächsten Prozess ausführt. Das kann erreicht werden durch folgenden Ablauf: Der Supervisor setellt vor dem ausführen des Prozesse eine Timed-Interrupt. Dann übergibt der Supervisor den Computer dem Prozess, welcher dann seine Programm ausführt. Dies machter bis der Timed-Interrupt ausgelöst wird und der Computer wieder in den Supervisormode wechselt. Dieser speichert nun alle Register und Banken Configuration des Prozesse und übergibt einem anderen Prozesse den Computer. Wenn nun ein schon angefanger Prozess wieder gestarted werden soll läd der Supervisor wieder die Register und Banken des Prozesse und übergibt die Außführung wieder an den Prozess. Somit kann der Computer zwischen Prozessen hin und herschallten, was die Illusion gibt, das der Computer diese gleichzeitig ausführt.
 	
-	\item Isolation von Prozessen: Programme sind meist nie perfekt. Vorallem sowas wie Bufferoverflows und andere Fehler dieser Art tretten in Low-Level Systeme gerne auf. Aus diesem Grund ist es wichtig Prozesse von einander zu isolieren. Nehmen wir an Prozess A hat ein Fehler welcher dafür sorgt das er den gesammten RAM anfängt voll zuschreiben. Um jetzt Prozess A daran zuhinern Prozess B zu überschreiben, ist es dem Prozess nicht gestattet auf den Arbeitsspeicher von Prozess B zuzugreifen. Nur der Supervisor kann zwischen den Prozessen wechseln
-	\footnote{Natürlich kann auch der Supervisor fehlerhaft sein. Jedoch hatten wir bei dieser Maßnahme nicht nur fehlerhaft sonderen auch schlicht böswillige Prozesse im Kopf. Natürlich ist dies unwahrscheinlich dass so etwas jemals eintretten wird, jedoch war unsere Idee von Anfang an eine Computer zu bauen der im Internet stehen könnte und die dementsprechenden Sicherheitsmaßnahmen hat}.
+	\item Isolation von Prozessen: Programme sind meist nie perfekt. Vor allem sowas wie Bufferoverflows und andere Fehler dieser Art tretten in Low-Level Systeme gerne auf. Aus diesem Grund ist es wichtig Prozesse von einander zu isolieren. Nehmen wir an Prozess A hat ein Fehler welcher dafür sorgt das er den gesammten RAM anfängt voll zuschreiben. Um jetzt Prozess A daran zuhinern Prozess B zu überschreiben, ist es dem Prozess nicht gestattet auf den Arbeitsspeicher von Prozess B zuzugreifen. Nur der Supervisor kann zwischen den Prozessen wechseln
+	\footnote{Natürlich kann auch der Supervisor fehlerhaft sein. Jedoch hatten wir bei dieser Maßnahme nicht nur fehlerhaft sondern auch schlicht böswillige Prozesse im Kopf. Natürlich ist dies unwahrscheinlich dass so etwas jemals eintreten wird, jedoch war unsere Idee von Anfang an eine Computer zu bauen der im Internet stehen könnte und die dementsprechenden Sicherheitsmaßnahmen hat}.
 \end{enumerate}
 
-Wenn man so etwas will kann dass auch auf einem ATMega328p gemacht werden, jedoch nicht ohne massive Leistungs Verluste. Wenn so ein Berechtigungssystem jedoch direkt in die Hardware des Computers einfleißt sorgt das für eine viel schnellern Computer. 
+Wenn man so etwas will kann dass auch auf einem ATMega328p gemacht werden, jedoch nicht ohne massive Leistungsverluste. Wenn so ein Berechtigungssystem jedoch direkt in die Hardware des Computers einfleißt sorgt das für eine viel schnellern Computer.
 
 Wenn man tatsächliche nur Programme schreiben will welche \"nur\" ein LED oder LCD-Display steuern soll, kann man das mit unserem Computer auch machen, indem man einfach diese Programm im Supervisor laufen lässt.
 
 \subsection{\label{com:SoftwareInterrupt}Zur fehlenden Deaktivierung der Software Interrupts}
 
-Die INT-Instruktion löst wie in \autoref{section:interrupts} einen Software Interrupt aus welcher nicht durch die OINT- Flagge deaktivirt werden kann. 
+Die INT-Instruktion löst wie in \autoref{section:interrupts} einen Software Interrupt aus welcher nicht durch die OINT- Flagge deaktiviert werden kann.
 
-Um die Motiviation hinter dieser Entscheidung zuverstehen ist zuwissen, dass der Software Interrupt dazugedach ist um aus dem Usermode in den Supervisormode zuwechseln. Unzwar in einem kontrollieren Weg, sodass es nicht möglich ist belibigen Programm-Code als User mit Supervisor Privileigen auszuführen. Daher wird auch nicht direkt nachdem Ausführen der INT-Instruktion an dieser Stelle weiterausgeführt sonder Programm-Code welcher an der Position von einem IV sich befindet, welcher nicht verändert werden kann und schluss endlich irgendwelchen Supervisor Code ausführt. 
+Um die Motivation hinter dieser Entscheidung zu verstehen ist zu wissen, dass der Software Interrupt dazu gedacht ist um aus dem Usermode in den Supervisormode zu wechseln.
+Und zwar in einem kontrollieren Weg, sodass es nicht möglich ist belibigen Programm-Code als User mit Supervisor Privileigen auszuführen.
+Daher wird auch nicht direkt nachdem Ausführen der INT-Instruktion an dieser Stelle weiter ausgeführt sonder Programm-Code welcher an der Position von einem IV sich befindet, welcher nicht verändert werden kann und schluss endlich irgendwelchen Supervisor Code ausführt.
 
-Dabei ist dies der einzige Weg, nebst den Computer zureseten um Code im Supervisormode auszuführen aus der Postition des Usermodes. Wenn es nun die Möglichkeit gäbe Software Interrupts zudeaktivieren und man in den Usermode wechseln würde, kann man nicht mehr zurück in den Supervisormode kommen, da im Usermode keine Interrupts aktivieren oder deaktiviert werden können. Vondaher ist es Sinnbefreit dem Computer die Möglichkeit zugeben Software Interrupts zudeaktivieren.
+Dabei ist dies der einzige Weg, nebst den Computer zu reseten um Code im Supervisormode auszuführen aus der Postition des Usermodes.
+Wenn es nun die Möglichkeit gäbe Software Interrupts zudeaktivieren und man in den Usermode wechseln würde, kann man nicht mehr zurück in den Supervisormode kommen, da im Usermode keine Interrupts aktivieren oder deaktiviert werden können. Vondaher ist es Sinnbefreit dem Computer die Möglichkeit zugeben Software Interrupts zudeaktivieren.
 
 \printbibliography{}
 
