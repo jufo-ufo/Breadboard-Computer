@@ -2,6 +2,7 @@
 
 \usepackage{graphicx}
 \usepackage[siunitx, RPvoltages, european]{circuitikz}
+\usepackage{tikz-timing}
 
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
@@ -502,11 +503,13 @@ Der Supervisor-mode hat die berechtigungen zu allen I/O-Interaktionen, für norm
 
 \subsection{\label{section:interrupts}Interrupts}
 
-Interrupts sind Unterbrechungen im Programmablauf. Wenn ein Interrupt gemeldet wird, wird dieser im nächsten Instruktions-Zyklus bearbeitet. Für diesen Zyklus, wird, je nach Interrupt-Quelle, nicht die Instruktion ander Stelle von IP sondern von einem IV (Interrupt Vektor) geladen. Es gibt im Computer vier verschieden Interrupt Quellen, wobei jede ein hard-gewired IV hat, dies ist in \autoref{table:iv} zusehen.
+Interrupts sind Unterbrechungen im Programmablauf. Wenn ein Interrupt gemeldet wird, wird dieser im nächsten Instruktions-Zyklus bearbeitet. Für diesen Zyklus, wird, je nach Interrupt-Quelle, nicht die Instruktion an der Stelle von IP sondern von einem IV (Interrupt Vektor) geladen. Es gibt im Computer vier verschieden Interrupt Quellen, wobei jede ein fest-verbauten IV hat, dies ist in \autoref{table:iv} zusehen.
 
-Interrupts können general (sowohl im Usermode als auch im Supervisormode) deaktiviert werden, mit Ausnahme von Software-Interrupts, durch das setzen der OINT Flagge. Für ein feinere Einstellung gibt es die OVIOI, OVTI1, OVTI2 Flaggen welche wie in \autoref{table:iv} zusehen, einnige spezielle Flaggen deaktivieren. Diese findet aber nur im Supervisormode stadt. Im Usermode hingegen lassen sich Interrupts nur über die OINT-Flagge deaktivieren. Alle diese Flaggen befinden sich übrigens in den letzten 8 Bit des FLAG Register, was sie nur für den Supervisor veränderbar macht.
+Interrupts können general (sowohl im Usermode als auch im Supervisormode) deaktiviert werden, mit Ausnahme von Software-Interrupts, durch das setzen der OINT Flagge. Für ein feinere Einstellung gibt es die OVIOI, OVTI1, OVTI2 Flaggen welche wie in \autoref{table:iv} zusehen, einen speziellen Interrupt deaktivieren. Diese Flaggen, übernehmen dies aber nur im Supervisor. Im Usermode hingegen lassen sich Interrupts nur durch das zuvorrige setzten der OINT Flagge im Supervisormode deaktivieren. Alle diese Flaggen befinden sich übrigens in den letzten 8 Bit des FLAG Register, womit sie nur im Supervisormode verändert werden kann.
 
-Die INT Instruktion welche keine Operatanten annmmit löst ein Software-Interrupt aus. Dieser kann nicht deaktiviert werden, da dieser Interrupt von laufenden Prozess ausgeführt werden muss und das Prozess somit selber weiß wann und ob es eine Interrupt auslösen soll. Wenn ein Prozess ungestört seine Arbeit machen will, ist er somit selbst verantwortlich ob er eine INT-Operation ausführen soll. 
+Die INT Instruktion löst ein Software-Interrupt aus. Dieser kann nicht deaktiviert werden. Diese Instruktion kann sowohl im Supervisor und im Usermode ausgeführt werden. Diese Instruktion nimmt keine Operntanten an. Die Notation ist dabei wie folgt:
+
+\text{INT}
 
 \begin{center}	
 	\begin{table}[h]
@@ -524,13 +527,13 @@ Die INT Instruktion welche keine Operatanten annmmit löst ein Software-Interrup
 
 \subsubsection{Timed-Interrupts}
 
-Der Computer besitzt zwei interne Timer je 32 Bit groß. Jeder Timer started bei $0$ und zählt (bei jedem Clock Schlag) um $1$ bis zuseinem eingestellten End Wert. Bei erreichen dieses Werts löst der Timer einen dementsprechenden Interrupt aus. 
+Der Computer besitzt zwei interne Timer je 32 Bit groß. Jeder Timer started bei $0$ und zählt (bei jedem Clock Schlag) um $1$ bis zu seinem eingestellten End Wert. Bei erreichen dieses Werts löst der Timer einen dementsprechenden Interrupt aus. 
 
-Jeder Timer kann in drei Modi Arbeit, wie in \autoref{table:TimerModi} zusehen. Der Timer Modus kann über die TM1 und TM2 (für Timer1 Mode, Timer2 Mode steht) Instruktion gesetzt werden, welcher entweder ein Quellen Register oder eine Konstante an nimmt, wobei die Notation wie folgt aus sieht:
+Jeder Timer kann in vier Modi Arbeit, wie in \autoref{table:TimerModi} zusehen. Der Timer Modus kann über die TM1 und TM2 (für Timer1 Mode, Timer2 Mode steht) Instruktion gesetzt werden, welcher entweder ein Quellen Register oder eine Konstante an nimmt, wobei die Notation wie folgt aus sieht:
 
 \text{TM<1/2> <Quellen-Register/Konstante>}
 
-Der Entwert wird über die SSTL1, SSTL2 und SSTH1, SSTH2 erledigt. Wobei SSTL<1/2> die ersten 16 Bit und SSTH die letzten 16 Bit des Endwert-Registers setzt. Der Entwert kann dabei als Konstante oder als Quellen-Register vorliegen. Die Notation ist dabei wie folgt:
+Der Endwert wird über die SSTL1, SSTL2 und SSTH1, SSTH2 erledigt. Wobei SSTL<1/2> die ersten 16 Bit und SSTH<1/2> die letzten 16 Bit des Endwert-Registers setzt. Der Entwert kann dabei als Konstante oder als Quellen-Register vorliegen. Die Notation ist dabei wie folgt:
 
 \text{SSTL<1/2> <Quellen-Register/Konstante>}
 
@@ -548,9 +551,10 @@ Die aktuell Clock Geschwindigkeit, ist in mit CFL und CFH instruktion zu bekomme
 		\begin{tabular}{l  l | L{9cm}}
 			Timer Modus & Modus ID & Funktion \\
 			\hline
-			Off & \texttt{0x0} & Timer ist Inaktive \\
-			Continues & \texttt{0x1} & Timer zählt hoch; bei ereichen des Ziels, löst Interrupt aus und fängt von vorne an zuzählen. \\
-			Singel & \texttt{0x2} & Timer zählt hoch; bei ereichen des Ziels, löst Interrupt aus und schalte in Off Modus um
+			Suspended & \texttt{0x0} & Timer zählt nicht hoch, behält aber sein aktuellen Wert. Das Hochzählen wird fortgesetzt sobalt der Timer in Continues oder Singel Mode gesetzt wird \\
+			Reset & \texttt{0x1} & Timer ist Inaktive und der Zähler wird auf 0 gesetzt \\
+			Continues & \texttt{0x2} & Timer zählt hoch; bei ereichen des Ziels, löst Interrupt aus und fängt von vorne an zuzählen. \\
+			Singel & \texttt{0x3} & Timer zählt hoch; bei ereichen des Ziels, löst Interrupt aus und schalte in Reset Modus um
 		\end{tabular}
 	\end{table}
 \end{center}
@@ -601,9 +605,10 @@ Fünf lässt sich nicht mehr mit $2$ bits repräsentieren ($2^2 = 4$), daher mus
 
 \subsection{\label{com:sup}Gedanken Hinter dem Supervisormode}
 
-Wir haben uns entschieden eine Artberechtigungs System in der Computer einzubaunen. Eine Rechner der nur einfache Programm ausführt um zu Beispiel eine LED oder ein LCD-Display zusteueren, wie es z.B. ein ESP32 oder ein ATMega328p macht, ist so ein System nicht nötig. Wir hatten jedoch vor mit unserem Computer die Möglichkeit zuschaffen Betriebsystem änliches Programm (Supervisor) laufen zulassen. 
+Wir haben uns entschieden eine Art Berechtigungs System in der Computer einzubaunen. Eine Rechner der nur einfache Programm ausführt um zu Beispiel eine LED oder ein LCD-Display zusteueren, wie es z.B. ein ESP32 oder ein ATMega328p macht, ist so ein System nicht nötig. Wir hatten jedoch vor mit unserem Computer die Möglichkeit zuschaffen Betriebsystem änliches Programm (Supervisor) laufen zulassen. 
 
-Hier für hat man einemal den Supervisor, der bei Start des Computer anfängt zulaufen, und Programme, welche im Usermode ausgeführt werden, sogenannte Prozesse. Dabei sieht ein typischer Programmablauf wie folgt aus:
+Hier für hat man einemal den Supervisor, der bei Start des Computer anfängt zulaufen, und Programme, welche im Usermode ausgeführt werden, sogenannte Prozesse. Dabei sieht ein typischer Programmablauf ist dabei in gezeigt.
+
 
 
 Wichtig ist, das sobald ein Prozess benendedt wurde, der Supervisor an dieser Stelle wieder anfängt und den nächsten Prozess started. 
@@ -621,9 +626,17 @@ Ein solcher Supervisor kann sehr mächtig sein:
 	\footnote{Natürlich kann auch der Supervisor fehlerhaft sein. Jedoch hatten wir bei dieser Maßnahme nicht nur fehlerhaft sonderen auch schlicht böswillige Prozesse im Kopf. Natürlich ist dies unwahrscheinlich dass so etwas jemals eintretten wird, jedoch war unsere Idee von Anfang an eine Computer zu bauen der im Internet stehen könnte und die dementsprechenden Sicherheitsmaßnahmen hat}.
 \end{enumerate}
 
-Wenn man so etwas will kann dass auch auf einem ATMega328p gemacht werden, jedoch nicht ohne massive Leistungs Verluste. Wenn so ein Berechtigungssystem jedoch direkt in die Hardware des Computers einfleßt sorgt das für eine viel schnellern Computer. 
+Wenn man so etwas will kann dass auch auf einem ATMega328p gemacht werden, jedoch nicht ohne massive Leistungs Verluste. Wenn so ein Berechtigungssystem jedoch direkt in die Hardware des Computers einfleißt sorgt das für eine viel schnellern Computer. 
 
 Wenn man tatsächliche nur Programme schreiben will welche \"nur\" ein LED oder LCD-Display steuern soll, kann man das mit unserem Computer auch machen, indem man einfach diese Programm im Supervisor laufen lässt.
+
+\subsection{\label{com:SoftwareInterrupt}Zur fehlenden Deaktivierung der Software Interrupts}
+
+Die INT-Instruktion löst wie in \autoref{section:interrupts} einen Software Interrupt aus welcher nicht durch die OINT- Flagge deaktivirt werden kann. 
+
+Um die Motiviation hinter dieser Entscheidung zuverstehen ist zuwissen, dass der Software Interrupt dazugedach ist um aus dem Usermode in den Supervisormode zuwechseln. Unzwar in einem kontrollieren Weg, sodass es nicht möglich ist belibigen Programm-Code als User mit Supervisor Privileigen auszuführen. Daher wird auch nicht direkt nachdem Ausführen der INT-Instruktion an dieser Stelle weiterausgeführt sonder Programm-Code welcher an der Position von einem IV sich befindet, welcher nicht verändert werden kann und schluss endlich irgendwelchen Supervisor Code ausführt. 
+
+Dabei ist dies der einzige Weg, nebst den Computer zureseten um Code im Supervisormode auszuführen aus der Postition des Usermodes. Wenn es nun die Möglichkeit gäbe Software Interrupts zudeaktivieren und man in den Usermode wechseln würde, kann man nicht mehr zurück in den Supervisormode kommen, da im Usermode keine Interrupts aktivieren oder deaktiviert werden können. Vondaher ist es Sinnbefreit dem Computer die Möglichkeit zugeben Software Interrupts zudeaktivieren.
 
 \printbibliography{}
 
