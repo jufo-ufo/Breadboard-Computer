@@ -773,8 +773,10 @@ Dabei ist dies der einzige Weg, nebst den Computer zu resetten um Code im Superv
 Wenn es nun die Möglichkeit gäbe Software Interrupts zu deaktivieren und man in den Usermode wechseln würde, kann man nicht mehr zurück in den Supervisormode kommen, da im Usermode keine Interrupts aktivieren oder deaktiviert werden können.
 Von daher ist es Sinnbefreit dem Computer die Möglichkeit zugeben Software Interrupts zu deaktivieren.
 
+\subsection{\label{com:} Zuordnung des IO-Slot zu IO-Type}
+
 Bei den IO-Geräten wird momentan als ID die ID des Anschlusses verwendet und der Supervisor hat die Aufgabe über die ls-funktion die Anschluss-IDs auf die Geräte-IDs zu mappen.
-Idealer weise würde dies un dem IO-Controller umgesetzt werden, aber da würde es für uns momentan zu kompliziert, weshalb wir uns entschieden haben das in der software zu machen.
+Idealer weise würde dies un dem IO-Controller umgesetzt werden, aber da würde es für uns momentan zu kompliziert, weshalb wir uns entschieden haben das in der Software zu machen.
 
 \printbibliography{}
 
