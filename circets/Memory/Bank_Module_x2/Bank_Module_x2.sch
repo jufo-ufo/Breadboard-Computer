@@ -10,7 +10,7 @@ Rev "v0.1"
 Comp ""
 Comment1 ""
 Comment2 "https://github.com/jufo-ufo/Breadboard-Computer/blob/master/LICENSE"
-Comment3 "Apache License 2.0"
+Comment3 "License: Apache License 2.0"
 Comment4 "Author: Alexander Wersching"
 $EndDescr
 $Comp
@@ -826,61 +826,6 @@ Wire Wire Line
 Wire Wire Line
 	5800 1800 6750 1800
 $Comp
-L 74xx:74LS00 U?
-U 1 1 624DFB2D
-P 5700 5550
-F 0 "U?" H 5700 5875 50  0000 C CNN
-F 1 "74LS00" H 5700 5784 50  0000 C CNN
-F 2 "" H 5700 5550 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74ls00" H 5700 5550 50  0001 C CNN
-	1    5700 5550
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74LS00 U?
-U 2 1 624E0AB4
-P 5700 6100
-F 0 "U?" H 5700 6425 50  0000 C CNN
-F 1 "74LS00" H 5700 6334 50  0000 C CNN
-F 2 "" H 5700 6100 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74ls00" H 5700 6100 50  0001 C CNN
-	2    5700 6100
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74LS00 U?
-U 5 1 624E2056
-P 9500 1650
-F 0 "U?" H 9730 1696 50  0000 L CNN
-F 1 "74LS00" H 9730 1605 50  0000 L CNN
-F 2 "" H 9500 1650 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74ls00" H 9500 1650 50  0001 C CNN
-	5    9500 1650
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+5V #PWR?
-U 1 1 624EABED
-P 9500 1150
-F 0 "#PWR?" H 9500 1000 50  0001 C CNN
-F 1 "+5V" H 9515 1323 50  0000 C CNN
-F 2 "" H 9500 1150 50  0001 C CNN
-F 3 "" H 9500 1150 50  0001 C CNN
-	1    9500 1150
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR?
-U 1 1 624EB6EB
-P 9500 2150
-F 0 "#PWR?" H 9500 1900 50  0001 C CNN
-F 1 "GND" H 9505 1977 50  0000 C CNN
-F 2 "" H 9500 2150 50  0001 C CNN
-F 3 "" H 9500 2150 50  0001 C CNN
-	1    9500 2150
-	1    0    0    -1  
-$EndComp
-$Comp
 L Connector:Conn_01x02_Female J?
 U 1 1 61D357A2
 P 4850 6550
@@ -896,43 +841,21 @@ Wire Wire Line
 Wire Wire Line
 	5450 6650 5250 6650
 Wire Wire Line
-	6050 4350 6050 5550
-Wire Wire Line
-	6050 5550 6000 5550
+	6050 4350 6050 5900
 Connection ~ 6050 4350
 Wire Wire Line
-	6100 4500 6100 6100
-Wire Wire Line
-	6100 6100 6000 6100
+	6100 4500 6100 6000
 Connection ~ 6100 4500
 Text Label 5100 6550 0    50   ~ 0
 OE
 Text Label 5100 6650 0    50   ~ 0
 WE
-Wire Wire Line
-	5400 6200 5350 6200
-Wire Wire Line
-	5350 6200 5350 6550
 Connection ~ 5350 6550
 Wire Wire Line
 	5350 6550 5450 6550
-Wire Wire Line
-	5350 6200 5350 6000
-Wire Wire Line
-	5350 6000 5400 6000
-Connection ~ 5350 6200
-Wire Wire Line
-	5400 5650 5250 5650
-Wire Wire Line
-	5250 5650 5250 6650
 Connection ~ 5250 6650
 Wire Wire Line
 	5250 6650 5050 6650
-Wire Wire Line
-	5400 5450 5250 5450
-Wire Wire Line
-	5250 5450 5250 5650
-Connection ~ 5250 5650
 Text Label 7050 3200 0    50   ~ 0
 Pattern_Out0
 Text Label 7050 3300 0    50   ~ 0
@@ -1270,4 +1193,12 @@ F 3 "" H 3200 1650 50  0001 C CNN
 	1    3200 1650
 	0    1    1    0   
 $EndComp
+Wire Wire Line
+	5350 6000 5350 6550
+Wire Wire Line
+	5250 5900 6050 5900
+Wire Wire Line
+	5250 5900 5250 6650
+Wire Wire Line
+	5350 6000 6100 6000
 $EndSCHEMATC

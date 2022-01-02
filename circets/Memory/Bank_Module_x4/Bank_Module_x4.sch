@@ -10,7 +10,7 @@ Rev "v0.1"
 Comp ""
 Comment1 ""
 Comment2 "https://github.com/jufo-ufo/Breadboard-Computer/blob/master/LICENSE"
-Comment3 "Apache License 2.0"
+Comment3 "License: Apache License 2.0"
 Comment4 "Author: Alexander Wersching"
 $EndDescr
 $Comp
@@ -1133,50 +1133,6 @@ Wire Wire Line
 Wire Wire Line
 	5300 6850 5600 6850
 Connection ~ 5600 6850
-Wire Wire Line
-	6350 6400 6250 6400
-Wire Wire Line
-	6300 5850 6250 5850
-Wire Wire Line
-	5650 5750 5500 5750
-Wire Wire Line
-	5650 6500 5600 6500
-Wire Wire Line
-	5600 6500 5600 6300
-Wire Wire Line
-	5600 6500 5600 6850
-Connection ~ 5600 6500
-Wire Wire Line
-	5500 5750 5500 5950
-Wire Wire Line
-	5500 5950 5500 6950
-Connection ~ 5500 5950
-Wire Wire Line
-	5650 5950 5500 5950
-Wire Wire Line
-	5600 6300 5650 6300
-$Comp
-L 74xx:74LS00 U?
-U 2 1 624E0AB4
-P 5950 6400
-F 0 "U?" H 5950 6725 50  0000 C CNN
-F 1 "74LS00" H 5950 6634 50  0000 C CNN
-F 2 "" H 5950 6400 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74ls00" H 5950 6400 50  0001 C CNN
-	2    5950 6400
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74LS00 U?
-U 1 1 624DFB2D
-P 5950 5850
-F 0 "U?" H 5950 6175 50  0000 C CNN
-F 1 "74LS00" H 5950 6084 50  0000 C CNN
-F 2 "" H 5950 5850 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74ls00" H 5950 5850 50  0001 C CNN
-	1    5950 5850
-	1    0    0    -1  
-$EndComp
 $Comp
 L Computer_Component_Library:AS6C1008-55PCN U?
 U 1 1 62DD6524
@@ -1207,7 +1163,7 @@ Wire Wire Line
 	6750 2300 6750 3800
 Connection ~ 6300 4300
 Wire Wire Line
-	6300 4300 6300 5850
+	6300 4300 6300 6300
 Wire Wire Line
 	6350 4450 6050 4450
 Wire Wire Line
@@ -1324,4 +1280,12 @@ Wire Wire Line
 	4250 650  4250 1900
 Wire Wire Line
 	4250 1900 4150 1900
+Wire Wire Line
+	5600 6400 6350 6400
+Wire Wire Line
+	5600 6400 5600 6850
+Wire Wire Line
+	5500 6300 6300 6300
+Wire Wire Line
+	5500 6300 5500 6950
 $EndSCHEMATC
