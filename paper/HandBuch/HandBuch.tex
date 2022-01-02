@@ -478,9 +478,9 @@ Die Struktur dieser Anschlüsse sieht wir folgt aus:
 			02-17 & 16Bit Daten \\
 			18 & Iin-Enable \\
 			19 & Din-Enable \\
-			20 & Dout-Enable \\
-			21 & Clock \\
-			22 & Active-Pin
+			20 & Dout-Request \\
+			21 & Dout-Accept \\
+			22 & CLK\_R
  		\end{tabular}
 	\end{table}
 \end{center}
@@ -522,7 +522,7 @@ Ein allgemeiner standard Ablauf (wie z.B. der der später definierten IO-Instruk
 \end{center}
 
 Die Pins Iin und Din werden dabei durch den Computer für einen Clock-Tick gesetzt, sobald die Daten/Instruktionsinformation am Dateneingang an liegen;
-der Dout Pin wird eine Clock-Zyklus durch das I/O-Gerät selbst gesetzt, wenn die Daten geschrieben werden.
+Wenn das IO-Gerät etwas zu dem Computer senden will, dann setzt es Dout-Request und der Computer nimmt darauf mit dem Setzten von Dout-Accept an, worauf hin das IO-Gerät die Daten zu dem Computer übermittelt.
 
 \subsubsection{\label{section:IO-Instructions}Ansprechen des Controllers im Code}
 das Oben genannte verhalten ist die Kommunikation nachdem der IO-Controller die Instruktionen übersetzt hat, dafür muss der Controller wie folgt angesprochen werden:
