@@ -557,7 +557,7 @@ Die Momentan bestehenden I/O-Instruktionen sind in \autoref{table:IOInstructions
 		\endhead
 			ID & Gerätetyp & Name & Funktion & Verhalten \\
 			\hline
-			\texttt{0x00} & All & ls & gibt alle normalen Funktionen des Geräts zurück & Iin(Instruktion); n$*$Dout(Antworten)\\
+			\texttt{0x00} & All & ls & gibt die ID des Gerätes zurück & Iin(Instruktion); n$*$Dout(Antworten)\\
 			\hline
 			\texttt{0x01} & Drive & rsn (read singel normal) & Lesen eines einzelnen 16-Bit werts von einer 24-Bit Addresse & Iin(Instruktion); Din(Addresse); 1$*$Dout(Antwort) \\
 			\hline
@@ -772,6 +772,9 @@ Daher wird auch nicht direkt nachdem Ausführen der INT-Instruktion an dieser St
 Dabei ist dies der einzige Weg, nebst den Computer zu resetten um Code im Supervisormode auszuführen aus der Position des Usermodes.
 Wenn es nun die Möglichkeit gäbe Software Interrupts zu deaktivieren und man in den Usermode wechseln würde, kann man nicht mehr zurück in den Supervisormode kommen, da im Usermode keine Interrupts aktivieren oder deaktiviert werden können.
 Von daher ist es Sinnbefreit dem Computer die Möglichkeit zugeben Software Interrupts zu deaktivieren.
+
+Bei den IO-Geräten wird momentan als ID die ID des Anschlusses verwendet und der Supervisor hat die Aufgabe über die ls-funktion die Anschluss-IDs auf die Geräte-IDs zu mappen.
+Idealer weise würde dies un dem IO-Controller umgesetzt werden, aber da würde es für uns momentan zu kompliziert, weshalb wir uns entschieden haben das in der software zu machen.
 
 \printbibliography{}
 
