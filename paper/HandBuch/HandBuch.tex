@@ -401,7 +401,7 @@ Fundamental hat der Computer zwei Stacks. Der Supervisor-Stack beginnt bei \text
 \subsection{\label{section:io}Input/Output}
 
 Der Computer hat zudem die Möglichkeit mit verschieden IO-Geräte zu interagieren.
-Die Komunikation läuft über die sogenannten IO-Ports.
+Die Kommunikation läuft über die sogenannten IO-Ports.
 Der Computer hat physische Anschlüsse an denen IO-Geräte angesteckt werden können.
 Die Struktur dieser Anschlüsse sieht wir folgt aus:
 
@@ -417,13 +417,16 @@ Die Struktur dieser Anschlüsse sieht wir folgt aus:
 			18 & Iin-Enable \\
 			19 & Din-Enable \\
 			20 & Dout-Enable \\
-			21 & Clock
+			21 & Clock \\
+			22 & Active-Pin
  		\end{tabular}
 	\end{table}
 \end{center}
 
-Dabei bekommt jedes IO-Gerät eine eigene ID (IO-ID), welche im Bereich von $0$ bis $65535$ liegen darf, (wobei davon aufgrund von physikalischen beschränkungen vermutlich nur die ersten -zig verwendet werden).
-Die Interaktion funktioniert dabei über drei Instruktionen, wie in \autoref{table:IOInstructions} zusehen ist.
+
+
+\subsubsection{\label{section:IO-Port}Kommunikation zwischen IO-Geräten und dem Controller}
+Die Interaktion zwischen IO-Controller und dem IO-Gerät funktioniert dabei über drei Instruktionen, wie in \autoref{table:IOInstructions} zusehen ist.
 
 \begin{center}
 	\begin{table}[h]
@@ -445,7 +448,7 @@ Ein allgemeiner standart Ablauf (wie z.B. der der später definierten IO-Instruk
 	\begin{table}[h]
 		\caption{\label{table:IO_Schem}}
 		\begin{tabular}{l | l | l | l | l | l | l}
-			 Bereich & Instr 1 & Instr 2 & ... & Instr n & Instr $n+1$ & ... \\
+			 Bereich & Clock 1 & Clock 2 & ... & Clock n & Clock $n+1$ & ... \\
 			\hline
 			Iin & 1 & 0 &   & 0 & \\
 			Din & 0 & 1 &   & 0 & \\
@@ -456,7 +459,32 @@ Ein allgemeiner standart Ablauf (wie z.B. der der später definierten IO-Instruk
 	\end{table}
 \end{center}
 
-Die Pins Iin und Din werden dabei durch den Computer für einen Clock-Tick gesetzt, sobald die Daten/instruktionsinformation am Dateneingang an liegen; der Dout Pin wird eine Clock-Cyclus durch das I/O-Gerät selbst gesetzt, wenn die Daten geschreiben werden.
+Die Pins Iin und Din werden dabei durch den Computer für einen Clock-Tick gesetzt, sobald die Daten/Instruktionsinformation am Dateneingang an liegen;
+der Dout Pin wird eine Clock-Zyklus durch das I/O-Gerät selbst gesetzt, wenn die Daten geschrieben werden.
+
+\subsubsection{\label{section:IO-Instructions}Ansprechen des Controllers im Code}
+das Oben genannte verhalten ist die Kommunikation nachdem der IO-Controller die Instruktionen übersetzt hat, dafür muss der Controller wie folgt angesprochen werden:
+
+Um Etwas zu dem IO-Gerät zu schreiben müssen folgende schritte im Programm stehen: \autoref{table:IO_Assembler_Schem}
+
+\begin{center}
+	\begin{table}[h]
+		\caption{\label{table:IO_Assembler_Schem}}
+		\begin{tabular}{l | l | l | l | l | l | l}
+			 Bereich & Clock 1 & Clock 2 & ... & Clock $n$ & Clock $n+1$ & ... \\
+			\hline
+			InsName 				& Iout 		  & Dout        &   & Dout        & Dout       \\
+			Variable 1 				& Geräte-ID   & Geräte-ID   &   & Geräte-ID   & Geräte-ID  \\
+			Var2 / Konstante b0-7 	& IO-Befehl   & 8b Variable &   & 8b Variable & 8b Variable\\
+			Var2 / Konstante b8-15 	& 8b Variable & 8b Variable &   & 8b Variable & 8b Variable
+ 		\end{tabular}
+	\end{table}
+\end{center}
+Der InsName ist hier der Name aus den Allgemeinen Instrukionen, wie in \autoref{table:instructions} definiert, Iout/Dout definiert, welcher der obigen Iin/Din pins gesetzt wird.
+Die Geräte-ID ist die ID, mit der sich das IO-Gerät bei dem Controller meldet und die vom Controller auf den richtigen Anschluss aufgelöst wird.
+Die Variable $2$ oder Konstante wird vom IO-Controller komplett unverändert an das IO-Gerät weiter gegeben.
+
+\subsubsection{\label{section:IO-Device-Instructions}Standart IO-Instruktionen}
 
 Die Momentan bestehenden I/O-Instruktionen sind in \autoref{table:IOInstructions}, aber diese sind im Programm frei veränderlich, solange das externe Gerät die gleiche Interpretation der Anweisungen hat.
 

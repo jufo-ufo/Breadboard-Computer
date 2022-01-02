@@ -19,7 +19,7 @@ Let's build a computer from ICs!
 | Memory                | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
 | BID\_Register         | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
 | Register\_File        | [X]   | [X]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
-| ALU                   | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    |
+| ALU                   | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    |
 | IV\_Storage           | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
 | Interrupt\_Controller | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    |
 | Timer                 | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     |
