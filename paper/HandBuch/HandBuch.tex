@@ -61,13 +61,16 @@ Diese Features können wie folgt auf gegliedert werden: Register, Memory, Input/
 
 Aber um zuerst ein paar Standards festzulegen: Der Computer hat eine Daten-/Adressenlänge von 16 Bit, d.h. er kann maximal 16 Bit auf einmal operieren bzw. können maximal 16 Bit an Daten/Adressen im Computer auf einmal bewegt werden. Mehr dazu in \autoref{section:comment:datalength}
 
-Unsere Computer ist eine von Neuman-Maschine, d.h. sowol Daten als auch Programm während in einem Hauptspeicher (Memory) gespeichert
+Unsere Computer ist eine von Neumann-Maschine, d.h. sowohl Daten als auch Programm während in einem Hauptspeicher (Memory) gespeichert
 
 
 
 \subsection{\label{section:insSet}Instruktions-Satz}
 
-Das Programm, welches den Computer vorschreibt, was er abzuarbeiten hat, besteht aus Instruktionen. Jede Instruktion enthält die $6$ Bit langen Ins-ID, ein $16$ Bit Konstante und $3$ gewählte Register in Form einer $3$ Bit Register Nummer (RN). Damit ergibt sich eine $32$ Bit, also $2$ words, lange Instruktion. Die Codierung ist dabei in \autoref{fig:InsEncoding} festgehalten.
+Das Programm, welches den Computer vorschreibt, was er abzuarbeiten hat, besteht aus Instruktionen.
+Jede Instruktion enthält die $6$ Bit langen Ins-ID, ein $16$ Bit Konstante und $3$ gewählte Register in Form einer $3$ Bit Register Nummer (RN).
+Damit ergibt sich eine $32$ Bit, also $2$ words, lange Instruktion.
+Die Codierung ist dabei in \autoref{fig:InsEncoding} festgehalten.
 
 \begin{figure}[h]
 	\label{fig:InsEncoding}
@@ -86,7 +89,10 @@ Das Programm, welches den Computer vorschreibt, was er abzuarbeiten hat, besteht
 
 Jeder zur Verfügung stehenden Instruktion ist dabei exakt einer oben erwähnten Ins-ID zugeordnet. Alle Ins-ID und dazugehörige Instruktion ist in \autoref{table:instructions}
 
-Jede Instruktion hat 3 Operatanten (op), welche Register sind. Im Falle des dritten Operatanten kann auch eine Konstante verwendet werden. Das E Bit gibt dabei an, welches von beiden genutzt werden soll. Bei gesetztem E Bit wird die Konstante verwendet, bei nicht gesetztem E Bit das Register.
+Jede Instruktion hat 3 Operatanten (op), welche Register sind.
+Im Falle des dritten Operatanten kann auch eine Konstante verwendet werden.
+Das E Bit gibt dabei an, welches von beiden genutzt werden soll.
+Bei gesetztem E Bit wird die Konstante verwendet, bei nicht gesetztem E Bit das Register.
 
 
 \begin{center}
@@ -151,7 +157,11 @@ Jede Instruktion hat 3 Operatanten (op), welche Register sind. Im Falle des drit
 
 \subsection{\label{section:supervisor}Supervisor-/Usermode}
 
-Der Computer hatte ein eingebautes Rechte-System. Er kann dabei in zwei Modi operieren: dem Supervisormode und Usermode. Im Supervisormode kann der Computer alle Funktion ohne Einschränkungen nutzen. Im Usermode hingegen ist der Computer in einigen Funktion eingeschränkt. Folgendes kann der Computer im Usermode \emph{nicht} machen:
+Der Computer hatte ein eingebautes Rechte-System.
+Er kann dabei in zwei Modi operieren: dem Supervisormode und Usermode.
+Im Supervisormode kann der Computer alle Funktion ohne Einschränkungen nutzen.
+Im Usermode hingegen ist der Computer in einigen Funktion eingeschränkt.
+Folgendes kann der Computer im Usermode \emph{nicht} machen:
 
 \begin{itemize}
 	\item Setzen der SUP Flagge
@@ -162,18 +172,23 @@ Der Computer hatte ein eingebautes Rechte-System. Er kann dabei in zwei Modi ope
 	\item Zugriff auf IO-Geräte, welche nicht in der Berechtigungsliste gespeichert sind (siehe \autoref{section:persmissionIO})
 \end{itemize}
 
-Der Modus des Computers (Supervisor or User) wird dabei in der SUP Flagge gespeichert. Eine gesetzte SUP Flagge entspricht dem Supervisormode und eine nicht gesetzte SUP dem Usermode Der Computer started dabei mit gestetzter SUP Flagge.
+Der Modus des Computers (Supervisor or User) wird dabei in der SUP Flagge gespeichert.
+Eine gesetzte SUP Flagge entspricht dem Supervisormode und eine nicht gesetzte SUP dem Usermode Der Computer started dabei mit gesetzter SUP Flagge.
 
-Zudem änderet sich je nach Modus des Computer die Start position des Stacks wie in \autoref{section:stack} erleutert.
+Zudem ändert sich je nach Modus des Computer die Start position des Stacks wie in \autoref{section:stack} erläutert.
 
 Mehr zu der Motivation hinter diesem System in \autoref{com:sup}
 
 
 
 \subsection{Registers}
-Register sind kleine, sehr schnelle Speichereinheiten, die genutzt werden können, um Zwischenergebnisse, lokal Variablen, Argumenten für Funktionen zu speichern oder um Daten im Computer zwischen den einzelnen Komponenten zu verschieben. Aus jedem Register kann \emph{gelesen} (\emph{Kopierten} des alten Wertes an einen anderen Ort) oder \emph{geschrieben} werden (den alten Wert mit einem neuen Wert \emph{überschreiben})
+Register sind kleine, sehr schnelle Speichereinheiten, die genutzt werden können, um Zwischenergebnisse, lokal Variablen, Argumenten für Funktionen zu speichern oder um Daten im Computer zwischen den einzelnen Komponenten zu verschieben.
+Aus jedem Register kann \emph{gelesen} (\emph{Kopierten} des alten Wertes an einen anderen Ort) oder \emph{geschrieben} werden (den alten Wert mit einem neuen Wert \emph{überschreiben})
 
-Der Computer besitzt $8$ verschiedene, jeweils $16$ Bit lange Register. Jedes Register hat dabei eine eigene Registernummer (RN). Machen Register erfüllen zudem noch spezielle Aufgaben und sollten auch nur so verwendet werden. Diese Funktionen sind in \autoref{table:register} zu sehen.
+Der Computer besitzt $8$ verschiedene, jeweils $16$ Bit lange Register.
+Jedes Register hat dabei eine eigene Registernummer (RN).
+Machen Register erfüllen zudem noch spezielle Aufgaben und sollten auch nur so verwendet werden.
+Diese Funktionen sind in \autoref{table:register} zu sehen.
 
 Mehr zur Registeranzahl in \autoref{section:comment:register_number}
 
@@ -195,19 +210,27 @@ Mehr zur Registeranzahl in \autoref{section:comment:register_number}
 	\end{table}
 \end{center}
 
-Die Register A-D sind dabei Register, welche frei für jede Nutzung zur Verfügung stehen. Es ist \emph{stark zu empfehlen}, die Spezialregister (ZERO, IP, SP und FLAG) \emph{nicht} für die Speicherung von Daten zu verwenden, da dies evtl. Programmabläufe stark stören könnte oder im Falle von ZERO oder den letzten 8 bit des Flaggen Registers im Usermode nicht möglich ist. Sie sind ausdrücklich nur für ihre zugewiesenen Aufgaben da.
+Die Register A-D sind dabei Register, welche frei für jede Nutzung zur Verfügung stehen.
+Es ist \emph{stark zu empfehlen}, die Spezialregister (ZERO, IP, SP und FLAG) \emph{nicht} für die Speicherung von Daten zu verwenden, da dies evtl. Programmabläufe stark stören könnte oder im Falle von ZERO oder den letzten 8 bit des Flaggen Registers im Usermode nicht möglich ist.
+Sie sind ausdrücklich nur für ihre zugewiesenen Aufgaben da.
 
 \subsubsection{\label{section:DataMov} Kopieren und Bewegen von Daten}
 
-Das Kopierten eines Wertes in ein Register ist mit der MOV-Instruktion möglich. Die MOV-Instruktion nimmt dabei als ersten Operanden das Ziel Register und als zweiten Operanden das Quellenregister oder eine Konstante an. MOV kopiert nun den Wert des zweiten Operanden in den des Ersten. Die Notation ist dabei wie folgt: 
+Das Kopierten eines Wertes in ein Register ist mit der MOV-Instruktion möglich.
+Die MOV-Instruktion nimmt dabei als ersten Operanden das Ziel Register und als zweiten Operanden das Quellenregister oder eine Konstante an.
+MOV kopiert nun den Wert des zweiten Operanden in den des Ersten.
+Die Notation ist dabei wie folgt:
 
-\text{MOV <Ziel-Register> <Qullen-Register/Konstante>}
+\text{MOV <Ziel-Register> <Quellen-Register/Konstante>}
 
 
 
 \subsubsection{\label{section:flags}Flaggen}
 
-Das Register FLAG enthält alle Statusflaggen. Eine Flagge kann entweder gesetzt oder nicht gesetzt sein, daher kann jede Flagge als ein Bit repräsentiert werden. Jedes Bit in FLAG stellt daher eine Flagge da. Flaggen werden bei unterschiedlichen Ereignissen geschaltet. Dies und welche Flaggen es gibt, ist in \autoref{table:flag} zusehen.
+Das Register FLAG enthält alle Statusflaggen.
+Eine Flagge kann entweder gesetzt oder nicht gesetzt sein, daher kann jede Flagge als ein Bit repräsentiert werden.
+Jedes Bit in FLAG stellt daher eine Flagge da. Flaggen werden bei unterschiedlichen Ereignissen geschaltet.
+Dies und welche Flaggen es gibt, ist in \autoref{table:flag} zusehen.
 
 \begin{center}
 	\begin{table}[h]
@@ -215,53 +238,65 @@ Das Register FLAG enthält alle Statusflaggen. Eine Flagge kann entweder gesetzt
 		\begin{tabular}{l | l | l | l}
 			Bit & Name & Funktion & Schaltung \\
 			\hline
-			 0 & OF  & Intager Overflow einer Rechenoperation & Bei jeder ALU Operation\\
-			 1 & E   & Gleichheit zweier Werte & TEST arg[0] = arg[1]\\
-			 2 & G   & Ungleicheit ($>$) zweier Werte & TEST arg[0] > arg[1]\\
-			 3 & L   & Ungleicheit ($<$) zweier Werte & TEST arg[0] < arg[0]\\
-			 4 &  &  &  \\
-			 5 &  &  &  \\
-			 6 &  &  &  \\
-			 7 &  &  &  \\
-			 8 & OVTI1 & Overwride Timed-Interrupt1, siehe \autoref{section:interrupts} &  \\
-			 9 & OVTI2 & Overwride Timed-Interrupt2, siehe \autoref{section:interrupts} &  \\
-			10 & OVIOI & Overwride IO-Interrupt, siehe \autoref{section:interrupts} &  \\
+			 0 &  &  & \\
+			 1 & E     & Gleichheit zweier Werte 					& TEST arg[0] = arg[1]\\
+			 2 & G     & Ungleichheit ($>$) zweier Werte 			& TEST arg[0] > arg[1]\\
+			 3 & L     & Ungleichheit ($<$) zweier Werte 			& TEST arg[0] < arg[0]\\
+			 4 & OFadd & Integer Overflow bei einer Addition 		& TEST arg[0] + arg[1] > $65535$ \\
+			 5 & OFsub & Integer Overflow bei einer Subtraktion 	& TEST arg[0] - arg[1] < $0$ \\
+			 6 & OFmul & Integer Overflow bei einer Multiplikation 	& TEST arg[0] * arg[1] > $65535$\\
+			 7 & OFdiv & Integer Overflow bei einer Division 		& TEST arg[0] / arg[1] < $0$\\
+			 8 & OVTI1 & Overwrite Timed-Interrupt1, siehe \autoref{section:interrupts} &  \\
+			 9 & OVTI2 & Overwrite Timed-Interrupt2, siehe \autoref{section:interrupts} &  \\
+			10 & OVIOI & Overwrite IO-Interrupt, siehe \autoref{section:interrupts} &  \\
 			11 &  &  &  \\
 			12 &  &  &  \\
 			13 &  &  &  \\
 			14 &  &  &  \\
-			15 & OINT & Overwride Interruption &  \\
+			15 & OINT & Overwrite Interruption &  \\
 			15 & SUP & Supervisor-/Usermode, siehe \autoref{section:supervisor} & 
 		\end{tabular}
 	\end{table}
 \end{center}
 
+Das FLAG Register verhält sich ebenfalls wie ein Register, daher können Flagge auch per Hand gesetzt oder nicht gesetzt werden.
+Eine Ausnahme machen die letzten 8 Flaggen darunter SUP und OINT die nur geschaltet werden können, wenn der Computer sich im Supervisormode befindet, siehe \autoref{section:supervisor}.
+Ein Schalten im Usermode hat keinen Effekt.
 
-Alle Flaggen, die mit TEST als Schaltung gekennzeichnet sind, werden bei der Ausführung der TEST Operation geschaltet.
+Flaggen $0$-$7$ werden bei dem Ausführen der TEST-instruktion gesetzt, die restlichen nur manuel.
 
-Das FLAG Register verhält sich ebenfalls wie ein Register, daher können Flagge auch per Hand gesetzt oder nicht gesetzt werden. Eine Ausnahme machen die letzten 8 Flaggen darunter SUP und OINT die nur geschaltet werden können, wenn der Computer sich im Supervisormode befindet, siehe \autoref{section:supervisor}. Ein Schalten im Usermode hat keinen Effekt.
-
-Neben der MOV-Instruktion gibt es auch die sogentannten kondizionallen MOV-Instruktionen. Diese funktionieren genauso wie die MOV-Instruktion, indem sie das Quellen-Register/Konstante in das Ziel-Register kopiert, aber dies jedoch nur tun, wenn die entsprechende Flagge gesetzt ist. Die Notation dafür ist wie folgt:
+Neben der MOV-Instruktion gibt es auch die sogenannten konditionalen MOV-Instruktionen.
+Diese funktionieren genauso wie die MOV-Instruktion, indem sie das Quellen-Register/Konstante in das Ziel-Register kopiert, aber dies jedoch nur tun, wenn die entsprechende Flagge gesetzt ist.
+Die Notation dafür ist wie folgt:
 
 \text{M<Flagge> <Ziel-Register> <Quellen-Register/Konstante>}
 
-Daher ergeben sich folgende kondizionallen MOV-Instruktionen: ME (E Flagge), MOF (OF Flagge), MG (G Flagge), ML (L Flagge), MI (ONIT Flagge), MS (SUP Flagge).
+Daher ergeben sich folgende konditionalen MOV-Instruktionen: ME (E Flagge), MOF (OF Flagge), MG (G Flagge), ML (L Flagge), MI (ONIT Flagge), MS (SUP Flagge).
 
 
 
 \subsubsection{\label{section:arthimatik}Arithmetische und Logische Operationen}
 
-Der Computer hat zudem die Fähigkeit, arithmetische und logische Operation durchzuführen. Alle Operationen sind dabei binär daher Kombinieren zwei Eingangswerte oder Operanden zu einem Ausgangswert. Die Ausnahme macht dabei die NOT-Instruktion, die nur einen Eingangswert annimmt und auf diesen ein Bitweises Nicht durchführt. 
+Der Computer hat zudem die Fähigkeit, arithmetische und logische Operation durchzuführen.
+Alle Operationen sind dabei binär daher Kombinieren zwei Eingangswerte oder Operanden zu einem Ausgangswert.
+Die Ausnahme macht dabei die NOT-Instruktion, die nur einen Eingangswert annimmt und auf diesen ein Bitweises Nicht durchführt.
 
-Alle arithmetischen und logische Operationen funktionieren dabei immer gleich: Sie kombinieren das erste Quelle-Register mit dem zweiten Quellen-Register und schreiben das Ergebnis in das Ziel-Register. Dabei ist zu beachten, dass das zweite Quellen-Register durch einen konstanten Wert ersetzt werden kann. Die Notation dafür sie wie folgt aus:
+Alle arithmetischen und logische Operationen funktionieren dabei immer gleich:
+Sie kombinieren das erste Quelle-Register mit dem zweiten Quellen-Register und schreiben das Ergebnis in das Ziel-Register.
+Dabei ist zu beachten, dass das zweite Quellen-Register durch einen konstanten Wert ersetzt werden kann.
+Die Notation dafür sie wie folgt aus:
 
 \text{<Operation> <Ziel-Register> <Quellen-Register 1> <Quellen-Register 2/Konstante>}
 
-Der Computer unterstützt dabei folgende Operationen: Addition (ADD), Subtraktion (SUB), Multiplikation (MUL), Division (DIV), Bitweises exklusives Oder (XOR), Bitweise Und (AND), Bitweises Oder (OR), Bitweises Nicht (NOT)
+Der Computer unterstützt dabei folgende Operationen:
+Addition (ADD), Subtraktion (SUB), Multiplikation (MUL), Division (DIV), Bitweises exklusives Oder (XOR), Bitweise Und (AND), Bitweises Oder (OR), Bitweises Nicht (NOT).
 
 
-
-Wichtig zu sagen ist, dass bei alle Operationen ($f(x_1, x_2) = y \mod 65536$) gilt $65535 \ge y \ge 0$ ist wo bei gilt $y \in \mathbb{N}$. Der springende Punk ist, dass bei einer Rechnung wie $65535 + 1$ das Ergebnis nicht $65536$ ist, sondern $0$. Bei so einem “Overflow“ wird die OF-Flagge gesetzt. Wenn diese bei einer Rechenopeation nicht eintritt, dann wird die OF-Flagge gelöscht. Dieses Problem tritt auf da wir nur $16$ Bit als Datenlänge zu Verfügung haben, mehr dazu in \autoref{section:comment:datalength}
+Wichtig zu sagen ist, dass bei alle Operationen ($f(x_1, x_2) = y \mod 65536$) gilt $65535 \ge y \ge 0$ ist wo bei gilt $y \in \mathbb{N}$.
+Der springende Punk ist, dass bei einer Rechnung wie $65535 + 1$ das Ergebnis nicht $65536$ ist, sondern $0$.
+Bei so einem “Overflow“ wird die OF-Flagge durch die TEST-Instruktion gesetzt.
+Wenn diese bei einer TEST-Operation nicht eintritt, dann wird die OF-Flagge gelöscht.
+Dieses Problem tritt auf da wir nur $16$ Bit als Datenlänge zu Verfügung haben, mehr dazu in \autoref{section:comment:datalength}
 
 
 
@@ -270,10 +305,16 @@ Wichtig zu sagen ist, dass bei alle Operationen ($f(x_1, x_2) = y \mod 65536$) g
 
 Während die Register für lokale Variablen und Zwischenergebnisse gedacht sind, ist Memory (Arbeitsspeicher) für die Speicherung von größeren Datenmengen gedacht.
 
-Es ist in 65536 einzelne und unabhängige Speicherzellen (Jede 16 Bit große) aufgeteilt. Jeder Zelle ist einer Adresse, welche von 0 bis 65535 reicht, zugeordnet. Der Computer kann damit auf $65536 \text{ words}$ oder $131072 \text{ bytes}$ ($\approx 131 \text{ kb}$) zugreifen
-\footnote{Die Größe messen wir in words (w) oder in kilowords (kw), wobei $1 \text{ word} = 2 \text{ bytes} = 16 \text{ Bit}$.}. Wichtig ist, dass die Gesamt Größe, dank Banking siehe \autoref{section:banking} theoretisch weitaus größer sein kann.
+Es ist in 65536 einzelne und unabhängige Speicherzellen (Jede 16 Bit große) aufgeteilt.
+Jeder Zelle ist einer Adresse, welche von 0 bis 65535 reicht, zugeordnet.
+Der Computer kann damit auf $65536 \text{ words}$ oder $131072 \text{ bytes}$ ($\approx 128 \text{ kib}$) zugreifen
+\footnote{Die Größe messen wir in words (w) oder in kilowords (kiw), wobei $1 \text{ word} = 2 \text{ bytes} = 16 \text{ Bit}$.}.
+Wichtig ist, dass die gesamt Größe, dank Banking siehe \autoref{section:banking} theoretisch weitaus größer sein kann.
 
-Memory wird dabei über LD- und STR-Instruktionen gesteuert. Die LD-Instruktion kopiert einen Wert aus Memory und schreibt ihn in ein Ziel-Register, während STR an der angegebenen Adresse den Wert mit dem Wert des Quellen-Register überschreibt. Die Adresse wird zusammen gesetzt durch die Addition des Address-Register1 und entweder in dem Address-Register2 oder einer Konstante. Die Notation sieht dabei wie folgt aus:
+Memory wird dabei über LD- und STR-Instruktionen gesteuert.
+Die LD-Instruktion kopiert einen Wert aus Memory und schreibt ihn in ein Ziel-Register, während STR an der angegebenen Adresse den Wert mit dem Wert des Quellen-Register überschreibt.
+Die Adresse wird zusammen gesetzt durch die Addition des Address-Register1 und entweder in dem Address-Register2 oder einer Konstante.
+Die Notation sieht dabei wie folgt aus:
 
 \text{LD <Ziel-Register> <Address-Register1> <Address-Register2/Konstante>}
 
@@ -282,9 +323,14 @@ Memory wird dabei über LD- und STR-Instruktionen gesteuert. Die LD-Instruktion 
 
 
 
-Zudem wurden bestimmte Bereichen bestimmte Aufgaben bzw. Funktionen zugewiesen, wie in \autoref{fig:memoryMap} zu stehen. Die zwei Hardware Stacks sind dort gekenzeichnet mit $\uparrow$, mehr dazu Stacks in \autoref{section:stack}
+Zudem wurden bestimmte Bereichen bestimmte Aufgaben bzw. Funktionen zugewiesen, wie in \autoref{fig:memoryMap} zu sehen.
+Die zwei Hardware Stacks sind dort gekennzeichnet mit $\uparrow$, mehr dazu Stacks in \autoref{section:stack}
 
-Die mit Supervisor gekennzeichneten Bereich können nur dann gelesen oder geschrieben werden, wenn sich der Computer im Supervisormode befindet. Mehr zu Supervisormode in \autoref{section:supervisor}. Der Bereich, der mit ROM versehen wurde, ist dabei nicht beschreibbar, sondern kann nur gelesen werden. Eine STR-Instruktion hat keine Wirkung. Eine Änderung des Inhalts der ROM Bereiche ist nur durch den Austausch des darunterliegen physikalischen ROM-Chips möglich.
+Die mit Supervisor gekennzeichneten Bereich können nur dann gelesen oder geschrieben werden, wenn sich der Computer im Supervisormode befindet.
+Mehr zu Supervisormode in \autoref{section:supervisor}.
+Der Bereich, der mit ROM versehen wurde, ist dabei nicht beschreibbar, sondern kann nur gelesen werden.
+Eine STR-Instruktion hat keine Wirkung.
+Eine Änderung des Inhalts der ROM Bereiche ist nur durch den Austausch/Externes Programmieren des darunterliegen physikalischen ROM-Chips möglich.
 
 \begin{figure}[h]
 	\centering
@@ -295,7 +341,7 @@ Die mit Supervisor gekennzeichneten Bereich können nur dann gelesen oder geschr
 		\begin{leftwordgroup}{\small \texttt{0x0000}}
 			\bitbox[lrt]{16}{}
 		\end{leftwordgroup}\\
-		\wordbox[lr]{2}{ROM Supervisor\\$16384 \text{w} \approx 16.3 \text{kw}$} \\
+		\wordbox[lr]{2}{ROM Supervisor\\$16384 \text{w} \approx 16 \text{kiw}$} \\
 		\begin{leftwordgroup}{\small \texttt{0x3fff}}
 			\bitbox[lr]{16}{}
 		\end{leftwordgroup}\\
@@ -304,7 +350,7 @@ Die mit Supervisor gekennzeichneten Bereich können nur dann gelesen oder geschr
 			\bitbox[lrt]{16}{}
 		\end{leftwordgroup}\\
 		\begin{rightwordgroup}{\large $\uparrow$ Supervisor Stack}
-			\wordbox[lr]{2}{RAM Supervisor\\$16384 \text{w} \approx 16.3 \text{kw}$} \\
+			\wordbox[lr]{2}{RAM Supervisor\\$16384 \text{w} \approx 16 \text{kiw}$} \\
 		\end{rightwordgroup}
 		\begin{leftwordgroup}{\small \texttt{0x7fff}}
 			\bitbox[lr]{16}{}
@@ -313,7 +359,7 @@ Die mit Supervisor gekennzeichneten Bereich können nur dann gelesen oder geschr
 		\begin{leftwordgroup}{\small \texttt{0x8000}}
 			\bitbox[lrt]{16}{}
 		\end{leftwordgroup}\\
-			\wordbox[lr]{2}{Bank 1 (User Programm)\\$16384 \text{w} \approx 16.3 \text{kw}$} \\
+			\wordbox[lr]{2}{Bank 1 (User Programm)\\$16384 \text{w} \approx 16 \text{kiw}$} \\
 		\begin{leftwordgroup}{\small \texttt{0xbfff}}
 			\bitbox[lr]{16}{}
 		\end{leftwordgroup}\\
@@ -322,7 +368,7 @@ Die mit Supervisor gekennzeichneten Bereich können nur dann gelesen oder geschr
 			\bitbox[lrt]{16}{}
 		\end{leftwordgroup}\\
 		\begin{rightwordgroup}{\large $\uparrow$ User Stack}
-			\wordbox[lr]{2}{Bank 2 (User Data)\\$16384 \text{w} \approx 16.3 \text{kw}$} \\
+			\wordbox[lr]{2}{Bank 2 (User Data)\\$16384 \text{w} \approx 16 \text{kiw}$} \\
 		\end{rightwordgroup}
 		\begin{leftwordgroup}{\small \texttt{0xffff}}
 			\bitbox[lrb]{16}{}
@@ -335,40 +381,56 @@ Die mit Supervisor gekennzeichneten Bereich können nur dann gelesen oder geschr
 \subsubsection{\label{section:banking}Banking}
 
 
-Banken sind externe Memory Module, die eingesteckt werden können. Alle Banken sind gleich groß ($16.3\text{kw} = 32.6\text{ kb}$) und der Computer unterstützt maximal $65536$ unterschiedliche Banken. Jede Bank hat dabei eine ID (BID), die von $0$ bis $65535$ reicht.
+Banken sind externe Memory Module, die eingesteckt werden können.
+Alle Banken sind gleich groß ($16\text{kiw} = 32\text{ kib}$) und der Computer unterstützt maximal $65536$ unterschiedliche Banken.
+Jede Bank hat dabei eine ID (BID), die von $0$ bis $65535$ reicht.
 
-Der Computer hat zwei Bank-Slots (Slot 1 \texttt{0x8000 - 0xbfff} und Slot 2 \texttt{0xc000 - 0xffff}). Er kann nun auf jede dieser Slots eine der theoretisch $65536$ Bank legen
-\footnote{Es ist dabei möglich, die gleiche Bank auf beide Slots zu legen, auch wenn das nur bedingt nützlich ist.}. Das Banken legen lässt sich über die SBK1- (Select Bank Slot 1) und SBK2- (Select Bank Slot 2) Instruktion erreichen. Die BIN kann dabei als Konstante oder als Register vorliegen. Die Notation ist dabei wie folgt:
+Der Computer hat zwei Bank-Slots (Slot 1 \texttt{0x8000 - 0xbfff} und Slot 2 \texttt{0xc000 - 0xffff}).
+Er kann nun auf jede dieser Slots eine der theoretisch $65536$ Bank legen
+\footnote{Es ist dabei möglich, die gleiche Bank auf beide Slots zu legen, auch wenn das nur bedingt nützlich ist.}
+Das Banken legen lässt sich über die SBK1- (Select Bank Slot 1) und SBK2- (Select Bank Slot 2) Instruktion erreichen.
+Die BIN kann dabei als Konstante oder als Register vorliegen. Die Notation ist dabei wie folgt:
 
 \text{SBK<1/2> <BIN-Register/Konstante>}
 
 Somit führt das Beschreiben/Lesen an einer Adresse welche einem Bank-Slot zugeordnet ist, zum Beschreiben/Lesen der ausgewählte Bank.
 
-Durch dieses System lassen sich $65536 \cdot 16.3\text{ kw} = 1.06\text{ Gw} = 2.12\text{ Gb}$ an Arbeitsspeicher ansprechen.
+Durch dieses System lassen sich $65536 \cdot 16\text{kiw} = 1\text{ Giw} = 2\text{ Gib}$ an Arbeitsspeicher ansprechen.
 
-Das Bankensystem dient zudem dazu, Prozesse voneinander zu isolieren, da der Computer im Usermode  die Bank nicht verändern kann, siehe \autoref{section:supervisor}.
+Das Bankensystem dient zudem dazu, Prozesse voneinander zu isolieren, da der Computer im Usermode die Bank nicht verändern kann, siehe \autoref{section:supervisor}.
 
 \subsubsection{\label{section:stack}Hardware Stack}
 
-Der Stack (oder, auch Stapelspeicher) ist eine LIFO (Last In First Out) Datenstruktur. Sie dient hauptsächlich dazu, Subroutinen zu verwalten. 
+Der Stack (oder, auch Stapelspeicher) ist eine LIFO (Last In First Out) Datenstruktur.
+Sie dient hauptsächlich dazu, Subroutinen zu verwalten.
 
-Er funktioniert dabei wie ein Papierstapel. Es kann ein Wert auf den Stack gelegt, werden (PUSH-Instruktion) oder ein Wert von oben abgehoben werden (POP-Instruktion). Wobei der Wert, der auf den Stack gelegt bzw. abgehoben werden soll, entweder im Quellen-Register bzw. Zeil-Register oder als Konstante vorliegt. Die Notation ist dabei wie folgt:
+Er funktioniert dabei wie ein Papierstapel.
+Es kann ein Wert auf den Stack gelegt, werden (PUSH-Instruktion) oder ein Wert von oben abgehoben werden (POP-Instruktion).
+Wobei der Wert, der auf den Stack gelegt bzw. abgehoben werden soll, entweder im Quellen-Register bzw. Zeil-Register oder als Konstante vorliegt.
+Die Notation ist dabei wie folgt:
 
 \text{PUSH <Quellen-Register/Konstante>}
 
 \text{POP  <Ziel-Register>}
 
-Der Stack liegt dabei physisch in Memory vor. Jedes Element des Stacks okkupiert dabei eine Memory-Zelle (16 Bit). Das Stack-Point Register-(SP) hält die Adresse, welche die nächste freie Memory-Zelle zeigt, die eins über dem obersten Wert des Stacks liegt. Der Stack wächst dabei von hohen Adressen zu niedrigen Adressen, wie in \autoref{fig:stack-dir} zusehen. 
+Der Stack liegt dabei physisch in Memory vor.
+Jedes Element des Stacks okkupiert dabei eine Memory-Zelle (16 Bit).
+Das Stack-Point Register-(SP) hält die Adresse, welche die nächste freie Memory-Zelle zeigt, die eins über dem obersten Wert des Stacks liegt.
+Der Stack wächst dabei von hohen Adressen zu niedrigen Adressen, wie in \autoref{fig:stack-dir} zusehen.
 
-Bei einer PUSH Instruktion wird zuerst an die Stelle auf die SP zeigt der Wert des Qullen-Register/Konstante geschrieben und darauf der SP um $1$ dekrementiert. POP dagegen inkriminiert zuerst den SP um $1$ und kopiert dann den Wert von der Stelle auf welche SP zeigt in das Ziel-Register.
+Bei einer PUSH Instruktion wird zuerst an die Stelle auf die SP zeigt der Wert des Quellen-Register/Konstante geschrieben und darauf der SP um $1$ dekrementiert.
+POP dagegen inkriminiert zuerst den SP um $1$ und kopiert dann den Wert von der Stelle auf welche SP zeigt in das Ziel-Register.
 
-Zudem gibt es noch die RET- und CALL-Instruktionen. \text{RET} ist äquivalent zu \text(POP IP) und CALL ist äquivalent zu \text{PUSH IP; MOV IP <Quellen-Register/Konstante>}. Die Notation ist dabei wie folgt:
+Zudem gibt es noch die RET- und CALL-Instruktionen. \text{RET} ist äquivalent zu \text(POP IP) und CALL ist äquivalent zu \text{PUSH IP; MOV IP <Quellen-Register/Konstante>}.
+Die Notation ist dabei wie folgt:
 
 \text{RET}
 
 \text{CALL <Quellen-Register/Konstante>}
 
-Fundamental hat der Computer zwei Stacks. Der Supervisor-Stack beginnt bei \texttt{0xc7fff} und wird genutzt, wenn die SUP Flagge gesetzt ist. Der User-Stack beginnt bei \texttt{0xffff}, also am Ende des Bank Slots 2 und wird genutzt, wenn die SUP Flagge nicht gesetzt ist.
+Fundamental hat der Computer zwei Stacks.
+Der Supervisor-Stack beginnt bei \texttt{0xc7fff} (kleiner werdend) und wird genutzt, wenn die SUP Flagge gesetzt ist.
+Der User-Stack beginnt bei \texttt{0xffff}, also am Ende des Bank Slots 2 und wird genutzt, wenn die SUP Flagge nicht gesetzt ist.
 
 \begin{figure}[h]
 	\centering
@@ -401,7 +463,7 @@ Fundamental hat der Computer zwei Stacks. Der Supervisor-Stack beginnt bei \text
 \subsection{\label{section:io}Input/Output}
 
 Der Computer hat zudem die Möglichkeit mit verschieden IO-Geräte zu interagieren.
-Die Komunikation läuft über die sogenannten IO-Ports.
+Die Kommunikation läuft über die sogenannten IO-Ports.
 Der Computer hat physische Anschlüsse an denen IO-Geräte angesteckt werden können.
 Die Struktur dieser Anschlüsse sieht wir folgt aus:
 
@@ -417,13 +479,16 @@ Die Struktur dieser Anschlüsse sieht wir folgt aus:
 			18 & Iin-Enable \\
 			19 & Din-Enable \\
 			20 & Dout-Enable \\
-			21 & Clock
+			21 & Clock \\
+			22 & Active-Pin
  		\end{tabular}
 	\end{table}
 \end{center}
 
-Dabei bekommt jedes IO-Gerät eine eigene ID (IO-ID), welche im Bereich von $0$ bis $65535$ liegen darf, (wobei davon aufgrund von physikalischen beschränkungen vermutlich nur die ersten -zig verwendet werden).
-Die Interaktion funktioniert dabei über drei Instruktionen, wie in \autoref{table:IOInstructions} zusehen ist.
+
+
+\subsubsection{\label{section:IO-Port}Kommunikation zwischen IO-Geräten und dem Controller}
+Die Interaktion zwischen IO-Controller und dem IO-Gerät funktioniert dabei über drei Instruktionen, wie in \autoref{table:IOInstructions} zusehen ist.
 
 \begin{center}
 	\begin{table}[h]
@@ -439,13 +504,13 @@ Die Interaktion funktioniert dabei über drei Instruktionen, wie in \autoref{tab
 \end{center}
 
 Jede Interaktion benötigt dabei mehrere Schritte, die genaue Definition der Kommunikationsschritte wird dabei durch jede instruktion eigen festgelegt.
-Ein allgemeiner standart Ablauf (wie z.B. der der später definierten IO-Instruktion "rmn") ist in \autoref{table:IO_Schem} zusehen.
+Ein allgemeiner standard Ablauf (wie z.B. der der später definierten IO-Instruktion "rmn") ist in \autoref{table:IO_Schem} zusehen.
 
 \begin{center}
 	\begin{table}[h]
 		\caption{\label{table:IO_Schem}}
 		\begin{tabular}{l | l | l | l | l | l | l}
-			 Bereich & Instr 1 & Instr 2 & ... & Instr n & Instr $n+1$ & ... \\
+			 Bereich & Clock 1 & Clock 2 & ... & Clock n & Clock $n+1$ & ... \\
 			\hline
 			Iin & 1 & 0 &   & 0 & \\
 			Din & 0 & 1 &   & 0 & \\
@@ -456,7 +521,32 @@ Ein allgemeiner standart Ablauf (wie z.B. der der später definierten IO-Instruk
 	\end{table}
 \end{center}
 
-Die Pins Iin und Din werden dabei durch den Computer für einen Clock-Tick gesetzt, sobald die Daten/instruktionsinformation am Dateneingang an liegen; der Dout Pin wird eine Clock-Cyclus durch das I/O-Gerät selbst gesetzt, wenn die Daten geschreiben werden.
+Die Pins Iin und Din werden dabei durch den Computer für einen Clock-Tick gesetzt, sobald die Daten/Instruktionsinformation am Dateneingang an liegen;
+der Dout Pin wird eine Clock-Zyklus durch das I/O-Gerät selbst gesetzt, wenn die Daten geschrieben werden.
+
+\subsubsection{\label{section:IO-Instructions}Ansprechen des Controllers im Code}
+das Oben genannte verhalten ist die Kommunikation nachdem der IO-Controller die Instruktionen übersetzt hat, dafür muss der Controller wie folgt angesprochen werden:
+
+Um Etwas zu dem IO-Gerät zu schreiben müssen folgende schritte im Programm stehen: \autoref{table:IO_Assembler_Schem}
+
+\begin{center}
+	\begin{table}[h]
+		\caption{\label{table:IO_Assembler_Schem}}
+		\begin{tabular}{l | l | l | l | l | l | l}
+			 Bereich & Clock 1 & Clock 2 & ... & Clock $n$ & Clock $n+1$ & ... \\
+			\hline
+			InsName 				& Iout 		  & Dout        &   & Dout        & Dout       \\
+			Variable 1 				& Geräte-ID   & Geräte-ID   &   & Geräte-ID   & Geräte-ID  \\
+			Var2 / Konstante b0-7 	& IO-Befehl   & 8b Variable &   & 8b Variable & 8b Variable\\
+			Var2 / Konstante b8-15 	& 8b Variable & 8b Variable &   & 8b Variable & 8b Variable
+ 		\end{tabular}
+	\end{table}
+\end{center}
+Der InsName ist hier der Name aus den Allgemeinen Instrukionen, wie in \autoref{table:instructions} definiert, Iout/Dout definiert, welcher der obigen Iin/Din pins gesetzt wird.
+Die Geräte-ID ist die ID, mit der sich das IO-Gerät bei dem Controller meldet und die vom Controller auf den richtigen Anschluss aufgelöst wird.
+Die Variable $2$ oder Konstante wird vom IO-Controller komplett unverändert an das IO-Gerät weiter gegeben.
+
+\subsubsection{\label{section:IO-Device-Instructions}Standart IO-Instruktionen}
 
 Die Momentan bestehenden I/O-Instruktionen sind in \autoref{table:IOInstructions}, aber diese sind im Programm frei veränderlich, solange das externe Gerät die gleiche Interpretation der Anweisungen hat.
 
@@ -498,19 +588,27 @@ Die Momentan bestehenden I/O-Instruktionen sind in \autoref{table:IOInstructions
 
 \subsubsection{\label{section:persmissionIO}Berechtigungsliste}
 
-Der Supervisor-mode hat die berechtigungen zu allen I/O-Interaktionen, für normale Prozesse wird die Berechtigungsliste in einer reihe an RAM-chips gespeichert, deren Addressen sich mit dem wechseln zwischen den verschiedenen Banks ändern.
-gesetzt werden können sie nur durch den Supervisor, wobei auch dieser die RAM-Addressen nicht manuel ändern kann 
-
-Der Supervisor-mode hat die berechtigungen zu allen I/O-Interaktionen, für normale Prozesse wird die Berechtigungsliste in einem separaten Speicher gespeichert, welcher an die BIN des ersten Bank Slots geknüpft ist. Der Supervisor kann nun einzelne IO-IDs frei geben oder diese wieder sperren.
+Der Supervisor-mode hat die berechtigungen zu allen I/O-Interaktionen, für normale Prozesse wird die Berechtigungsliste in einer Reihe an RAM-Chips gespeichert, deren Adressen sich mit dem wechseln zwischen den verschiedenen Banks ändern.
+Gesetzt werden können sie nur durch den Supervisor, wobei auch dieser die RAM-Adressen nicht manuel ändern kann.
 
 
 \subsection{\label{section:interrupts}Interrupts}
 
-Interrupts sind Unterbrechungen im Programmablauf. Wenn ein Interrupt gemeldet wird, wird dieser im nächsten Instruktions-Zyklus bearbeitet. Für diesen Zyklus, wird, je nach Interrupt-Quelle, nicht die Instruktion an der Stelle von IP sondern von einem IV (Interrupt Vektor) geladen. Es gibt im Computer vier verschieden Interrupt Quellen, wobei jede ein fest-verbauten IV hat, dies ist in \autoref{table:iv} zusehen.
+Interrupts sind Unterbrechungen im Programmablauf.
+Wenn ein Interrupt gemeldet wird, wird dieser im nächsten Instruktions-Zyklus bearbeitet.
+Für diesen Zyklus, wird, je nach Interrupt-Quelle, nicht die Instruktion an der Stelle von IP sondern von einem IV (Interrupt Vektor) geladen.
+Es gibt im Computer vier verschieden Interrupt Quellen, wobei jede ein fest-verbauten IV hat, dies ist in \autoref{table:iv} zusehen.
 
-Interrupts können general (sowohl im Usermode als auch im Supervisormode) deaktiviert werden, mit Ausnahme von Software-Interrupts, durch das setzen der OINT Flagge. Für ein feinere Einstellung gibt es die OVIOI, OVTI1, OVTI2 Flaggen welche wie in \autoref{table:iv} zusehen, einen speziellen Interrupt deaktivieren. Diese Flaggen, übernehmen dies aber nur im Supervisor. Im Usermode hingegen lassen sich Interrupts nur durch das zuvorrige setzten der OINT Flagge im Supervisormode deaktivieren. Alle diese Flaggen befinden sich übrigens in den letzten 8 Bit des FLAG Register, womit sie nur im Supervisormode verändert werden kann.
+Interrupts können generell (sowohl im Usermode als auch im Supervisormode) deaktiviert werden, mit Ausnahme von Software-Interrupts, durch das setzen der OINT Flagge (nur vom Supervisor).
+Für ein feinere Einstellung gibt es die OVIOI, OVTI1, OVTI2 Flaggen welche wie in \autoref{table:iv} zusehen, einen speziellen Interrupt deaktivieren.
+Diese Flaggen, übernehmen dies aber nur im Supervisor.
+Alle diese Flaggen befinden sich übrigens in den letzten 8 Bit des FLAG Register, womit sie nur im Supervisormode verändert werden kann.
 
-Die INT Instruktion löst ein Software-Interrupt aus. Dieser kann nicht deaktiviert werden. Diese Instruktion kann sowohl im Supervisor und im Usermode ausgeführt werden. Diese Instruktion nimmt keine Operntanten an. Die Notation ist dabei wie folgt:
+Die INT Instruktion löst ein Software-Interrupt aus.
+Dieser kann nicht deaktiviert werden.
+Diese Instruktion kann sowohl im Supervisor und im Usermode ausgeführt werden.
+Die Instruktion nimmt keine Operntanten an.
+Die Notation ist dabei wie folgt:
 
 \text{INT}
 
@@ -530,19 +628,28 @@ Die INT Instruktion löst ein Software-Interrupt aus. Dieser kann nicht deaktivi
 
 \subsubsection{Timed-Interrupts}
 
-Der Computer besitzt zwei interne Timer je 32 Bit groß. Jeder Timer started bei $0$ und zählt (bei jedem Clock Schlag) um $1$ bis zu seinem eingestellten End Wert. Bei erreichen dieses Werts löst der Timer einen dementsprechenden Interrupt aus. 
+Der Computer besitzt zwei interne Timer je 32 Bit groß.
+Jeder Timer started bei $0$ und zählt (bei jedem Clock Schlag) um $1$ bis zu seinem eingestellten End Wert.
+Bei erreichen dieses Werts löst der Timer einen dementsprechenden Interrupt aus.
 
-Jeder Timer kann in vier Modi Arbeit, wie in \autoref{table:TimerModi} zusehen. Der Timer Modus kann über die TM1 und TM2 (für Timer1 Mode, Timer2 Mode steht) Instruktion gesetzt werden, welcher entweder ein Quellen Register oder eine Konstante an nimmt, wobei die Notation wie folgt aus sieht:
+Jeder Timer kann in vier Modi Arbeit, wie in \autoref{table:TimerModi} zusehen.
+Der Timer Modus kann über die TM1 und TM2 (steht für Timer1 Mode, Timer2 Mode) Instruktion gesetzt werden, welcher entweder ein Quellen Register oder eine Konstante an nimmt, wobei die Notation wie folgt aus sieht:
 
 \text{TM<1/2> <Quellen-Register/Konstante>}
 
-Der Endwert wird über die SSTL1, SSTL2 und SSTH1, SSTH2 erledigt. Wobei SSTL<1/2> die ersten 16 Bit und SSTH<1/2> die letzten 16 Bit des Endwert-Registers setzt. Der Entwert kann dabei als Konstante oder als Quellen-Register vorliegen. Die Notation ist dabei wie folgt:
+Der Endwert wird über die SSTL1, SSTL2 und SSTH1, SSTH2 erledigt.
+Wobei SSTL<1/2> die ersten 16 Bit und SSTH<1/2> die letzten 8 Bit des Endwert-Registers setzt.
+Der Endwert kann dabei als Konstante oder als Quellen-Register vorliegen.
+Die Notation ist dabei wie folgt:
 
 \text{SSTL<1/2> <Quellen-Register/Konstante>}
 
 \text{SSTH<1/2> <Quellen-Register/Konstante>}
 
-Die aktuell Clock Geschwindigkeit, ist in mit CFL und CFH instruktion zu bekommen. CFL lädt die ersten 16 bit der Clock Geschwindigkeit in das Ziel-Register und CFH die letzten 16 bit in das Ziel-Register. Die Frequenz ist dabei In Herz (Schläge pro Sekunde) angegeben. Die Notation ist wie folgt:
+Die aktuell Clock Geschwindigkeit, ist in mit CFL und CFH instruktion zu bekommen.
+CFL lädt die ersten 16 bit der Clock Geschwindigkeit in das Ziel-Register und CFH die letzten 8 bit in das Ziel-Register.
+Die Frequenz ist dabei In Herz (Schläge pro Sekunde) angegeben.
+Die Notation ist wie folgt:
 
 \text{CFL <Ziel-Register>}
 
@@ -574,10 +681,11 @@ Es können natürlich alle IO-Interrupts auf einmal mit der OVIOI-Flagge gemacht
 \subsection{\label{section:comment:datalength}16 bit Daten/Address Länge}
 
 Die Address- und Datenlänge besagt viele Binäre Ziffern (bits) für eine Address und Daten verwendet werden.
-Je mehr Ziffern man verwendet desto größere Zahlen können in einer Operation verarbeitet werden wobei die maximal repräsentierbare Zahle $2^n - 1$ ist wenn $n$ die Anzahl der Binary Ziffern (= Bits) ist und wenn man mit $0$ anfängt zu zählen.
+Je mehr Ziffern man verwendet desto größere Zahlen können in einer Operation verarbeitet werden wobei die maximal repräsentierbare Zahle $2^n - 1$ ist wenn $n$ die Anzahl der Binären Ziffern (= Bits) ist und wenn man mit $0$ anfängt zu zählen.
 Siehe \autoref{table:max_zahlen}
 
-Ein eine $n$ stellige Binär Zahl wobei $n$ teilbar durch $8$ ist, ist dabei relative angenehm, $8$ bit = $1$ byte. Das byte ist dabei die Basis Einheit für so gut wie alle informationstechnischen Standards.
+Ein eine $n$ stellige Binär Zahl wobei $n$ teilbar durch $8$ ist, ist dabei relative angenehm, $8$ bit = $1$ byte.
+Das Byte ist dabei die basis Einheit für so gut wie alle informationstechnischen Standards.
 Daher ist es gute eine solches $n$ zu wählen.
 Zudem kommen einige elementar ICs, z.B. Buffer oder Register, immer mit 8 bits.
 
@@ -588,8 +696,9 @@ Wir haben uns daher für $16$ bit entschieden, der laut \autoref{table:max_zahle
 Diese Menge ist gerade große genug, um für die meisten Programme große genüge Zahl abzubilden
 \footnote{Für Programme die Zahlen welche $> 65535$ darstellen wohlen ist es ratsam immer zwei oder mehr Speichereinheiten zunehmen oder bei Berechnungen, selbige auf zwei oder mehr Schritte auf zuteilen}.
 
-Die Entscheidung zur größe der Daten/Address Länge ist eine sehr ausschlag gebende, daher haben wir diese zuerst festgelegt.
-Sie wird für viele weitere Entscheidung eine wichtige Rolle spielen. Wichtig ist nur das wir maximal $65536$ Zustände oder Zahlen von $0$ bis $65535$ darstellen können mit unseren $16$ bit.
+Die Entscheidung zur größe der Daten/Address Länge ist sehr ausschlaggebend, daher haben wir diese zuerst festgelegt.
+Sie wird für viele weitere Entscheidung eine wichtige Rolle spielen.
+Wichtig ist nur das wir mit unseren $16$ bit maximal $65536$ Zustände oder Zahlen von $0$ bis $65535$ darstellen können.
 
 \begin{center}
 	\begin{table}[h]
@@ -609,8 +718,9 @@ Sie wird für viele weitere Entscheidung eine wichtige Rolle spielen. Wichtig is
 
 \subsection{\label{section:comment:register_number}Register Anzahl}
 
-Der Computer hat 8 Register. Wir haben uns für Acht ausfolgenden Gründen entschieden:
-Zu erst die minimale Anzahl an Registern die wirklich gebraucht würde, ist $5$! Man braucht mindestens zwei all Zweck Register um binäre Rechenoperation durch zu führen, einen Stackpointer, einen Instruktion Point und einen Ort wo man die Flaggen speichern kann.
+Der Computer hat 8 Register.
+Wir haben uns für Acht aus folgenden Gründen entschieden:
+Zu erst die minimale Anzahl an Registern die wirklich gebraucht würde, ist $5$! Man braucht mindestens zwei allzweck Register um binäre Rechenoperation durch zu führen, einen Stackpointer, einen Instruktion Pointer und einen Ort wo man die Flaggen speichern kann.
 \footnote{Theoretisch ist es möglich das Flaggen Register wegzulassen, wir haben uns aber für eine solches Register entschieden siehe \autoref{com:conditionals}}.
 
 Fünf lässt sich nicht mehr mit $2$ bits repräsentieren ($2^2 = 4$), daher muss man $3$ bit ($2^2 = 8$) nehmen.
@@ -621,7 +731,7 @@ Somit haben sich $8$ Register als das Optimum ergeben
 
 Wir haben uns entschieden eine Art Berechtigungssystem in der Computer einzubauen.
 Eine Rechner der nur einfache Programm ausführt um zu Beispiel eine LED oder ein LCD-Display zusteueren, wie es z.B. ein ESP32 oder ein ATMega328p macht, ist so ein System nicht nötig.
-Wir hatten jedoch vor mit unserem Computer die Möglichkeit zuschaffen Betriebsystem änliches Programm (Supervisor) laufen zulassen.
+Wir hatten jedoch vor mit unserem Computer die Möglichkeit zu schaffen ein Betriebssystem ähnliches Programm (Supervisor) laufen zulassen.
 
 Hier für hat man ein mal den Supervisor, der bei Start des Computer anfängt zulaufen, und Programme, welche im Usermode ausgeführt werden, sogenannte Prozesse.
 Dabei sieht ein typischer Programmablauf ist dabei in gezeigt.
@@ -630,7 +740,10 @@ Dabei sieht ein typischer Programmablauf ist dabei in gezeigt.
 
 Wichtig ist, das sobald ein Prozess beendet wurde, der Supervisor an dieser Stelle wieder anfängt und den nächsten Prozess started.
 
-Ein Prozess kann auch Funktionen des Supervisor nutzten über Software Interrupts, da bei einem Interrupt, der Computer in den Supervisormode wechselt. So kann der Prozess, bevor er den Interrupt auslegt, ein oder mehrer Register nutzten um Werte an den Supervisor zu übergeben. Z.B. kann er eine Register nutzten um dem Supervisor zusagen was er tun soll, z.B. dem Prozess zugang zu einem IO-Gerät zugeben oder etwas in eine Datei zuschreiben. Diese Art von Kommuntiation werden auch System-Calls genannt und sind die Basis für jedes moderne Betriebssystem.
+Ein Prozess kann auch Funktionen des Supervisor nutzten über Software Interrupts, da bei einem Interrupt, der Computer in den Supervisormode wechselt.
+So kann der Prozess, bevor er den Interrupt auslegt, ein oder mehrere Register nutzten um Werte an den Supervisor zu übergeben.
+Z.B. kann er eine Register nutzten um dem Supervisor zusagen was er tun soll, z.B. dem Prozess zugang zu einem IO-Gerät zugeben oder etwas in eine Datei zuschreiben.
+Diese Art von Kommunikation werden auch System-Calls genannt und sind die Basis für jedes moderne Betriebssystem.
 
 Ein solcher Supervisor kann sehr mächtig sein:
 
@@ -643,7 +756,8 @@ Ein solcher Supervisor kann sehr mächtig sein:
 	\footnote{Natürlich kann auch der Supervisor fehlerhaft sein. Jedoch hatten wir bei dieser Maßnahme nicht nur fehlerhaft sondern auch schlicht böswillige Prozesse im Kopf. Natürlich ist dies unwahrscheinlich dass so etwas jemals eintreten wird, jedoch war unsere Idee von Anfang an eine Computer zu bauen der im Internet stehen könnte und die dementsprechenden Sicherheitsmaßnahmen hat}.
 \end{enumerate}
 
-Wenn man so etwas will kann dass auch auf einem ATMega328p gemacht werden, jedoch nicht ohne massive Leistungsverluste. Wenn so ein Berechtigungssystem jedoch direkt in die Hardware des Computers einfleißt sorgt das für eine viel schnellern Computer.
+Wenn man so etwas will kann dass auch auf einem ATMega328p gemacht werden, jedoch nicht ohne massive Leistungsverluste.
+Wenn so ein Berechtigungssystem jedoch direkt in die Hardware des Computers einfließt sorgt das für eine viel effektiveren Computer.
 
 Wenn man tatsächliche nur Programme schreiben will welche \"nur\" ein LED oder LCD-Display steuern soll, kann man das mit unserem Computer auch machen, indem man einfach diese Programm im Supervisor laufen lässt.
 
@@ -652,11 +766,12 @@ Wenn man tatsächliche nur Programme schreiben will welche \"nur\" ein LED oder 
 Die INT-Instruktion löst wie in \autoref{section:interrupts} einen Software Interrupt aus welcher nicht durch die OINT- Flagge deaktiviert werden kann.
 
 Um die Motivation hinter dieser Entscheidung zu verstehen ist zu wissen, dass der Software Interrupt dazu gedacht ist um aus dem Usermode in den Supervisormode zu wechseln.
-Und zwar in einem kontrollieren Weg, sodass es nicht möglich ist belibigen Programm-Code als User mit Supervisor Privileigen auszuführen.
+Und zwar in einem kontrollieren Weg, sodass es nicht möglich ist beliebigen Programm-Code als User mit Supervisor Privilege auszuführen.
 Daher wird auch nicht direkt nachdem Ausführen der INT-Instruktion an dieser Stelle weiter ausgeführt sonder Programm-Code welcher an der Position von einem IV sich befindet, welcher nicht verändert werden kann und schluss endlich irgendwelchen Supervisor Code ausführt.
 
-Dabei ist dies der einzige Weg, nebst den Computer zu reseten um Code im Supervisormode auszuführen aus der Postition des Usermodes.
-Wenn es nun die Möglichkeit gäbe Software Interrupts zudeaktivieren und man in den Usermode wechseln würde, kann man nicht mehr zurück in den Supervisormode kommen, da im Usermode keine Interrupts aktivieren oder deaktiviert werden können. Vondaher ist es Sinnbefreit dem Computer die Möglichkeit zugeben Software Interrupts zudeaktivieren.
+Dabei ist dies der einzige Weg, nebst den Computer zu resetten um Code im Supervisormode auszuführen aus der Position des Usermodes.
+Wenn es nun die Möglichkeit gäbe Software Interrupts zu deaktivieren und man in den Usermode wechseln würde, kann man nicht mehr zurück in den Supervisormode kommen, da im Usermode keine Interrupts aktivieren oder deaktiviert werden können.
+Von daher ist es Sinnbefreit dem Computer die Möglichkeit zugeben Software Interrupts zu deaktivieren.
 
 \printbibliography{}
 
