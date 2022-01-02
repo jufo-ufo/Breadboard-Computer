@@ -239,13 +239,13 @@ Dies und welche Flaggen es gibt, ist in \autoref{table:flag} zusehen.
 			Bit & Name & Funktion & Schaltung \\
 			\hline
 			 0 &  &  & \\
-			 1 & E     & Gleichheit zweier Werte 					& TEST arg[0] = arg[1]\\
-			 2 & G     & Ungleichheit ($>$) zweier Werte 			& TEST arg[0] > arg[1]\\
-			 3 & L     & Ungleichheit ($<$) zweier Werte 			& TEST arg[0] < arg[0]\\
-			 4 & OFadd & Integer Overflow bei einer Addition 		& TEST arg[0] + arg[1] > $65535$ \\
-			 5 & OFsub & Integer Overflow bei einer Subtraktion 	& TEST arg[0] - arg[1] < $0$ \\
-			 6 & OFmul & Integer Overflow bei einer Multiplikation 	& TEST arg[0] * arg[1] > $65535$\\
-			 7 & OFdiv & Integer Overflow bei einer Division 		& TEST arg[0] / arg[1] < $0$\\
+			 1 & E     & Gleichheit zweier Werte 					& TEST op1 = op2\\
+			 2 & G     & Ungleichheit ($>$) zweier Werte 			& TEST op1 > op2\\
+			 3 & L     & Ungleichheit ($<$) zweier Werte 			& TEST op1 < op2\\
+			 4 & OFadd & Integer Overflow bei einer Addition 		& TEST op1 + op2 > $65535$ \\
+			 5 & OFsub & Integer Overflow bei einer Subtraktion 	& TEST op1 - op2 < $0$ \\
+			 6 & OFmul & Integer Overflow bei einer Multiplikation 	& TEST op1 * op2 > $65535$\\
+			 7 & OFdiv & Integer Overflow bei einer Division 		& TEST op1 / op2 < $0$\\
 			 8 & OVTI1 & Overwrite Timed-Interrupt1, siehe \autoref{section:interrupts} &  \\
 			 9 & OVTI2 & Overwrite Timed-Interrupt2, siehe \autoref{section:interrupts} &  \\
 			10 & OVIOI & Overwrite IO-Interrupt, siehe \autoref{section:interrupts} &  \\
