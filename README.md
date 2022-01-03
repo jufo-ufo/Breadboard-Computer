@@ -14,7 +14,7 @@ Let's build a computer from ICs!
 
 | Part                  | Logic | Schematic | Layout | Breadboard | Etching | Soldering | Documenation | Engineer | Comment
 |-----------------------|-------|-----------|--------|------------|---------|-----------|--------------|----------|---------
-| Bank                  | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
+| Bank                  | [X]   | [X]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
 | Bank\_controller      | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
 | Memory                | [X]   | [X]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
 | BID\_Register         | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 

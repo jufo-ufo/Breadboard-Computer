@@ -12,6 +12,7 @@ out
 WIP/*
 WIP/IO_Protocoll_v1.txt
 
+**/__pycache__/*
 **/.idea/*
 **/.vscode/*
 
