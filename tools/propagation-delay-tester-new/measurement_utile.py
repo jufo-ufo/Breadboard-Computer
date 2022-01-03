@@ -31,6 +31,30 @@ def progressbar(sum, iteration, suffix="", prefix="", length=50):
 def format_seconds(value: float) -> str:
     return "{:02.0f}:{:02.0f}:{:02.3f}".format(value / 3600, value / 60, value)
 
+def format_metric_units(n):
+    if n > 10**14:
+        return "    {:3.2f} P".format(n/(10**15))[-7:]
+    elif n > 10**11:
+        return "    {:3.2f} T".format(n/(10**12))[-7:]
+    elif n > 10**8:
+        return "    {:3.2f} G".format(n/(10**9))[-7:]
+    elif n > 10**5:
+        return "    {:3.2f} M".format(n/(10**6))[-7:]
+    elif n > 10**2:
+        return "    {:3.2f} k".format(n/(10**3))[-7:]
+    elif n >= 1:
+        return "    {:3.2f}  ".format(n)[-7:]
+    elif n > 10**-4:
+        return "    {:3.2f} m".format(n/(10**-3))[-7:]
+    elif n > 10**-7:
+        return "    {:3.2f} µ".format(n/(10**-6))[-7:]
+    elif n > 10**-10:
+        return "    {:3.2f} n".format(n/(10**-9))[-7:]
+    elif n > 10**-13:
+        return "    {:3.2f} p".format(n/(10**-12))[-7:]
+    else:
+        return "    {:3.2f} f".format(n/(10**-15))[-7:]
+
 # Ploting and processing samples
 
 formatter_time = EngFormatter(unit='s')
@@ -41,6 +65,32 @@ def plot_voltage_time(voltage: list[float], timescale: list[float], ax: plt.axes
     ax.yaxis.set_major_formatter(formatter_voltage)
     plt.plot(timescale, voltage)
 
+def extrat_binary(data: list[float], HIGH_LEVEL = 4.5, LOW_LEVEL=0.7) -> list[bool]:
+    res = []
+    last_value = False
+    for i in data:
+        if i >= HIGH_LEVEL:
+            res.append(True)
+            last_value = True
+        elif i <= LOW_LEVEL:
+            res.append(False)
+            last_value = False
+        else:
+            res.append(last_value)
+    
+    return res
+
+def detect_edges(data: list[bool], timescale: list[float], edge="r") -> list[float]:
+    edges = []
+    last_state = data[0]
+    for j,i in enumerate(data):
+        if last_state != i:
+            if (edge == "r" and last_state == False) or (edge == "f" and last_state == True) or (edge == "fr" or edge == "rf"):
+                edges.append(timescale[j])
+
+        last_state = i
+
+    return edges
 
 # Storing Samples
 
@@ -80,7 +130,7 @@ class SampleBucket:
             self.sample_index = json.loads(f.read())
 
     def query_samples(self) -> list[str]:
-        return self.sample_index.keys()
+        return list(self.sample_index.keys())
     
     def query_sample_meta(self, index: str) -> dict:
         return self.sample_index[index]
