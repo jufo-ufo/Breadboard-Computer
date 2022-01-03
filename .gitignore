@@ -21,3 +21,5 @@ tools/VTR-toolchain/VTR/*
 *.swp
 *.out
 *.log
+/paper/HandBuch/.fuse_hidden0000032d00000001
+/paper/HandBuch/.fuse_hidden000002fe00000001

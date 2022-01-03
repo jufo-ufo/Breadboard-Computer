@@ -14,12 +14,13 @@ Idee:
   bis wir dann so weit waren erste Versuche zu machen war es dann schon Ende 2020. [Bild erste Ätz-versuche]
 - Nachdem es auch auf geätzten Platinen noch nicht automatisch ordentlich ist und eine Große Platine für uns nicht machbar gewesen wäre, haben wir uns dann noch ine 3-Dimensionales Design ausgedacht.
 
-
 - Im nächsten Lockdown hatten wir dann wieder viel Zeit zu planen, und der geplante Computer wurde immer komplexer.
   Aus 8-bit wurden 16-bit Datenlänge, wir wollten ein Memory-Modul haben, immer mehr Operationen bis hin zur Hardware-Multiplikation und komplexere konditionale Jumps.
   Dazu hat sich dann die Idee von einer komplexeren Umsetzung von Interaktion mit dem Computer eingeschlichen:
     universelle Ports zum Anschließen von (modifizierten) Festplatten, Sensoren, einfachen Tastaturen, LCD-Displays und der Vorstellung einer Grafikkarte, die echte Bildschirme betreiben kann.
   [spezifikation v0.1]
+
+- Zwischendurch haben wir dann für die Einladung zu einem lokalen Projekt "Persvektive P" am 15.07.2021 wieder einen Prototyp auf dem Breadboard gebaut, wobei auch diese Version sehr unvollständig war.
 
   Die vermutlich die größte Änderung war danach, dass wir ein Berechtigungssystem einführen wollten.
   Dafür haben wir dann Flaggen, Interrupts und noch mehr Instruktionen hinzugefügt.
@@ -28,6 +29,19 @@ Idee:
   und wir die Idee von mehreren Prozessen, die abwechselnd ausgeführt werden, verlockend war haben wir uns dann entschieden durch eine neue Instruktion, mit der wir Teile des Arbeitsspeichers auswechseln können (Banking),
   beides zu ermöglichen. [Link zu Dokumentation v0.2]
 
+- Um den ROM-Chip zu programmieren haben wir zwar mal kurz ein bisschen manuell über Schalter programmiert, aber nachdem das offensichtlich zu lange brauchen würde haben wir dann einen Arduino (um genau zu sein, einen ESP32) programmiert und an die pins des ROM-Ch8ips angeschlossen.
+  Der Arduino bekommt die zu schreibenden bits wiederum aus einem Python-Programm, das den Assembler in Maschinensprache (1en und 0en) umwandelt.
+
+- Um einen eindruck zu bekommen, wie komplex unsere programme werden können, ohne übermäßig lange zu brauchen, haben wir dann versucht zu errechnen, wie schnell wir den Computer maximal laufen lassen können, ohne fehlerhafte Ergebnisse zu erhalten.
+  Also haben den "Propagation-delay", die Zeit, bis der Chip den Output liefert, den der laut der Eingabe haben müsste,  aller Komponenten gemessen, die wir verwenden wollen.
+  die meisten Chips, die wir jetzt vorhaben zu verwenden haben eine Verzögerung von ungefähr 8 Nanosekunden, allerdings haben wir bei den verschiedenen versionen, die wir getestet haben, teilweise weitaus höhere Werte bis zu 150ns erreicht, was an sich noch nicht so schlecht ist, aber wenn wir damit rechnen, dass wir reihen von bis zu 40 Chips in einem Clock-Zyklus haben, limitiert das die Geschwindigkeit schon sehr.
+
+- Wir wollen als basis für unseren Computer ja Chips kaufen, aber wie funktionieren die eigentlich? Wir haben also versucht den Aufbau herauszufinden, indem wir einfach einen geöffnet haben, wobei "Einfach" nicht so ganz stimmt, weil die Hülle aus Epoxidharz besteht, was sich fast nicht auflösen lässt.
+  Also mussten wir mechanisch abtragen, also Schleifen.
+
 - Im Schuljahr 2021-2022 haben wir dann wieder weitere Tests zum Ätzen - dieses mahl sowohl erfolgreicher, als auch besser Dokumentiert, um die optimalen Belichtungs- und Ätzzeiten zu finden.
 
 - Gleichzeitig haben wir auch angefangen unsere erste vollständige Version der Spezifikation zu schreiben (jetzt auch mit dem eindeutigen Ziel es bei Jugend Forscht anzumelden, die vorherigen Versionen waren auf Englisch, weil wir es uns beim Programmieren der Einheitlichkeit halber angewöhnt haben alles in Englisch zu schreiben).
+
+- Aktueller Bau: Ablauf...
+- Assembler/Emulator
