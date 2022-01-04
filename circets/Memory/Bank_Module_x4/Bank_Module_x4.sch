@@ -257,17 +257,6 @@ F 3 "74xx/74ls86.pdf" H 2350 4500 50  0001 C CNN
 $EndComp
 $Comp
 L 74xx:74LS86 U?
-U 2 1 61EF8B7A
-P 2350 2850
-F 0 "U?" H 2350 3175 50  0000 C CNN
-F 1 "74LS86" H 2350 3084 50  0000 C CNN
-F 2 "" H 2350 2850 50  0001 C CNN
-F 3 "74xx/74ls86.pdf" H 2350 2850 50  0001 C CNN
-	2    2350 2850
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74LS86 U?
 U 2 1 61EFAA72
 P 2350 5050
 F 0 "U?" H 2350 5375 50  0000 C CNN
@@ -388,8 +377,6 @@ F 3 "" H 8750 2150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	1500 2750 2050 2750
-Wire Wire Line
 	1450 3300 2050 3300
 Wire Wire Line
 	1400 2500 1400 3850
@@ -397,8 +384,6 @@ Wire Wire Line
 	1400 3850 2050 3850
 Wire Wire Line
 	1350 4400 2050 4400
-Wire Wire Line
-	1500 2300 1500 2750
 Wire Wire Line
 	1450 2400 1450 3300
 Wire Wire Line
@@ -439,14 +424,6 @@ Wire Wire Line
 	2050 3500 1850 3500
 Wire Wire Line
 	1850 3500 1850 1400
-Wire Wire Line
-	2050 2950 1900 2950
-Wire Wire Line
-	1900 2950 1900 1300
-Wire Wire Line
-	2650 2850 2800 2850
-Wire Wire Line
-	2800 2850 2800 1650
 Wire Wire Line
 	2850 1750 2850 3400
 Wire Wire Line
@@ -499,8 +476,6 @@ Wire Wire Line
 	3150 1850 2900 1850
 Wire Wire Line
 	3150 1750 2850 1750
-Wire Wire Line
-	2800 1650 3150 1650
 Wire Wire Line
 	3150 2250 3100 2250
 Wire Wire Line
@@ -725,55 +700,6 @@ Wire Wire Line
 Wire Wire Line
 	6050 1600 7000 1600
 $Comp
-L 74xx:74LS00 U?
-U 5 1 624E2056
-P 9500 1650
-F 0 "U?" H 9730 1696 50  0000 L CNN
-F 1 "74LS00" H 9730 1605 50  0000 L CNN
-F 2 "" H 9500 1650 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74ls00" H 9500 1650 50  0001 C CNN
-	5    9500 1650
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+5V #PWR?
-U 1 1 624EABED
-P 9500 1150
-F 0 "#PWR?" H 9500 1000 50  0001 C CNN
-F 1 "+5V" H 9515 1323 50  0000 C CNN
-F 2 "" H 9500 1150 50  0001 C CNN
-F 3 "" H 9500 1150 50  0001 C CNN
-	1    9500 1150
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR?
-U 1 1 624EB6EB
-P 9500 2150
-F 0 "#PWR?" H 9500 1900 50  0001 C CNN
-F 1 "GND" H 9505 1977 50  0000 C CNN
-F 2 "" H 9500 2150 50  0001 C CNN
-F 3 "" H 9500 2150 50  0001 C CNN
-	1    9500 2150
-	1    0    0    -1  
-$EndComp
-Text Label 7050 3200 0    50   ~ 0
-Pattern_Out0
-Text Label 7050 3300 0    50   ~ 0
-Pattern_Out1
-Text Label 7050 3400 0    50   ~ 0
-Pattern_Out2
-Text Label 7050 3500 0    50   ~ 0
-Pattern_Out3
-Text Label 7050 5050 0    50   ~ 0
-Pattern_Out4
-Text Label 7050 5150 0    50   ~ 0
-Pattern_Out5
-Text Label 7050 5250 0    50   ~ 0
-Pattern_Out6
-Text Label 7050 5350 0    50   ~ 0
-Pattern_Out7
-$Comp
 L Computer_Component_Library:74HC283 U?
 U 1 1 6263D706
 P 8000 3600
@@ -851,22 +777,6 @@ F 3 "" H 8000 4750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7050 5050 7600 5050
-Wire Wire Line
-	7600 5150 7050 5150
-Wire Wire Line
-	7050 5250 7600 5250
-Wire Wire Line
-	7600 5350 7050 5350
-Wire Wire Line
-	7050 3500 7600 3500
-Wire Wire Line
-	7050 3400 7600 3400
-Wire Wire Line
-	7600 3300 7050 3300
-Wire Wire Line
-	7050 3200 7600 3200
-Wire Wire Line
 	7600 4150 7550 4150
 Wire Wire Line
 	7550 4150 7550 4900
@@ -875,12 +785,12 @@ Wire Wire Line
 $Comp
 L power:+5V #PWR?
 U 1 1 62709DE4
-P 7600 3800
-F 0 "#PWR?" H 7600 3650 50  0001 C CNN
-F 1 "+5V" V 7615 3928 50  0000 L CNN
-F 2 "" H 7600 3800 50  0001 C CNN
-F 3 "" H 7600 3800 50  0001 C CNN
-	1    7600 3800
+P 7600 3900
+F 0 "#PWR?" H 7600 3750 50  0001 C CNN
+F 1 "+5V" V 7615 4028 50  0000 L CNN
+F 2 "" H 7600 3900 50  0001 C CNN
+F 3 "" H 7600 3900 50  0001 C CNN
+	1    7600 3900
 	0    -1   -1   0   
 $EndComp
 $Comp
@@ -908,12 +818,12 @@ $EndComp
 $Comp
 L power:GND #PWR?
 U 1 1 62717C3A
-P 7600 3900
-F 0 "#PWR?" H 7600 3650 50  0001 C CNN
-F 1 "GND" V 7605 3772 50  0000 R CNN
-F 2 "" H 7600 3900 50  0001 C CNN
-F 3 "" H 7600 3900 50  0001 C CNN
-	1    7600 3900
+P 7600 3800
+F 0 "#PWR?" H 7600 3550 50  0001 C CNN
+F 1 "GND" V 7605 3672 50  0000 R CNN
+F 2 "" H 7600 3800 50  0001 C CNN
+F 3 "" H 7600 3800 50  0001 C CNN
+	1    7600 3800
 	0    1    1    0   
 $EndComp
 $Comp
@@ -1019,8 +929,6 @@ Text Label 9200 3550 2    50   ~ 0
 Pattern_Out1
 Text Label 9200 3450 2    50   ~ 0
 Pattern_Out0
-Wire Wire Line
-	6450 650  6450 2300
 Connection ~ 6450 2300
 Wire Wire Line
 	6450 2300 6450 4600
@@ -1036,8 +944,6 @@ Wire Wire Line
 	800  1500 1800 1500
 Wire Wire Line
 	1850 1400 800  1400
-Wire Wire Line
-	1900 1300 800  1300
 $Comp
 L Connector:Conn_01x08_Female J?
 U 1 1 61D20627
@@ -1061,8 +967,6 @@ Wire Wire Line
 	800  2500 1400 2500
 Wire Wire Line
 	800  2400 1450 2400
-Wire Wire Line
-	800  2300 1500 2300
 $Comp
 L Connector:Conn_01x08_Female J?
 U 1 1 61D1F639
@@ -1097,13 +1001,10 @@ Wire Wire Line
 	6600 3500 6050 3500
 Wire Wire Line
 	6050 3400 6550 3400
-Connection ~ 5500 6950
-Text Label 5350 6950 0    50   ~ 0
-WE
 Text Label 5350 6850 0    50   ~ 0
+WE
+Text Label 5350 6950 0    50   ~ 0
 OE
-Wire Wire Line
-	5500 6950 5300 6950
 $Comp
 L Connector:Conn_01x02_Female J?
 U 1 1 61D357A2
@@ -1115,8 +1016,6 @@ F 3 "~" H 5100 6850 50  0001 C CNN
 	1    5100 6850
 	-1   0    0    -1  
 $EndComp
-Wire Wire Line
-	5700 6950 5500 6950
 $Comp
 L Connector:Conn_01x02_Female J?
 U 1 1 61D36346
@@ -1128,11 +1027,6 @@ F 3 "~" H 5900 6850 50  0001 C CNN
 	1    5900 6850
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	5600 6850 5700 6850
-Wire Wire Line
-	5300 6850 5600 6850
-Connection ~ 5600 6850
 $Comp
 L Computer_Component_Library:AS6C1008-55PCN U?
 U 1 1 62DD6524
@@ -1270,22 +1164,100 @@ $EndComp
 Wire Wire Line
 	4450 1200 800  1200
 Connection ~ 4450 1200
-Wire Wire Line
-	1900 1300 4500 1300
-Connection ~ 1900 1300
 Connection ~ 4500 1300
-Wire Wire Line
-	6450 650  4250 650 
-Wire Wire Line
-	4250 650  4250 1900
 Wire Wire Line
 	4250 1900 4150 1900
 Wire Wire Line
-	5600 6400 6350 6400
-Wire Wire Line
-	5600 6400 5600 6850
+	5550 6400 6350 6400
 Wire Wire Line
 	5500 6300 6300 6300
+Text Label 7550 3200 2    50   ~ 0
+Pattern_In0
+Text Label 7550 3300 2    50   ~ 0
+Pattern_In1
+Text Label 7550 3400 2    50   ~ 0
+Pattern_In2
+Text Label 7550 3500 2    50   ~ 0
+Pattern_In3
+Text Label 7550 5050 2    50   ~ 0
+Pattern_In4
+Text Label 7550 5150 2    50   ~ 0
+Pattern_In5
+Text Label 7550 5250 2    50   ~ 0
+Pattern_In6
+Text Label 7550 5350 2    50   ~ 0
+Pattern_In7
 Wire Wire Line
-	5500 6300 5500 6950
+	7550 3200 7600 3200
+Wire Wire Line
+	7600 3300 7550 3300
+Wire Wire Line
+	7550 3400 7600 3400
+Wire Wire Line
+	7600 3500 7550 3500
+Wire Wire Line
+	7550 5050 7600 5050
+Wire Wire Line
+	7600 5150 7550 5150
+Wire Wire Line
+	7550 5250 7600 5250
+Wire Wire Line
+	7600 5350 7550 5350
+$Comp
+L 74xx:74LS86 U?
+U 4 1 645ED5B6
+P 4700 700
+F 0 "U?" H 4850 850 50  0000 C CNN
+F 1 "74LS86" H 4700 500 50  0000 C CNN
+F 2 "" H 4700 700 50  0001 C CNN
+F 3 "74xx/74ls86.pdf" H 4700 700 50  0001 C CNN
+	4    4700 700 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5000 700  6450 700 
+Wire Wire Line
+	6450 700  6450 2300
+Wire Wire Line
+	4250 800  4250 1900
+Wire Wire Line
+	4400 800  4250 800 
+$Comp
+L power:+5V #PWR?
+U 1 1 6461B693
+P 4400 600
+F 0 "#PWR?" H 4400 450 50  0001 C CNN
+F 1 "+5V" V 4415 728 50  0000 L CNN
+F 2 "" H 4400 600 50  0001 C CNN
+F 3 "" H 4400 600 50  0001 C CNN
+	1    4400 600 
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	5300 6850 5500 6850
+Wire Wire Line
+	5300 6950 5550 6950
+Wire Wire Line
+	5500 6300 5500 6850
+Connection ~ 5500 6850
+Wire Wire Line
+	5500 6850 5700 6850
+Connection ~ 5550 6950
+Wire Wire Line
+	5550 6950 5700 6950
+Wire Wire Line
+	5550 6400 5550 6950
+Wire Wire Line
+	800  1300 4500 1300
+$Comp
+L power:GND #PWR?
+U 1 1 64669F14
+P 3150 1650
+F 0 "#PWR?" H 3150 1400 50  0001 C CNN
+F 1 "GND" V 3155 1522 50  0000 R CNN
+F 2 "" H 3150 1650 50  0001 C CNN
+F 3 "" H 3150 1650 50  0001 C CNN
+	1    3150 1650
+	0    1    1    0   
+$EndComp
 $EndSCHEMATC
