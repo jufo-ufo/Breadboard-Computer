@@ -1097,8 +1097,6 @@ Text Label 2600 10150 0    50   ~ 0
 WE_F
 Text Label 2600 10250 0    50   ~ 0
 WE
-Text Label 2600 10050 0    50   ~ 0
-WE_R
 $Comp
 L Computer_Component_Library:AM-Connector U?
 U 3 1 61FB8EB6
@@ -1211,8 +1209,6 @@ Wire Wire Line
 Wire Wire Line
 	3100 1200 3150 1200
 Connection ~ 3100 1200
-Text Label 3150 1200 0    50   ~ 0
-WE_R
 Wire Wire Line
 	2100 1200 2200 1200
 Text Label 3600 2850 0    50   ~ 0
@@ -1656,4 +1652,6 @@ Wire Wire Line
 Connection ~ 3700 9550
 Wire Wire Line
 	3700 9550 3700 9650
+Text Label 3150 1200 0    50   ~ 0
+CLK_R
 $EndSCHEMATC
