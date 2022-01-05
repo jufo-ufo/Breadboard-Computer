@@ -107,6 +107,7 @@ Bei gesetztem E Bit wird die Konstante verwendet, bei nicht gesetztem E Bit das 
 			\texttt{0x02} & ADD  & reg & reg & reg/c & op1 $=$ op2 $+$ op3 \\
 			\texttt{0x03} & SUB  & reg & reg & reg/c & op1 $=$ op2 $-$ op3 \\
 			\texttt{0x04} & MUL? & reg & reg & reg/c & op1 $=$ op2 $*$ op3 \\
+			\texttt{0x05} & MULOF& reg & reg & reg/c & op1 $=$ Overflow op2 $*$ op3 \\ 
 			\texttt{0x05} & DIV? & reg & reg & reg/c & op1 $=$ op2 $/$ op3 \\
 			\texttt{0x06} & XOR  & reg & reg & reg/c & op1 $=$ op2 $\oplus$ op3 \\
 			\texttt{0x07} & AND  & reg & reg & reg/c & op1 $=$ op2 $\land$ op3 \\
@@ -127,27 +128,28 @@ Bei gesetztem E Bit wird die Konstante verwendet, bei nicht gesetztem E Bit das 
 			\hline
 			\texttt{0x12} & TEST & reg &  & reg/c & Vergleicht op1 und op3 \\
 			\texttt{0x13} & ME   & reg &  & reg/c & op1 = op3 if E \\
-			\texttt{0x14} & MOF  & reg &  & reg/c & op1 = op3 if O \\
-			\texttt{0x15} & MG   & reg &  & reg/c & op1 = op3 if G \\
-			\texttt{0x16} & ML   & reg &  & reg/c & op1 = op3 if L \\
-			\texttt{0x17} & MS & reg &  & reg/c & op1 = op3 if SUP \\
-			\texttt{0x18} & MI & reg &  & reg/c & op1 = op3 if OINT \\
+			\texttt{0x14} & MG   & reg &  & reg/c & op1 = op3 if G \\
+			\texttt{0x15} & ML   & reg &  & reg/c & op1 = op3 if L \\
+			\texttt{0x16} & MS & reg &  & reg/c & op1 = op3 if SUP \\
+			\texttt{0x17} & MI & reg &  & reg/c & op1 = op3 if OINT \\
+			\texttt{0x18} & MOFadd  & reg &  & reg/c & op1 = op3 if O \\
+			\texttt{0x19} & MOFsub  & reg &  & reg/c & op1 = op3 if O \\
 			\hline
-			\texttt{0x19} & IOUT & reg &  & reg/c & IIO[op1] = op3/c \\
-			\texttt{0x1a} & DOUT & reg &  & reg/c & DIO[op1] = op3/c \\
-			\texttt{0x1b} & DIN  & reg &  & reg & op3 = DIO[op1] \\
-			\texttt{0x1c} & AIO  & reg &  &  & Aktiviert IO[op1] \\
-			\texttt{0x1d} & DIO  & reg &  &  & Deaktivieren IO[op1] \\
+			\texttt{0x1a} & IOUT & reg &  & reg/c & IIO[op1] = op3/c \\
+			\texttt{0x1b} & DOUT & reg &  & reg/c & DIO[op1] = op3/c \\
+			\texttt{0x1c} & DIN  & reg &  & reg & op3 = DIO[op1] \\
+			\texttt{0x1d} & AIO  & reg &  &  & Aktiviert IO[op1] \\
+			\texttt{0x1e} & DIO  & reg &  &  & Deaktivieren IO[op1] \\
 			\hline
-			\texttt{0x1e} & INT  & & & & Löst einen Interrupt aus \\
-			\texttt{0x1f} & TM1  & & & reg/c & Modi Timer1 = op3 \\
-			\texttt{0x20} & TM2  & & & reg/c & Modi Timer2 = op3 \\
-			\texttt{0x21} & SSTL1 & & & reg/c & lower Stop Timer1 = op3 \\
-			\texttt{0x22} & SSTL2 & & & reg/c & lower Stop Timer2 = op3 \\
-			\texttt{0x23} & SSTH1 & & & reg/c & higher Stop Timer1 = op3 \\			
-			\texttt{0x24} & SSTH2 & & & reg/c & higher Stop Timer2 = op3 \\
-			\texttt{0x25} & CFL  & reg & & & op1 = lower Clock Freq \\
-			\texttt{0x26} & CFH  & reg & & & op1 = higher Clock Freq \\
+			\texttt{0x1f} & INT  & & & & Löst einen Interrupt aus \\
+			\texttt{0x20} & TM1  & & & reg/c & Modi Timer1 = op3 \\
+			\texttt{0x21} & TM2  & & & reg/c & Modi Timer2 = op3 \\
+			\texttt{0x22} & SSTL1 & & & reg/c & lower Stop Timer1 = op3 \\
+			\texttt{0x23} & SSTL2 & & & reg/c & lower Stop Timer2 = op3 \\
+			\texttt{0x24} & SSTH1 & & & reg/c & higher Stop Timer1 = op3 \\			
+			\texttt{0x25} & SSTH2 & & & reg/c & higher Stop Timer2 = op3 \\
+			\texttt{0x26} & CFL  & reg & & & op1 = lower Clock Freq \\
+			\texttt{0x27} & CFH  & reg & & & op1 = higher Clock Freq \\
 			
 			\hline
 		\end{tabular}
@@ -244,8 +246,8 @@ Dies und welche Flaggen es gibt, ist in \autoref{table:flag} zusehen.
 			 3 & L     & Ungleichheit ($<$) zweier Werte 			& TEST op1 < op2\\
 			 4 & OFadd & Integer Overflow bei einer Addition 		& TEST op1 + op2 > $65535$ \\
 			 5 & OFsub & Integer Overflow bei einer Subtraktion 	& TEST op1 - op2 < $0$ \\
-			 6 & OFmul & Integer Overflow bei einer Multiplikation 	& TEST op1 * op2 > $65535$\\
-			 7 & OFdiv & Integer Overflow bei einer Division 		& TEST op1 / op2 < $0$\\
+			 6 &  &  & \\
+			 7 &  &  & \\
 			 8 & OVTI1 & Overwrite Timed-Interrupt1, siehe \autoref{section:interrupts} &  \\
 			 9 & OVTI2 & Overwrite Timed-Interrupt2, siehe \autoref{section:interrupts} &  \\
 			10 & OVIOI & Overwrite IO-Interrupt, siehe \autoref{section:interrupts} &  \\
@@ -271,7 +273,7 @@ Die Notation dafür ist wie folgt:
 
 \text{M<Flagge> <Ziel-Register> <Quellen-Register/Konstante>}
 
-Daher ergeben sich folgende konditionalen MOV-Instruktionen: ME (E Flagge), MOF (OF Flagge), MG (G Flagge), ML (L Flagge), MI (ONIT Flagge), MS (SUP Flagge).
+Daher ergeben sich folgende konditionalen MOV-Instruktionen: ME (E Flagge), MG (G Flagge), ML (L Flagge), MI (ONIT Flagge), MS (SUP Flagge), MOFadd (OFadd Flagge), MOFsub (OFsub Flagge).
 
 
 
@@ -292,11 +294,15 @@ Der Computer unterstützt dabei folgende Operationen:
 Addition (ADD), Subtraktion (SUB), Multiplikation (MUL), Division (DIV), Bitweises exklusives Oder (XOR), Bitweise Und (AND), Bitweises Oder (OR), Bitweises Nicht (NOT).
 
 
-Wichtig zu sagen ist, dass bei alle Operationen ($f(x_1, x_2) = y \mod 65536$) gilt $65535 \ge y \ge 0$ ist wo bei gilt $y \in \mathbb{N}$.
+Wichtig zu sagen ist, dass bei alle Operationen ($f(x_1, x_2) \equiv y \mod 65536$) gilt $65535 \ge y \ge 0$ ist wo bei gilt $y \in \mathbb{N}$.
 Der springende Punk ist, dass bei einer Rechnung wie $65535 + 1$ das Ergebnis nicht $65536$ ist, sondern $0$.
-Bei so einem “Overflow“ wird die OF-Flagge durch die TEST-Instruktion gesetzt.
-Wenn diese bei einer TEST-Operation nicht eintritt, dann wird die OF-Flagge gelöscht.
-Dieses Problem tritt auf da wir nur $16$ Bit als Datenlänge zu Verfügung haben, mehr dazu in \autoref{section:comment:datalength}
+So ein “Overflow“ kann erkannt werden durch die Ausführung der TEST-Instruktion für Addition und Subtraktion. Diese Setzt bzw löscht bei Subtraktion und Addition, die entsprechenden Flaggen OFadd und OFsub. 
+
+Bei Addition ist das schlimmste was passieren kann ein Overflow von $1$ ($65535 + 65535 = 131070 \equiv 65534 \mod 65536$). Bei Subtraktion werden negative Zahl im Zweierkomplement System dargestellt. Das Schlimmst was passieren kann ist daher ein Overflow, oder vielmehr Underflow von $1$ ($0 - 65535 = -65535 \equiv 1 \mod 65536$)
+
+Bei der Multiplikation von zwei Zahlen ist dies jedoch komplexer, da in diesem Fall ein Overflow zwischen $0$ und $65534$ haben kann ($65535 * 65535 = 4294836225 \equiv 1 \mod 65536$). Daher gibt es eine MULOF um den bei der Multiplikation entstanden Overflow aufzufangen. Die Notation ist dabei wie folgt:
+
+\text{MULOF <Ziel-Register> <Quellen-Register 1> <Quellen-Register 2/Konstante>}
 
 
 
