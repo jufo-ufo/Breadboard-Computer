@@ -17,16 +17,14 @@ Let's build a computer from ICs!
 | Bank                  | [X]   | [X]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
 | Bank\_controller      | [X]   | [X]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
 | Memory                | [X]   | [X]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
-| BID\_Register         | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
 | Register\_File        | [X]   | [X]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
 | ALU                   | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    | 
 | IV\_Storage           | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
 | Interrupt\_Controller | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
 | Timer                 | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
 | Freq\_Counter         | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
-| IR                    | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | Kann die Hardware des BID\_Regsister benutz werden
 | Instruction\_Decoder  | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
 | IO\_Controller        | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    | 
 | Activation\_Module    | [X]   | [X]       | [ ]    | [X]        | [ ]     | [ ]       | [ ]          | alex     | 
-
+| Dual\_Register        | [X]   | [X]       | [ ]    | [ ]        | [ ] x2  | [ ] x2    | [ ]          | alex     | Replacement for BID-Regiser and IR
 https://www.youtube.com/watch?v=9aUsTlBjspE
