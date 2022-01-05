@@ -5,8 +5,8 @@ $Descr A3 16535 11693
 encoding utf-8
 Sheet 1 1
 Title "Activation Module"
-Date "2021-12-21"
-Rev "v0.3"
+Date "2022-01-05"
+Rev "v0.4"
 Comp ""
 Comment1 ""
 Comment2 "https://github.com/jufo-ufo/Breadboard-Computer/blob/master/LICENSE"
@@ -1051,91 +1051,69 @@ Wire Wire Line
 Wire Wire Line
 	3500 6400 3500 6850
 Wire Wire Line
-	900  8450 900  6400
+	900  8450 900  7050
 Connection ~ 900  8450
 Wire Wire Line
-	1000 8400 1000 6400
+	1000 8400 1000 7050
 Connection ~ 1000 8400
 Wire Wire Line
-	1100 8350 1100 6400
+	1100 8350 1100 7050
 Connection ~ 1100 8350
 Wire Wire Line
-	1200 6400 1200 8300
+	1200 7050 1200 8300
 Connection ~ 1200 8300
 Wire Wire Line
-	1300 8250 1300 6400
+	1300 8250 1300 7050
 Connection ~ 1300 8250
 Wire Wire Line
-	1400 6400 1400 8200
+	1400 7050 1400 8200
 Connection ~ 1400 8200
 Wire Wire Line
-	1500 8150 1500 6400
+	1500 8150 1500 7050
 Connection ~ 1500 8150
 Wire Wire Line
-	1600 6400 1600 8100
+	1600 7050 1600 8100
 Connection ~ 1600 8100
 Wire Wire Line
-	1700 6400 1700 8050
+	1700 7050 1700 8050
 Wire Wire Line
 	1700 8050 2200 8050
 Connection ~ 2200 8050
 Wire Wire Line
 	2300 8000 1800 8000
 Wire Wire Line
-	1800 8000 1800 6400
+	1800 8000 1800 7050
 Connection ~ 2300 8000
 Wire Wire Line
-	1900 6400 1900 7950
+	1900 7050 1900 7950
 Wire Wire Line
 	1900 7950 2400 7950
 Connection ~ 2400 7950
 Wire Wire Line
 	2500 7900 2000 7900
 Wire Wire Line
-	2000 7900 2000 6400
+	2000 7900 2000 7050
 Connection ~ 2500 7900
 Wire Wire Line
-	2100 6400 2100 7850
+	2100 7050 2100 7850
 Wire Wire Line
 	2100 7850 2600 7850
 Connection ~ 2600 7850
 Wire Wire Line
 	2700 7800 2200 7800
 Wire Wire Line
-	2200 7800 2200 6400
+	2200 7800 2200 7050
 Connection ~ 2700 7800
 Wire Wire Line
-	2300 6400 2300 7750
+	2300 7050 2300 7750
 Wire Wire Line
 	2300 7750 2800 7750
 Connection ~ 2800 7750
 Wire Wire Line
 	2900 7700 2400 7700
 Wire Wire Line
-	2400 7700 2400 6400
+	2400 7700 2400 7050
 Connection ~ 2900 7700
-$Comp
-L Connector:Conn_01x16_Female J2
-U 1 1 62D9B096
-P 1600 6200
-F 0 "J2" V 1550 5300 50  0000 C CNN
-F 1 "To_Bus" V 1450 5250 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x16_P2.54mm_Vertical" H 1600 6200 50  0001 C CNN
-F 3 "~" H 1600 6200 50  0001 C CNN
-	1    1600 6200
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Connector:Conn_01x16_Female J3
-U 1 1 62DA0E02
-P 4200 6200
-F 0 "J3" V 4150 5300 50  0000 C CNN
-F 1 "From_Bus" V 4050 5200 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x16_P2.54mm_Vertical" H 4200 6200 50  0001 C CNN
-F 3 "~" H 4200 6200 50  0001 C CNN
-	1    4200 6200
-	0    -1   -1   0   
-$EndComp
 $Comp
 L 74xx:74LS32 U6
 U 3 1 6288E1E5
@@ -1968,17 +1946,6 @@ Wire Wire Line
 	6000 5400 6000 4250
 Wire Wire Line
 	6000 4250 6350 4250
-$Comp
-L Connector:Conn_01x03_Female J6
-U 1 1 6ED25AAF
-P 8100 3750
-F 0 "J6" V 8250 4200 50  0000 R CNN
-F 1 "Enable Connector" V 8150 4200 50  0000 R CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 8100 3750 50  0001 C CNN
-F 3 "~" H 8100 3750 50  0001 C CNN
-	1    8100 3750
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	8000 3950 8000 4150
 Wire Wire Line
@@ -2003,28 +1970,6 @@ Text Label 8200 4150 1    50   ~ 0
 RE
 Wire Wire Line
 	6000 5400 6550 5400
-$Comp
-L Connector:Conn_01x03_Female J4
-U 1 1 6F517F4D
-P 13300 6750
-F 0 "J4" V 13450 6600 50  0000 L CNN
-F 1 "Mode_R" V 13350 6600 50  0000 L CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 13300 6750 50  0001 C CNN
-F 3 "~" H 13300 6750 50  0001 C CNN
-	1    13300 6750
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Connector:Conn_01x03_Female J5
-U 1 1 6F578562
-P 15450 6750
-F 0 "J5" V 15600 6600 50  0000 L CNN
-F 1 "Mode_W" V 15500 6600 50  0000 L CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 15450 6750 50  0001 C CNN
-F 3 "~" H 15450 6750 50  0001 C CNN
-	1    15450 6750
-	0    -1   -1   0   
-$EndComp
 Text Notes 15100 6450 0    118  ~ 0
 Mode-Router
 Text Notes 6100 6400 0    118  ~ 0
@@ -2239,25 +2184,13 @@ Connection ~ 12600 6550
 Wire Wire Line
 	13150 7000 13200 7000
 Wire Wire Line
-	13200 7000 13200 6950
-Wire Wire Line
-	13300 6950 13300 7200
-Wire Wire Line
 	13300 7200 13150 7200
 Wire Wire Line
 	13150 7400 13400 7400
 Wire Wire Line
-	13400 7400 13400 6950
-Wire Wire Line
-	15350 6950 15350 7000
-Wire Wire Line
 	15350 7000 15300 7000
 Wire Wire Line
-	15450 6950 15450 7200
-Wire Wire Line
 	15450 7200 15300 7200
-Wire Wire Line
-	15550 6950 15550 7400
 Wire Wire Line
 	15550 7400 15300 7400
 $Comp
@@ -2859,6 +2792,88 @@ F 1 "Bus_Connector" V 8550 900 50  0000 L CNN
 F 2 "" H 7550 350 50  0001 C CNN
 F 3 "" H 7550 350 50  0001 C CNN
 	7    8850 1000
+	0    1    1    0   
+$EndComp
+$Comp
+L Computer_Component_Library:AM-Connector U?
+U 1 1 62917F1A
+P 13450 8250
+F 0 "U?" V 13283 7922 50  0000 R CNN
+F 1 "AM-Connector" V 13192 7922 50  0000 R CNN
+F 2 "" H 13600 8250 50  0001 C CNN
+F 3 "" H 13600 8250 50  0001 C CNN
+	1    13450 8250
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	13200 7000 13200 8100
+Wire Wire Line
+	13300 7200 13300 8100
+Wire Wire Line
+	13400 7400 13400 8100
+Wire Wire Line
+	15350 7000 15350 7800
+Wire Wire Line
+	15350 7800 13500 7800
+Wire Wire Line
+	13500 7800 13500 8100
+Wire Wire Line
+	13600 8100 13600 7850
+Wire Wire Line
+	13600 7850 15450 7850
+Wire Wire Line
+	15450 7850 15450 7200
+Wire Wire Line
+	15550 7400 15550 7900
+Wire Wire Line
+	15550 7900 13700 7900
+Wire Wire Line
+	13700 7900 13700 8100
+$Comp
+L Computer_Component_Library:AM-Connector U?
+U 2 1 62D6A39E
+P 8100 3800
+F 0 "U?" V 7963 3988 50  0000 L CNN
+F 1 "AM-Connector" V 8054 3988 50  0000 L CNN
+F 2 "" H 8250 3800 50  0001 C CNN
+F 3 "" H 8250 3800 50  0001 C CNN
+	2    8100 3800
+	0    1    1    0   
+$EndComp
+$Comp
+L Computer_Component_Library:AM-Connector U?
+U 3 1 62D8CC7E
+P 14500 3000
+F 0 "U?" V 14390 3088 50  0000 L CNN
+F 1 "AM-Connector" V 14481 3088 50  0000 L CNN
+F 2 "" H 14650 3000 50  0001 C CNN
+F 3 "" H 14650 3000 50  0001 C CNN
+	3    14500 3000
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	14500 3150 14500 3200
+Connection ~ 14500 3200
+$Comp
+L Computer_Component_Library:AM-Connector U?
+U 4 1 62E93C1C
+P 4250 6250
+F 0 "U?" V 3877 5422 50  0000 R CNN
+F 1 "AM-Connector" V 3968 5422 50  0000 R CNN
+F 2 "" H 4400 6250 50  0001 C CNN
+F 3 "" H 4400 6250 50  0001 C CNN
+	4    4250 6250
+	0    -1   1    0   
+$EndComp
+$Comp
+L Computer_Component_Library:AM-Connector U?
+U 5 1 62E9F6AB
+P 1650 6900
+F 0 "U?" V 1326 7738 50  0000 L CNN
+F 1 "AM-Connector" V 1417 7738 50  0000 L CNN
+F 2 "" H 1800 6900 50  0001 C CNN
+F 3 "" H 1800 6900 50  0001 C CNN
+	5    1650 6900
 	0    1    1    0   
 $EndComp
 $EndSCHEMATC
