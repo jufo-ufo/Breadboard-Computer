@@ -22,7 +22,7 @@ Let's build a computer from ICs!
 | IV\_Storage           | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
 | Interrupt\_Controller | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
 | Timer                 | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
-| Freq\_Counter         | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
+| Freq\_Counter         | [X]   | [ ]       | [ ]    | [X]        | [ ]     | [ ]       | [ ]          | alex     | 
 | Instruction\_Decoder  | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | alex     | 
 | IO\_Controller        | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       | [ ]          | simon    | 
 | Activation\_Module    | [X]   | [X]       | [ ]    | [X]        | [ ]     | [ ]       | [ ]          | alex     | 
