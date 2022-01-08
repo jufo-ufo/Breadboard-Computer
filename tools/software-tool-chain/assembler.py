@@ -4,6 +4,7 @@ import sys
 import traceback
 
 WHITESPACE = [" ", "\t", "\r"]
+REGISTERS = ["zero", "ip", "sp", "a", "b", "c", "d", "flag"]
 ENDIANNESS = "big"
 
 INSTRUCTIONS = {
@@ -22,34 +23,35 @@ INSTRUCTIONS = {
     "ld": ("r", "r", "rc", 0x0b),
     "bnk1": ("", "", "rc", 0x0c),
     "bnk2": ("", "", "rc", 0x0d),
-    "push": ("", "", "", 0x0e),
-    "pop": ("", "", "", 0x0f),
-    "call": ("", "", "", 0x10),
+    "push": ("", "r", "rc", 0x0e),
+    "pop": ("", "r", "", 0x0f),
+    "call": ("", "", "rc", 0x10),
     "ret": ("", "", "", 0x11),
 
-    "test": ("", "", "", 0x12),
-    "me": ("", "", "", 0x13),
-    "mof": ("", "", "", 0x14),
-    "mg": ("", "", "", 0x15),
-    "ml": ("", "", "", 0x16),
-    "ms": ("", "", "", 0x17),
-    "mi": ("", "", "", 0x18),
+    "test": ("r", "", "rc", 0x12),
+    "me": ("r", "", "rc", 0x13),
+    "mg": ("r", "", "rc", 0x14),
+    "ml": ("r", "", "rc", 0x15),
+    "ms": ("r", "", "rc", 0x16),
+    "mi": ("r", "", "rc", 0x17),
+    "mofadd": ("r", "", "rc", 0x18),
+    "mofsub": ("r", "", "rc", 0x19),
 
-    "iout": ("r", "", "rc", 0x19),
-    "dout": ("r", "", "rc", 0x1a),
-    "din": ("r", "", "r", 0x1b),
-    "aio": ("r", "", "", 0x1c),
-    "dio": ("r", "", "", 0x1d),
+    "iout": ("r", "", "rc", 0x1a),
+    "dout": ("r", "", "rc", 0x1b),
+    "din": ("r", "", "r", 0x1c),
+    "aio": ("r", "", "", 0x1d),
+    "dio": ("r", "", "", 0x1e),
 
-    "int": ("", "", "", 0x1e),
-    "tm1": ("", "", "rc", 0x1f),
-    "tm2": ("", "", "rc", 0x20),
-    "sstl1": ("", "", "rc", 0x21),
-    "sstl2": ("", "", "rc", 0x22),
-    "ssth1": ("", "", "rc", 0x23),
-    "ssth2": ("", "", "rc", 0x24),
-    "cfl": ("r", "", "", 0x25),
-    "cfh": ("r", "", "", 0x26),
+    "int": ("", "", "", 0x1f),
+    "tm1": ("", "", "rc", 0x20),
+    "tm2": ("", "", "rc", 0x21),
+    "sstl1": ("", "", "rc", 0x22),
+    "sstl2": ("", "", "rc", 0x23),
+    "ssth1": ("", "", "rc", 0x24),
+    "ssth2": ("", "", "rc", 0x25),
+    "cfl": ("r", "", "", 0x26),
+    "cfh": ("r", "", "", 0x27),
 }
 
 
@@ -129,7 +131,7 @@ class Token:
 
 
 def throw_error(error_msg: str, line: int, filename: str, char: None | int = None):
-    error_msg_text = "line {} in {}: {}".format(line, filename, error_msg)
+    error_msg_text = "line {} in {}: {}".format(line+1, filename, error_msg)
     print(error_msg_text, file=sys.stderr)
     if char:
         print(" "*len(error_msg_text) + " "*char + "^")
@@ -283,7 +285,6 @@ for ref, value in references_index.items():
     new_literal.bin_value = address_value.to_bytes(2, ENDIANNESS)
     new_literal.type = "data"
     references_index[ref] = new_literal
-    print(ref, value)
 
 # Evaluating Preprocessor statements
 for i, token in enumerate(program):
@@ -322,14 +323,53 @@ for i, token in enumerate(program):
 # Converting Instruction to binary
 for i, token in enumerate(program):
     if token.type == "instruction":
-        instruction_body = INSTRUCTIONS.get(token.value[0])
+        instruction_body = INSTRUCTIONS.get(token.value[0].lower())
 
         if not instruction_body:
             throw_error("Unknown Instruction \"{}\"".format(token.value[0]), token.line, token.file)
 
-        # TODO Implement Checking Instruciton for coresponding pattern
+        instruction_parameter_order = list(instruction_body)[:-1]
+        while "" in instruction_parameter_order:
+            instruction_parameter_order.remove("")
 
-for i in program:
-    print(i)
+        for j in REGISTERS:
+            while j in instruction_parameter_order:
+                instruction_parameter_order.remove(j)
 
-print(references_index)
+        if len(token.value) - 1 != len(instruction_parameter_order):
+            throw_error("Invalid Amount of parameters! {} requires {}".format(
+                token.value[0], "".join(["<{}> ".format(j) for j in instruction_parameter_order])
+            ), token.line, token.file)
+
+        for expected, parameter in zip(instruction_parameter_order, token.value[1:]):
+            if expected == "r" and type(parameter) == str and parameter.lower() not in REGISTERS:
+                throw_error("\"{}\" is not a register, expected register!".format(
+                    parameter.value if type(parameter) == LiteralValue else parameter
+                ), token.line, token.file)
+            elif expected == "c" and type(parameter) != LiteralValue:
+                throw_error("\"{}\" is not a literal, expected literal".format(parameter), token.line, token.file)
+
+        instruction_binary = instruction_body[-1]
+        j_body = 0
+        j_ins = 1
+
+        while j_body < len(instruction_body) - 1:
+            token.binary_data = b"\x00\x00"
+            if instruction_body[j_body] != "":
+                if type(token.value[j_ins]) == LiteralValue:
+                    instruction_binary |= 0b1000000
+                    token.binary_data = token.value[j_ins].bin_value
+                else:
+                    instruction_binary |= REGISTERS.index(token.value[j_ins].lower()) << (7 + j_body*3)
+                j_ins += 1
+            j_body += 1
+        token.binary_data = token.binary_data + instruction_binary.to_bytes(2, ENDIANNESS)
+
+# Writing stuff to Output file
+with open("output_file.bin", "wb") as f_bin, open("output_file.hex", "w") as f_hex:
+    for i in program:
+        if i.type == "instruction" or i.type == "data":
+            f_bin.write(i.binary_data)
+            f_hex.write(i.binary_data.hex() + "\n")
+
+# TODO Add "User Interface" aka sys.args to input in/output file
