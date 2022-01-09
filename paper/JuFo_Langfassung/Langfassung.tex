@@ -49,14 +49,14 @@
     \section{Nützung von Platinen}
     \subsection{weshalb Platinen}
 
-    \begin{wrapfigure}{r}{0.4\textwidth}
+        \begin{wrapfigure}{r}{0.4\textwidth}
         \vspace{-40pt}
         \begin{center}
         \includegraphics[width=0.37\textwidth]{Computer_V01_Chaos_07}
         \includegraphics[width=0.37\textwidth,angle=0]{Handy/WP_20210704_20_54_21_Pro}
         \end{center}
         \vspace{-30pt}
-    \end{wrapfigure}
+        \end{wrapfigure}
 
     Bald war aber klar, dass ein einfaches Verwenden von flachen Kabel als Verbindung zwischen den Breadboards das Kabelgewirr, das wir bei dem Projekt von vor 2 Jahren gesehen haben
     und nach möglichkeit vermeiden wollten, um ein übersichtlicheres Design zu erreichen, nicht lösen kann.
@@ -69,39 +69,170 @@
 
     \subsection{erste Versuche der Umsetzung}
 
-    \begin{wrapfigure}{l}{0.4\textwidth}
+        \begin{wrapfigure}{l}{0.4\textwidth}
         \vspace{-25pt}
         \begin{center}
         \includegraphics[width=0.4\textwidth,angle=0]{Handy/WP_20210704_20_40_03_Pro} %hier binn ich noch nicht ganz glücklich mit dem Bild
         \end{center}
         \vspace{-20pt}
-    \end{wrapfigure}
+        \end{wrapfigure}
 
     Was zu Beginn das Projekt vorangetrieben hat, ab diesem Punkt aber natürlich ein Problem dargestellt hat ist das Homeschooling, bei dem wir natürlich nicht Ätzen können.
     (wir hätten es natürlich zu Hause versuchen können, hatten da aber keine adequate Ausrüstung v.a. bzgl. Sicherheit)
     bis wir dann so weit waren erste Versuche zu machen war es dann schon Ende 2020.
 
-
+    \newpage
     \subsection{design}
 
-    %\begin{wrapfigure}{r}{0.5\textwidth}
-    %    \vspace{-40pt}
-    %    \begin{center}
-    %    \end{center}
-    %    \vspace{-30pt}
-    %\end{wrapfigure}
+        \begin{wrapfigure}{r}{0.65\textwidth}
+        \vspace{-40pt}
+        \begin{center}
+        \includegraphics[width=0.55\textwidth]{3D_Desighn_V2}
+        \end{center}
+        \vspace{-50pt}
+        \end{wrapfigure}
 
     Nachdem es auch auf geätzten Platinen noch nicht automatisch ordentlich ist und eine Große Platine für uns nicht machbar gewesen wäre, haben wir uns dann noch ein 3-Dimensionales Design ausgedacht.
 
-    \includegraphics[width=0.5\textwidth]{3D_Desighn_V2}
 
     Offensichtlich ist das mit unseren aktuell geplanten Modulen: am Boden sitzt eine große Bus-Platine, auf der wie alle Module senkrecht aufstecken.
+        \newline
+        \newline
+        \newline
 
+    \newpage
     \section{Anforderungen V1}
     Im nächsten Lockdown hatten wir dann wieder viel Zeit zu planen, und der geplante Computer wurde immer komplexer.
-    \subsection{Datenlänge, Memory, Logik-Operationen und konditionale jumps}
 
-    Aus 8-bit wurden 16-bit Datenlänge, wir wollten ein Memory-Modul haben, immer mehr Operationen bis hin zur Hardware-Multiplikation und komplexere konditionale Jumps.
+    \subsection{Datenlänge}
+
+    Aus den ursprünglich geplanten 8-bit wurden 16-bit Datenlänge:
+
+        \vspace{-5pt}
+        \fbox{%
+        \parbox{1\textwidth}{
+
+        Die Address- und Datenlänge besagt, wie viele Binäre Ziffern (bits) für eine Address und Daten verwendet werden.\\
+        Je mehr Ziffern man verwendet desto größere Zahlen können in einer Operation verarbeitet werden wobei die maximal repräsentierbare Zahle $2^n - 1$ ist wenn $n$ die Anzahl der Binären Ziffern (= Bits) ist.\\
+        \\
+            $n$ teilbar durch $8$ zu machen, ist dabei relativ angenehm, weil $8$ bit = $1$ byte,\\
+        und Bytes sind nun mal die grundlage für das meiste in der Informatik,\\
+        zudem kommen einige elementar ICs, z.B. Buffer oder Register, immer mit 8 bits.\\
+        \\
+        Jedoch gilt je mehr Bits man verwendet, desto mehr Schaltung brauchen man, desto mehr Stromverbrauch, wodurch es für uns relativ schnell unrealistisch aufwendig wird\\
+        \\
+        Wir haben uns daher für $16$ bit entschieden, womit wir
+            Zahlen bis zwischen $0$ und $65535$ darstellen können.\\
+        Diese Menge ist gerade große genug, um für die meisten Programme große genüge Zahl abzubilden, aber trotzdem auf Platinen noch einigermaßen handhabbar.\\
+
+        }%
+        }
+        \vspace{0pt}
+
+
+    \subsection{Memory}
+    Um auch Daten oder Programme verwenden zu können haben wir dann als erstes noch einen Größeren Speicher hinzu gefügt: Memory
+
+        \vspace{-5pt}
+        \fbox{%
+        \parbox{1\textwidth}{
+        Memory ist in 65536 (weil wir genau so viele Adressen in unseren 16bit speichen können) einzelne und unabhängige Speicherzellen (Jede 16 Bit große) aufgeteilt.\\
+        Der Computer kann damit auf $65536 \text{ words}$ oder $131072 \text{ bytes}$ ($\approx 128 \text{ kib}$) direkt zugreifen.\\
+        (Die Größe messen wir in words (w) oder in kilowords (kiw), wobei $1 \text{ word} = 2 \text{ bytes} = 16 \text{ Bit}$ sind.)\\
+        \\
+        Memory wird dabei über LD- und STR-Instruktionen gesteuert.\\
+        Die LD-Instruktion kopiert einen Wert aus Memory und schreibt ihn in ein Ziel-Register, während STR an der angegebenen Adresse den Wert mit dem Wert des Quellen-Register überschreibt.\\
+
+        }%
+        }
+        \vspace{0pt}
+
+    Um aber noch mehr speicher zu bekommen und das später erwähnte Berechtigungssysten möglichst einfach um zu setzen haben wir noch Banks hinzu gefügt:
+
+        \vspace{-5pt}
+        \fbox{%
+        \parbox{1\textwidth}{
+        Banken sind externe Memory Module, die eingesteckt werden können.
+        Alle Banken sind gleich groß ($16\text{kiw} = 32\text{ kib}$) und der Computer unterstützt maximal $65536$ unterschiedliche Banken.
+        Jede Bank hat dabei eine ID (BID), die von $0$ bis $65535$ reicht.
+
+        Der Computer hat zwei Bank-Slots (Slot 1 \texttt{0x8000 - 0xbfff} und Slot 2 \texttt{0xc000 - 0xffff}).
+        \newline
+        \newline
+        Er kann nun auf jede dieser Slots eine der theoretisch $65536$ Banken legen, wobei
+
+        Bank $1$ dafür gedacht ist, dass jedes normale Programm in seiner eigenen Bank dort eingefügt wird, sodass in den Programmen absolute Memory Adressen verwendet werden können, weil das Programm immer an der gleichen Stelle liegt.
+        außerdem wird in der Bank auch der Stack des Programms gespeichert, sodass dieser von anderen Prozessen auch nicht durcheinander gebracht werden kann.
+
+        }%
+        }
+
+
+
+    \subsection{Logik-Operationen und konditionale jumps}
+    Um die neuen Möglichkeiten durch 16-bit auch sinnvoll nutzen zu können haben wir dann noch eine ganze Reihe an neuen Operationen hinzugefügt:
+    Viele Logikoperationen bis hin zur Hardware- Multiplikation und komplexere konditionale Jumps.
+    \begin{center}
+        \begin{table*}
+            \caption{\label{table:instructions}Instruktions-Satz}
+            \begin{tabular}{l | l l l l | l}
+                Ins-ID & Name & op1 & op2 & op3 & Beschreibung \\
+                \hline
+                \texttt{0x00} & NOP  &  &  &  & Kein Effekt  \\
+                \hline
+                \texttt{0x01} & MOV  & reg &  & reg/c & op1 $=$ op3\\
+                \texttt{0x02} & ADD  & reg & reg & reg/c & op1 $=$ op2 $+$ op3 \\
+                \texttt{0x03} & SUB  & reg & reg & reg/c & op1 $=$ op2 $-$ op3 \\
+                \texttt{0x04} & MUL? & reg & reg & reg/c & op1 $=$ op2 $*$ op3 \\
+                \texttt{0x05} & MULOF& reg & reg & reg/c & op1 $=$ Overflow op2 $*$ op3 \\
+                \texttt{0x05} & DIV? & reg & reg & reg/c & op1 $=$ op2 $/$ op3 \\
+                \texttt{0x06} & XOR  & reg & reg & reg/c & op1 $=$ op2 $\oplus$ op3 \\
+                \texttt{0x07} & AND  & reg & reg & reg/c & op1 $=$ op2 $\land$ op3 \\
+                \texttt{0x08} & OR   & reg & reg & reg/c & op1 $=$ op2 $\lor$ op3 \\
+                \texttt{0x09} & NOT  & reg &  & reg/c & op1 $=$ $\lnot$op3 \\
+                \hline
+                \texttt{0x0a} & STR  & reg & reg & reg/c & memory[op2 + op3] = op1  \\
+                \texttt{0x0b} & LD   & reg & reg & reg/c & op1 = memory[op2 + op3] \\
+                \texttt{0x0c} & BNK1 &  &  & reg/c & Setzt BID für Bank-Slot1 \\
+                \texttt{0x0d} & BNK2 &  &  & reg/c & Setzt BID für Bank-Slot2 \\
+                \hline
+                \texttt{0x0e} & PUSH &  &  & reg/c & SP--; memory[SP] = op1 \\
+                \texttt{0x0f} & POP  &  &  & reg & op3 = memory[SP]; SP++ \\
+                \texttt{0x10} & CALL &  &  & reg/c & \vtop{
+                    \hbox{\strut memory[SP] = IP; SP++;}
+                    \hbox{\strut IP = op3}} \\
+                \texttt{0x11} & RET  &  &  &  & IP = memory[SP]; SP++ \\
+                \hline
+                \texttt{0x12} & TEST & reg &  & reg/c & Vergleicht op1 und op3 \\
+                \texttt{0x13} & ME   & reg &  & reg/c & op1 = op3 if E \\
+                \texttt{0x14} & MG   & reg &  & reg/c & op1 = op3 if G \\
+                \texttt{0x15} & ML   & reg &  & reg/c & op1 = op3 if L \\
+                \texttt{0x16} & MS & reg &  & reg/c & op1 = op3 if SUP \\
+                \texttt{0x17} & MI & reg &  & reg/c & op1 = op3 if OINT \\
+                \texttt{0x18} & MOFadd  & reg &  & reg/c & op1 = op3 if O \\
+                \texttt{0x19} & MOFsub  & reg &  & reg/c & op1 = op3 if O \\
+                \hline
+                \texttt{0x1a} & IOUT & reg &  & reg/c & IIO[op1] = op3/c \\
+                \texttt{0x1b} & DOUT & reg &  & reg/c & DIO[op1] = op3/c \\
+                \texttt{0x1c} & DIN  & reg &  & reg & op3 = DIO[op1] \\
+                \texttt{0x1d} & AIO  & reg &  &  & Aktiviert IO[op1] \\
+                \texttt{0x1e} & DIO  & reg &  &  & Deaktivieren IO[op1] \\
+                \hline
+                \texttt{0x1f} & INT  & & & & Löst einen Interrupt aus \\
+                \texttt{0x20} & TM1  & & & reg/c & Modi Timer1 = op3 \\
+                \texttt{0x21} & TM2  & & & reg/c & Modi Timer2 = op3 \\
+                \texttt{0x22} & SSTL1 & & & reg/c & lower Stop Timer1 = op3 \\
+                \texttt{0x23} & SSTL2 & & & reg/c & lower Stop Timer2 = op3 \\
+                \texttt{0x24} & SSTH1 & & & reg/c & higher Stop Timer1 = op3 \\
+                \texttt{0x25} & SSTH2 & & & reg/c & higher Stop Timer2 = op3 \\
+                \texttt{0x26} & CFL  & reg & & & op1 = lower Clock Freq \\
+                \texttt{0x27} & CFH  & reg & & & op1 = higher Clock Freq \\
+                \hline
+            \end{tabular}
+        \end{table*}
+    \end{center}
+
+    \newpage
     \subsection{IO-Ports}
     Dazu hat sich dann die Idee von einer komplexeren Umsetzung von Interaktion mit dem Computer eingeschlichen:
     universelle Ports zum Anschließen von (modifizierten) Festplatten, Sensoren, einfachen Tastaturen, LCD-Displays und der Vorstellung einer Grafikkarte, die echte Bildschirme betreiben kann.
