@@ -17,6 +17,8 @@
 \usepackage{listings}
 \usepackage{bytefield}
 \usepackage{longtable}
+\usepackage{sidecap}
+\usepackage{wrapfig}
 
 \addbibresource{ref.bib}
 
@@ -34,7 +36,6 @@
 
     \newpage
     \tableofcontents
-    \newpage
 
     \section{Idee}
 
@@ -43,25 +44,58 @@
     Ein paar monate später haben wir uns dann dazu entschieden, tatsächlich einen eigenen 8-bit-Computer zu bauen und haben auch bald angefangen erste Versuche auf dem breadboard zu machen.
     Es gab noch weder eine Möglichkeit diese erste Version automatisch zu betreiben, noch Daten zu schreiben/speichern, oder irgendwie mit der Umgebung zu interagieren, nur 3 Register 2 operationen und viele knöpfe zum Bedienen. [Bilder von v1].
 
-    \includegraphics[width=\linewidth/2,angle=0]{Computer_V01_Overview_01}
+    \newpage
 
     \section{Nützung von Platinen}
     \subsection{weshalb Platinen}
-    bald war aber klar, dass auch flache Kabel als Verbindung zwischen den Breadboards das Kabelgewirr, das wir bei dem Projekt von vor 2 Jahren gesehen haben
-    und nicht auch haben wollten, nicht lösen kann.
-    \includegraphics[width=\linewidth/2,angle=0]{Computer_V01_Chaos_07}
 
-    Auf der Suche nach einer Alternative sind wir fast zwangsläufig auf Platinen gekommen, aber weil es ja nicht mehr wirklich selbst gemacht wäre, wenn wir diese professionell Ätzen lassen würden,
-    wollten wir versuchen - zumindest einen teil - selbst zu Ätzen.
-    \includegraphics[width=\linewidth/2,angle=0]{Handy/WP_20210704_20_54_21_Pro}
+    \begin{wrapfigure}{r}{0.4\textwidth}
+        \vspace{-40pt}
+        \begin{center}
+        \includegraphics[width=0.37\textwidth]{Computer_V01_Chaos_07}
+        \includegraphics[width=0.37\textwidth,angle=0]{Handy/WP_20210704_20_54_21_Pro}
+        \end{center}
+        \vspace{-30pt}
+    \end{wrapfigure}
+
+    Bald war aber klar, dass ein einfaches Verwenden von flachen Kabel als Verbindung zwischen den Breadboards das Kabelgewirr, das wir bei dem Projekt von vor 2 Jahren gesehen haben
+    und nach möglichkeit vermeiden wollten, um ein übersichtlicheres Design zu erreichen, nicht lösen kann.
+
+    Auf der Suche nach einer Alternative sind wir fast zwangsläufig auf Platinen gekommen, aber weil unser Computer ja nicht mehr wirklich selbst gemacht wäre, wenn wir diese professionell Ätzen lassen würden,
+    wollten wir versuchen - zumindest einen teil - selbst zu Ätzen, auch wenn wir dadurch natürlich auf viele Neue probleme gestoßen sind...
+
+
+
 
     \subsection{erste Versuche der Umsetzung}
+
+    \begin{wrapfigure}{l}{0.4\textwidth}
+        \vspace{-25pt}
+        \begin{center}
+        \includegraphics[width=0.4\textwidth,angle=0]{Handy/WP_20210704_20_40_03_Pro} %hier binn ich noch nicht ganz glücklich mit dem Bild
+        \end{center}
+        \vspace{-20pt}
+    \end{wrapfigure}
+
     Was zu Beginn das Projekt vorangetrieben hat, ab diesem Punkt aber natürlich ein Problem dargestellt hat ist das Homeschooling, bei dem wir natürlich nicht Ätzen können.
-    bis wir dann so weit waren erste Versuche zu machen war es dann schon Ende 2020. [Bild erste Ätz-versuche]
-    \includegraphics[width=\linewidth/2,angle=0]{Handy/WP_20210704_20_40_03_Pro} %hier binn ich noch nicht ganz glücklich mit dem Bild
+    (wir hätten es natürlich zu Hause versuchen können, hatten da aber keine adequate Ausrüstung v.a. bzgl. Sicherheit)
+    bis wir dann so weit waren erste Versuche zu machen war es dann schon Ende 2020.
+
 
     \subsection{design}
+
+    %\begin{wrapfigure}{r}{0.5\textwidth}
+    %    \vspace{-40pt}
+    %    \begin{center}
+    %    \end{center}
+    %    \vspace{-30pt}
+    %\end{wrapfigure}
+
     Nachdem es auch auf geätzten Platinen noch nicht automatisch ordentlich ist und eine Große Platine für uns nicht machbar gewesen wäre, haben wir uns dann noch ein 3-Dimensionales Design ausgedacht.
+
+    \includegraphics[width=0.5\textwidth]{3D_Desighn_V2}
+
+    Offensichtlich ist das mit unseren aktuell geplanten Modulen: am Boden sitzt eine große Bus-Platine, auf der wie alle Module senkrecht aufstecken.
 
     \section{Anforderungen V1}
     Im nächsten Lockdown hatten wir dann wieder viel Zeit zu planen, und der geplante Computer wurde immer komplexer.
