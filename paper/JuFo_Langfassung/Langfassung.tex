@@ -183,7 +183,7 @@
 
     \subsection{Logik-Operationen und konditionale Jumps}
     Um die neuen Möglichkeiten durch 16-bit auch sinnvoll nutzen zu können haben wir dann noch eine ganze Reihe an neuen Operationen hinzugefügt:
-    Viele Logikoperationen bis hin zur Hardware- Multiplikation und komplexere konditionale Jumps.
+    Viele Logikoperationen und komplexere konditionale Jumps.
     \begin{center}
         \begin{table*}
             \caption{\label{table:instructions}Instruktions-Satz}
@@ -270,11 +270,6 @@
     Dafür haben wir dann Flaggen, Interrupts und noch mehr Instruktionen hinzugefügt.
     \subsection{ROM}
     Um den Computer komplett unabhängig funktionsfähig machen zu können, haben wir uns dann überlegt einen Teil des RAMs durch ROM zu ersetzen, um automatisch Programme von einem externen Speichermedium laden zu können.
-    \subsection{Banking}
-    Nachdem uns $2^{16}$= 65536 Speicherzellen (jede einen 16-bit Wert beinhaltend) also 128kiB Daten in Memory bei so vielen Anforderungen dann doch etwas wenig erschienen
-    und wir die Idee von mehreren Prozessen, die abwechselnd ausgeführt werden, verlockend war haben wir uns dann entschieden durch eine neue Instruktion, mit der wir Teile des Arbeitsspeichers auswechseln können (Banking),
-    beides zu ermöglichen. [Link zu Dokumentation v0.2]
-
 
     \subsection{Nützung eines 2. Busses}
 
