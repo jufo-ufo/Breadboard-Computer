@@ -321,49 +321,7 @@ for i, token in enumerate(program):
             program[i].value[j] = references_index[token_fragment]
 
 # Converting Instruction to binary
-for i, token in enumerate(program):
-    if token.type == "instruction":
-        instruction_body = INSTRUCTIONS.get(token.value[0].lower())
 
-        if not instruction_body:
-            throw_error("Unknown Instruction \"{}\"".format(token.value[0]), token.line, token.file)
-
-        instruction_parameter_order = list(instruction_body)[:-1]
-        while "" in instruction_parameter_order:
-            instruction_parameter_order.remove("")
-
-        for j in REGISTERS:
-            while j in instruction_parameter_order:
-                instruction_parameter_order.remove(j)
-
-        if len(token.value) - 1 != len(instruction_parameter_order):
-            throw_error("Invalid Amount of parameters! {} requires {}".format(
-                token.value[0], "".join(["<{}> ".format(j) for j in instruction_parameter_order])
-            ), token.line, token.file)
-
-        for expected, parameter in zip(instruction_parameter_order, token.value[1:]):
-            if expected == "r" and type(parameter) == str and parameter.lower() not in REGISTERS:
-                throw_error("\"{}\" is not a register, expected register!".format(
-                    parameter.value if type(parameter) == LiteralValue else parameter
-                ), token.line, token.file)
-            elif expected == "c" and type(parameter) != LiteralValue:
-                throw_error("\"{}\" is not a literal, expected literal".format(parameter), token.line, token.file)
-
-        instruction_binary = instruction_body[-1]
-        j_body = 0
-        j_ins = 1
-
-        while j_body < len(instruction_body) - 1:
-            token.binary_data = b"\x00\x00"
-            if instruction_body[j_body] != "":
-                if type(token.value[j_ins]) == LiteralValue:
-                    instruction_binary |= 0b1000000
-                    token.binary_data = token.value[j_ins].bin_value
-                else:
-                    instruction_binary |= REGISTERS.index(token.value[j_ins].lower()) << (7 + j_body*3)
-                j_ins += 1
-            j_body += 1
-        token.binary_data = token.binary_data + instruction_binary.to_bytes(2, ENDIANNESS)
 
 # Writing stuff to Output file
 with open("output_file.bin", "wb") as f_bin, open("output_file.hex", "w") as f_hex:
