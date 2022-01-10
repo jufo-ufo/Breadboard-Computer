@@ -112,7 +112,7 @@
         \newline
 
     \newpage
-    \section{Anforderungen V1}
+    \section{Anforderungen V2}
     Im nächsten Lockdown hatten wir dann wieder viel Zeit zu planen, und der geplante Computer wurde immer komplexer.
 
     \subsection{Datenlänge}
@@ -173,15 +173,15 @@
         Es kann auf jede dieser Slots eine der theoretisch $65536$ Banken gelegt werden.
 
         Bank $1$ ist dafür gedacht, dass jeder Prozess dort in seiner eigenen Bank lebt, sodass in dem Prozess absolute Memory Adressen verwendet werden können, weil das Programm immer an der gleichen Stelle liegt.
-        Außerdem wird in der Bank auch der Stack des Prozess gespeichert, sodass dieser von anderen Prozessen auch nicht durcheinander gebracht werden kann.
+        Außerdem wird in der Bank auch der Stack des jeweiligen Prozesses gespeichert, sodass dieser von anderen Prozessen nicht überschrieben werden kann.
 
-        und Bank $2$ als potentiellen zusätzlichen Speicher des Programms, oder als allgemeineren Speicherort, um zwischen den Programmen Daten zu übermitteln.
+        Bank $2$ dient als potentieller zusätzlichen Speicher des Prozesses, oder als allgemeineren Speicherort, um zwischen den Prozessen Daten zu übermitteln.
 
         }%
         }
 
 
-    \subsection{Logik-Operationen und konditionale jumps}
+    \subsection{Logik-Operationen und konditionale Jumps}
     Um die neuen Möglichkeiten durch 16-bit auch sinnvoll nutzen zu können haben wir dann noch eine ganze Reihe an neuen Operationen hinzugefügt:
     Viele Logikoperationen bis hin zur Hardware- Multiplikation und komplexere konditionale Jumps.
     \begin{center}
