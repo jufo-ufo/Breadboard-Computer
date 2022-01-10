@@ -47,11 +47,18 @@
 
 
     Vor ca. 2 Jahren hatte Alex die Idee, er wolle einen 8-bit Computer bauen, die vor 2 Jahren beim Regionalwettbewerb München-West eingereichte Version einer anderen Gruppe hat dann auch das Interresse von mir (Simon) geweckt.
-    Ein paar monate später haben wir uns dann dazu entschieden, tatsächlich einen eigenen 8-bit-Computer zu bauen und haben auch bald angefangen erste Versuche auf dem breadboard zu machen.
-    Es gab noch weder eine Möglichkeit diese erste Version automatisch zu betreiben, noch Daten zu schreiben/speichern, oder irgendwie mit der Umgebung zu interagieren, nur 3 Register 2 operationen und viele knöpfe zum Bedienen.
+        \begin{wrapfigure}{r}{0.5\textwidth}
+        \vspace{-25pt}
+        \begin{center}
+            \includegraphics[width=0.5\textwidth]{Computer_V01_Overview_01}
+        \end{center}
+        \vspace{-20pt}
+        \end{wrapfigure}
+    Ein paar Monate später haben wir uns dann dazu entschieden, tatsächlich einen eigenen 8-bit-Computer zu bauen und haben auch bald angefangen erste Versuche auf dem Breadboard zu entwickeln.
+    Es gab noch weder eine Möglichkeit diese erste Version automatisch zu betreiben, noch Daten zu schreiben/speichern, oder irgendwie mit der Umgebung zu interagieren, nur 3 Register, 2 Operationen und viele Knöpfe zum Bedienen.
 
 
-    \section{Nützung von Platinen}
+    \section{Gebrauch von Platinen}
     \subsection{weshalb Platinen}
 
         \begin{wrapfigure}{r}{0.4\textwidth}
@@ -63,16 +70,16 @@
         \vspace{-30pt}
         \end{wrapfigure}
 
-    Bald war aber klar, dass ein einfaches Verwenden von flachen Kabel als Verbindung zwischen den Breadboards das Kabelgewirr, das wir bei dem Projekt von vor 2 Jahren gesehen haben
-    und nach möglichkeit vermeiden wollten, um ein übersichtlicheres Design zu erreichen, nicht lösen kann.
+    Bald war aber klar, dass ein einfaches Verwenden von flachen Kabel als Verbindung zwischen den Breadboards, das Kabelgewirr, dass wir bei dem Projekt von vor 2 Jahren gesehen haben
+    und nach Möglichkeit vermeiden wollten, um ein übersichtlicheres Design zu erreichen, nicht lösen kann.
 
-    Auf der Suche nach einer Alternative sind wir fast zwangsläufig auf Platinen gekommen, aber weil unser Computer ja nicht mehr wirklich selbst gemacht wäre, wenn wir diese professionell Ätzen lassen würden,
-    wollten wir versuchen - zumindest einen teil - selbst zu Ätzen, auch wenn wir dadurch natürlich auf viele Neue probleme gestoßen sind...
+    Auf der Suche nach einer Alternative sind wir fast zwangsläufig auf Platinen gekommen, aber weil unser Computer ja nicht mehr wirklich selbst gemacht wäre, wenn wir diese nur professionell Ätzen lassen würden,
+    wollten wir versuchen - zumindest einen Teil - selbst zu ätzen, auch wenn wir dadurch natürlich auf viele neue Probleme gestoßen sind...
 
 
     \newpage
 
-    \subsection{erste Versuche der Umsetzung}
+    \subsection{Erste Versuche der Umsetzung}
 
         \begin{wrapfigure}{l}{0.4\textwidth}
         \vspace{-25pt}
@@ -82,24 +89,24 @@
         \vspace{-20pt}
         \end{wrapfigure}
 
-    Was zu Beginn das Projekt vorangetrieben hat, ab diesem Punkt aber natürlich ein Problem dargestellt hat ist das Homeschooling, bei dem wir natürlich nicht Ätzen können.
+    Was zu Beginn das Projekt vorangetrieben hat, hat ab diesem Punkt aber natürlich ein Problem dargestellt hat ist das Homeschooling, bei dem wir natürlich nicht Ätzen können.
     (wir hätten es natürlich zu Hause versuchen können, hatten da aber keine adequate Ausrüstung v.a. bzgl. Sicherheit)
     bis wir dann so weit waren erste Versuche zu machen war es dann schon Ende 2020.
 
-    \subsection{design}
+    \subsection{Design}
 
         \begin{wrapfigure}{r}{0.65\textwidth}
         \vspace{-40pt}
         \begin{center}
         \includegraphics[width=0.55\textwidth]{3D_desighn_V21}
         \end{center}
-        \vspace{-50pt}
+        \vspace{-30pt}
         \end{wrapfigure}
 
-    Nachdem es auch auf geätzten Platinen noch nicht automatisch ordentlich ist und eine Große Platine für uns nicht machbar gewesen wäre, haben wir uns dann noch ein 3-Dimensionales Design ausgedacht.
+    Nachdem es auch auf geätzten Platinen noch nicht automatisch ordentlich ist und eine derart große Platine für uns nicht machbar gewesen wäre, haben wir uns dann noch ein 3-Dimensionales Design ausgedacht.
 
 
-    Offensichtlich ist das mit unseren aktuell geplanten Modulen: am Boden sitzt eine große Bus-Platine, auf der wie alle Module senkrecht aufstecken.
+    Offensichtlich ist das mit unseren aktuell geplanten Modulen: am Boden sitzt eine große Bus-Platine, auf der wir alle Module senkrecht aufstecken.
         \newline
         \newline
         \newline
@@ -357,6 +364,8 @@
     \subsection{Spezifikation}
     Gleichzeitig haben wir auch angefangen unsere erste vollständige Version der Spezifikation zu schreiben siehe: https://www.mediafire.com/file/9iz9wlpiuwhr1ln/HandBuch.pdf/file
 
+    \includegraphics[width=0.612\textwidth, ]{arch.drawio}
+    
     \subsection{Desighnen der Schaltungen}
 
         \begin{wrapfigure}{r}{0.7\textwidth}
