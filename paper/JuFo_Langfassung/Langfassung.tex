@@ -70,7 +70,7 @@
     wollten wir versuchen - zumindest einen teil - selbst zu Ätzen, auch wenn wir dadurch natürlich auf viele Neue probleme gestoßen sind...
 
 
-
+    \newpage
 
     \subsection{erste Versuche der Umsetzung}
 
@@ -86,7 +86,6 @@
     (wir hätten es natürlich zu Hause versuchen können, hatten da aber keine adequate Ausrüstung v.a. bzgl. Sicherheit)
     bis wir dann so weit waren erste Versuche zu machen war es dann schon Ende 2020.
 
-    \newpage
     \subsection{design}
 
         \begin{wrapfigure}{r}{0.65\textwidth}
@@ -134,7 +133,7 @@
         }
         \vspace{0pt}
 
-
+    \newpage
     \subsection{Memory}
     Um auch Daten oder Programme verwenden zu können haben wir dann als erstes noch einen Größeren Speicher hinzu gefügt: Memory
 
@@ -173,7 +172,6 @@
 
         }%
         }
-
 
 
     \subsection{Logik-Operationen und konditionale jumps}
@@ -239,7 +237,6 @@
         \end{table*}
     \end{center}
 
-    \newpage
     \subsection{IO-Ports}
     Dazu hat sich dann die Idee von einer komplexeren Umsetzung von Interaktion mit dem Computer eingeschlichen:
     universelle Ports zum Anschließen von (modifizierten) Festplatten, Sensoren, einfachen Tastaturen, LCD-Displays und der Vorstellung einer Grafikkarte, die echte Bildschirme betreiben kann.
@@ -358,14 +355,21 @@
     Im Schuljahr 2021-2022 haben wir dann wieder weitere Tests zum Ätzen - dieses mahl sowohl erfolgreicher, als auch besser Dokumentiert, um die optimalen Belichtungs- und Ätzzeiten zu finden.
 
     \subsection{Spezifikation}
-    Gleichzeitig haben wir auch angefangen unsere erste vollständige Version der Spezifikation zu schreiben siehe:
+    Gleichzeitig haben wir auch angefangen unsere erste vollständige Version der Spezifikation zu schreiben siehe: https://www.mediafire.com/file/9iz9wlpiuwhr1ln/HandBuch.pdf/file
 
     \subsection{Desighnen der Schaltungen}
 
+        \begin{wrapfigure}{r}{0.7\textwidth}
+        \vspace{-40pt}
+        \begin{center}
+        \includegraphics[width=0.65\textwidth]{kicad_schematic}
+        \includegraphics[width=0.65\textwidth]{kicad_pcb}
+        \end{center}
+        \vspace{-20pt}
+        \end{wrapfigure}
     Zum designen haben wir uns schlussendlich darauf festgelegt, dass wir die Schaltungen zuerst in dem Logiksimulationsprogramm Logisim erstellen,
     und danach den Plan noch einmal als Ätzbaren Schaltplan erstellen, wobei wir hierfür kein wirklich zufriedenstellendes Produkt finden konnten.
     Schließlich haben wir uns vor allem wegen der einfachheit es zu bekommen und Installieren für KiCad entschieden, was uns allerdings ziemlich viel frust beschert hat.
-    (Um Alex zu zitieren: "Es ist schmerzhafter KiCad zu verwenden als ohne Betäubung einen Zahn gezogen zu bekommen") %TODO: wieder entfernen, nur als Spaß gedacht
 
 
 \end{document}
