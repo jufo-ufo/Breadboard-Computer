@@ -123,18 +123,18 @@
         \fbox{%
         \parbox{1\textwidth}{
 
-        Die Address- und Datenlänge besagt, wie viele Binäre Ziffern (bits) für eine Address und Daten verwendet werden.\\
+        Die Address- und Datenlänge besagt, wie viele Binäre Ziffern (bits) für eine Adresse und Daten verwendet werden.\\
         Je mehr Ziffern man verwendet desto größere Zahlen können in einer Operation verarbeitet werden wobei die maximal repräsentierbare Zahle $2^n - 1$ ist wenn $n$ die Anzahl der Binären Ziffern (= Bits) ist.\\
         \\
             $n$ teilbar durch $8$ zu machen, ist dabei relativ angenehm, weil $8$ bit = $1$ byte,\\
         und Bytes sind nun mal die grundlage für das meiste in der Informatik,\\
         zudem kommen einige elementar ICs, z.B. Buffer oder Register, immer mit 8 bits.\\
         \\
-        Jedoch gilt je mehr Bits man verwendet, desto mehr Schaltung brauchen man, desto mehr Stromverbrauch, wodurch es für uns relativ schnell unrealistisch aufwendig wird\\
+        Jedoch gilt je mehr Bits man verwendet, desto mehr Schaltung brauchen man und desto größer der Stromverbrauch, wodurch es für uns relativ schnell unrealistisch aufwendig wird\\
         \\
         Wir haben uns daher für $16$ bit entschieden, womit wir
             Zahlen bis zwischen $0$ und $65535$ darstellen können.\\
-        Diese Menge ist gerade große genug, um für die meisten Programme große genüge Zahl abzubilden, aber trotzdem auf Platinen noch einigermaßen handhabbar.\\
+        Diese Menge ist gerade große genug, um für die meisten Programme große genuge Zahl abzubilden, aber trotzdem auf Platinen noch einigermaßen handhabbar.\\
 
         }%
         }
@@ -148,7 +148,7 @@
         \fbox{%
         \parbox{1\textwidth}{
         Memory ist in 65536 (weil wir genau so viele Adressen in unseren 16bit speichen können) einzelne und unabhängige Speicherzellen (Jede 16 Bit große) aufgeteilt.\\
-        Der Computer kann damit auf $65536 \text{ words}$ oder $131072 \text{ bytes}$ ($\approx 128 \text{ kib}$) direkt zugreifen.\\
+        Der Computer kann damit auf $65536 \text{ words}$ oder $131072 \text{ bytes}$ ($= 128 \text{ kib}$) direkt zugreifen.\\
         (Die Größe messen wir in words (w) oder in kilowords (kiw), wobei $1 \text{ word} = 2 \text{ bytes} = 16 \text{ Bit}$ sind.)\\
         \\
         Memory wird dabei über LD- und STR-Instruktionen gesteuert.\\
@@ -158,24 +158,24 @@
         }
         \vspace{0pt}
 
-    Um aber noch mehr speicher zu bekommen und das später erwähnte Berechtigungssysten möglichst einfach um zu setzen haben wir noch Banken hinzu gefügt:
+    Um aber noch mehr Speicher zu bekommen und das später erwähnte Berechtigungssysten möglichst einfach umsetzen zu können haben wir noch Banken hinzu gefügt:
 
         \vspace{-5pt}
         \fbox{%
         \parbox{1\textwidth}{
         Banken sind externe Memory Module, die eingesteckt werden können.
-        Alle Banken sind gleich groß ($16\text{kiw} = 32\text{ kib}$) und der Computer unterstützt maximal $65536$ unterschiedliche Banken.
+        Alle Banken sind gleich groß ($16\text{ kiw} = 32\text{ kib}$) und der Computer unterstützt maximal $65536$ unterschiedliche Banken.
         Jede Bank hat dabei eine ID (BID), die von $0$ bis $65535$ reicht.
 
         Der Computer hat zwei Bank-Slots (Slot 1 \texttt{0x8000 - 0xbfff} und Slot 2 \texttt{0xc000 - 0xffff}).
         \newline
         \newline
-        Es kann auf jede dieser Slots eine der theoretisch $65536$ Banken legen, wobei
+        Es kann auf jede dieser Slots eine der theoretisch $65536$ Banken gelegt werden.
 
-        Bank $1$ dafür gedacht ist, dass jedes normale Programm in seiner eigenen Bank dort eingefügt wird, sodass in den Programmen absolute Memory Adressen verwendet werden können, weil das Programm immer an der gleichen Stelle liegt.
-        außerdem wird in der Bank auch der Stack des Programms gespeichert, sodass dieser von anderen Prozessen auch nicht durcheinander gebracht werden kann.
+        Bank $1$ ist dafür gedacht, dass jeder Prozess dort in seiner eigenen Bank lebt, sodass in dem Prozess absolute Memory Adressen verwendet werden können, weil das Programm immer an der gleichen Stelle liegt.
+        Außerdem wird in der Bank auch der Stack des Prozess gespeichert, sodass dieser von anderen Prozessen auch nicht durcheinander gebracht werden kann.
 
-        und Bank $2$ als potentiellen zusätzlichen Speicher des Programms, oder als allgemeineren Speicherort, um zwischen den Programmen daten zu übermitteln.
+        und Bank $2$ als potentiellen zusätzlichen Speicher des Programms, oder als allgemeineren Speicherort, um zwischen den Programmen Daten zu übermitteln.
 
         }%
         }
