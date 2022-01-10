@@ -392,7 +392,7 @@ Alle Banken sind gleich groß ($16\text{kiw} = 32\text{ kib}$) und der Computer 
 Jede Bank hat dabei eine ID (BID), die von $0$ bis $65535$ reicht.
 
 Der Computer hat zwei Bank-Slots (Slot 1 \texttt{0x8000 - 0xbfff} und Slot 2 \texttt{0xc000 - 0xffff}).
-Er kann nun auf jede dieser Slots eine der theoretisch $65536$ Bank legen
+Er kann nun auf jede dieser Slots eine der theoretisch $65536$ Banken legen
 \footnote{Es ist dabei möglich, die gleiche Bank auf beide Slots zu legen, auch wenn das nur bedingt nützlich ist.}
 Das Banken legen lässt sich über die SBK1- (Select Bank Slot 1) und SBK2- (Select Bank Slot 2) Instruktion erreichen.
 Die BIN kann dabei als Konstante oder als Register vorliegen. Die Notation ist dabei wie folgt:
@@ -686,11 +686,11 @@ Es können natürlich alle IO-Interrupts auf einmal mit der OVIOI-Flagge gemacht
 
 \subsection{\label{section:comment:datalength}16 bit Daten/Address Länge}
 
-Die Address- und Datenlänge besagt viele Binäre Ziffern (bits) für eine Address und Daten verwendet werden.
+Die Address- und Datenlänge besagt, wie viele Binäre Ziffern (bits) für eine Address und Daten verwendet werden.
 Je mehr Ziffern man verwendet desto größere Zahlen können in einer Operation verarbeitet werden wobei die maximal repräsentierbare Zahle $2^n - 1$ ist wenn $n$ die Anzahl der Binären Ziffern (= Bits) ist und wenn man mit $0$ anfängt zu zählen.
 Siehe \autoref{table:max_zahlen}
 
-Ein eine $n$ stellige Binär Zahl wobei $n$ teilbar durch $8$ ist, ist dabei relative angenehm, $8$ bit = $1$ byte.
+Ein eine $n$ stellige Binär Zahl wobei $n$ teilbar durch $8$ ist, ist dabei relativ angenehm, $8$ bit = $1$ byte.
 Das Byte ist dabei die basis Einheit für so gut wie alle informationstechnischen Standards.
 Daher ist es gute eine solches $n$ zu wählen.
 Zudem kommen einige elementar ICs, z.B. Buffer oder Register, immer mit 8 bits.
