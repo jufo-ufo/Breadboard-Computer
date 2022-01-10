@@ -4,6 +4,7 @@
 \usepackage[siunitx, RPvoltages, european]{circuitikz}
 \usepackage{tikz-timing}
 
+\usepackage{ulem}
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
@@ -133,7 +134,6 @@ Bei gesetztem E Bit wird die Konstante verwendet, bei nicht gesetztem E Bit das 
 			\texttt{0x16} & MS & reg &  & reg/c & op1 = op3 if SUP \\
 			\texttt{0x17} & MI & reg &  & reg/c & op1 = op3 if OINT \\
 			\texttt{0x18} & MOFadd  & reg &  & reg/c & op1 = op3 if O \\
-			\texttt{0x19} & MOFsub  & reg &  & reg/c & op1 = op3 if O \\
 			\hline
 			\texttt{0x1a} & IOUT & reg &  & reg/c & IIO[op1] = op3/c \\
 			\texttt{0x1b} & DOUT & reg &  & reg/c & DIO[op1] = op3/c \\
@@ -240,12 +240,12 @@ Dies und welche Flaggen es gibt, ist in \autoref{table:flag} zusehen.
 		\begin{tabular}{l | l | l | l}
 			Bit & Name & Funktion & Schaltung \\
 			\hline
-			 0 &  &  & \\
+			 0 & NE    & Ungleichheit zweier Werte					& TEST op1 $\neq$ op2\\
 			 1 & E     & Gleichheit zweier Werte 					& TEST op1 = op2\\
 			 2 & G     & Ungleichheit ($>$) zweier Werte 			& TEST op1 > op2\\
 			 3 & L     & Ungleichheit ($<$) zweier Werte 			& TEST op1 < op2\\
 			 4 & OFadd & Integer Overflow bei einer Addition 		& TEST op1 + op2 > $65535$ \\
-			 5 & OFsub & Integer Overflow bei einer Subtraktion 	& TEST op1 - op2 < $0$ \\
+			 5 & \sout{OFsub} & \sout{Integer Overflow bei einer Subtraktion} 	& \sout{TEST op1 - op2 < $0$} \\
 			 6 &  &  & \\
 			 7 &  &  & \\
 			 8 & OVTI1 & Overwrite Timed-Interrupt1, siehe \autoref{section:interrupts} &  \\
