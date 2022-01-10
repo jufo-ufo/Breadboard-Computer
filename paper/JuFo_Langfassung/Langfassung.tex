@@ -19,12 +19,18 @@
 \usepackage{longtable}
 \usepackage{sidecap}
 \usepackage{wrapfig}
+\usepackage{subcaption}
+%\usepackage{titlesec}
 
 \addbibresource{ref.bib}
 
 \graphicspath{ {../../images/} }
 
 \KOMAoptions{parskip=full}
+
+%\titlespacing{\section}{8pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+%\titlespacing{\subsection}{4pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+%\titlespacing{\subsubsection}{2pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
 
 
 \begin{document}
@@ -34,9 +40,9 @@
     \date{2022}
     \maketitle
 
-    \newpage
     \tableofcontents
 
+    \newpage
     \section{Idee}
 
 
@@ -44,7 +50,6 @@
     Ein paar monate später haben wir uns dann dazu entschieden, tatsächlich einen eigenen 8-bit-Computer zu bauen und haben auch bald angefangen erste Versuche auf dem breadboard zu machen.
     Es gab noch weder eine Möglichkeit diese erste Version automatisch zu betreiben, noch Daten zu schreiben/speichern, oder irgendwie mit der Umgebung zu interagieren, nur 3 Register 2 operationen und viele knöpfe zum Bedienen.
 
-    \newpage
 
     \section{Nützung von Platinen}
     \subsection{weshalb Platinen}
@@ -87,7 +92,7 @@
         \begin{wrapfigure}{r}{0.65\textwidth}
         \vspace{-40pt}
         \begin{center}
-        \includegraphics[width=0.55\textwidth]{3D_Desighn_V2}
+        \includegraphics[width=0.55\textwidth]{3D_Desighn_V21}
         \end{center}
         \vspace{-50pt}
         \end{wrapfigure}
@@ -270,6 +275,7 @@
     \subsection{2. Bus}
 
 
+
     \section{Tests}
     \subsection{Breadboard test}
         \begin{wrapfigure}{r}{0.65\textwidth}
@@ -291,6 +297,25 @@
     Wir wollen als basis für unseren Computer ja Chips kaufen, aber wie funktionieren die eigentlich?
     Wir haben also versucht den Aufbau herauszufinden, indem wir einfach einen geöffnet haben, wobei $"$Einfach$"$ nicht so ganz stimmt, weil die Hülle aus Epoxidharz besteht, was sich fast nicht auflösen lässt.
     Also mussten wir mechanisch abtragen, also Schleifen.
+
+    Leider haben wir es damit nie geschafft das gesamte Silizium/die Verbindungsbahnen frei zu legen, sodass wir keinen schaltplan erstellen könnten,
+    es gab uns aber trotzdem eine beeindruckende persönliche einsicht:
+
+
+        \begin{figure}{r}{1\textwidth}
+        \begin{subfigure}[b]{0.3\textwidth}
+            \includegraphics[width=\textwidth]{WP1_09}
+        \end{subfigure}
+        ~
+        \begin{subfigure}[b]{0.3\textwidth}
+            \includegraphics[width=\textwidth]{WP_20211029_143251_}
+        \end{subfigure}
+        ~
+        \begin{subfigure}[b]{0.3\textwidth}
+            \includegraphics[width=\textwidth]{WP_20210917_16_56_15}
+        \end{subfigure}
+        \end{figure}
+
 
     \section{Umsetzung}
     \subsection{Programmierung}
