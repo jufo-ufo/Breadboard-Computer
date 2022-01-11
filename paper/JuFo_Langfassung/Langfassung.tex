@@ -44,8 +44,7 @@
 
     \newpage
     \section{Idee}
-
-
+    \vspace{-15pt}
     Vor ca. 2 Jahren hatte Alex die Idee, er wolle einen 8-bit Computer bauen, die vor 2 Jahren beim Regionalwettbewerb München-West eingereichte Version einer anderen Gruppe hat dann auch das Interresse von mir (Simon) geweckt.
         \begin{wrapfigure}{r}{0.5\textwidth}
         \vspace{-25pt}
@@ -59,7 +58,9 @@
 
 
     \section{Gebrauch von Platinen}
+    \vspace{-15pt}
     \subsection{weshalb Platinen}
+    \vspace{-15pt}
 
         \begin{wrapfigure}{r}{0.4\textwidth}
         \vspace{-40pt}
@@ -80,6 +81,7 @@
     \newpage
 
     \subsection{Erste Versuche der Umsetzung}
+    \vspace{-15pt}
 
         \begin{wrapfigure}{l}{0.4\textwidth}
         \vspace{-25pt}
@@ -94,6 +96,7 @@
     bis wir dann so weit waren erste Versuche zu machen war es dann schon Ende 2020.
 
     \subsection{Design}
+    \vspace{-15pt}
 
         \begin{wrapfigure}{r}{0.65\textwidth}
         \vspace{-40pt}
@@ -113,9 +116,11 @@
 
     \newpage
     \section{Anforderungen V2}
+    \vspace{-15pt}
     Im nächsten Lockdown hatten wir dann wieder viel Zeit zu planen, und der geplante Computer wurde immer komplexer.
 
     \subsection{Datenlänge}
+    \vspace{-15pt}
 
     Aus den ursprünglich geplanten 8-bit wurden 16-bit Datenlänge:
 
@@ -142,6 +147,7 @@
 
     \newpage
     \subsection{Memory}
+    \vspace{-15pt}
     Um auch Daten oder Programme verwenden zu können haben wir dann als erstes noch einen Größeren Speicher hinzu gefügt: Memory
 
         \vspace{-5pt}
@@ -182,6 +188,7 @@
 
 
     \subsection{Logik-Operationen und konditionale Jumps}
+    \vspace{-15pt}
     Um die neuen Möglichkeiten durch 16-bit auch sinnvoll nutzen zu können haben wir dann noch eine ganze Reihe an neuen Operationen hinzugefügt:
     Viele Logikoperationen und komplexere konditionale Jumps.
     \begin{center}
@@ -245,14 +252,15 @@
     \end{center}
 
     \subsection{IO-Ports}
-    Dazu hat sich dann die Idee von einer komplexeren Umsetzung von Interaktion mit dem Computer eingeschlichen:
-    universelle Ports zum Anschließen von (modifizierten) Festplatten, Sensoren, einfachen Tastaturen, LCD-Displays und der Vorstellung einer Grafikkarte, die echte Bildschirme betreiben kann.
+    \vspace{-15pt}
+    Dazu hat sich die Idee von komplexer IO-Interaktion mit dem Computer ergeben:
+    universelle Ports zum Anschließen von Festplatten, Sensoren, einfachen Tastaturen, LCD-Displays und einer Grafikkarte.
 
         \vspace{-5pt}
         \fbox{%
         \parbox{1\textwidth}{
-        die theoretisch 64ki Anschlüsse, die alle über eine Anschluss-ID angesprochen werden können, kommunizieren mit dem IO-Gerät über 4 Kommandos,
-            die als 4 separate verbindungen zwischen dem Controller und dem Gerät umgesetzt sind:
+        Die theoretisch 65536 Anschlüsse, wobei jedem eine Anschluss-ID zugewiesen ist, kommunizieren mit IO-Geräten über 4 Kommandos,
+            die als 4 separate Pins zwischen dem Controller und dem Gerät umgesetzt sind:
 
         1. Einen Befehl an das IO-Gerät schicken (auf Programm-Ebene);
 
@@ -266,13 +274,15 @@
         }
 
     \subsection{Berechtigungssysten}
+    \vspace{-15pt}
     Die vermutlich die größte Änderung war danach, dass wir ein Berechtigungssystem einführen wollten.
     Dafür haben wir dann Flaggen, Interrupts und noch mehr Instruktionen hinzugefügt.
     \subsection{ROM}
+    \vspace{-15pt}
     Um den Computer komplett unabhängig funktionsfähig machen zu können, haben wir uns dann überlegt einen Teil des RAMs durch ROM zu ersetzen, um automatisch Programme von einem externen Speichermedium laden zu können.
 
     \subsection{Nützung eines 2. Busses}
-
+    \vspace{-15pt}
     Um Memory innerhalb einer Instruktion zu beschreiben, muss dieses sowohl eine 16-bit Adresse über die Position in Memory erhalten,
     als auch den 16-bit Wert, der dort gespeichert werden soll,
     damit diese beiden Daten parallel übermittelt werden können brauchen wir also 2*16bit.
@@ -291,6 +301,7 @@
     $"$Persvektive P$"$ am 15.07.2021 wieder einen Prototyp auf dem Breadboard gebaut, wobei auch diese Version sehr unvollständig war.
 
     \subsection{Geschwindigkeit}
+    \vspace{-15pt}
         \begin{wrapfigure}{r}{0.4\textwidth}
         \vspace{-20pt}
         \begin{center}
@@ -303,14 +314,14 @@
     Also haben den "Propagation-delay", die Zeit, bis der Chip den Output liefert, den der laut der Eingabe haben müsste, aller Komponenten gemessen, die wir verwenden wollen.
     die meisten Chips, die wir jetzt vorhaben zu verwenden haben eine Verzögerung von ungefähr 8 Nanosekunden, allerdings haben wir bei den verschiedenen versionen, die wir getestet haben, teilweise weitaus höhere Werte bis zu 150ns erreicht, was an sich noch nicht so schlecht ist, aber wenn wir damit rechnen, dass wir reihen von bis zu 40 Chips in einem Clock-Zyklus haben, limitiert das die Geschwindigkeit schon sehr.
 
-    \includegraphics[width=\textwidth]{NANDs_Result_Rising}
+    \includegraphics[width=0.9\textwidth]{NANDs_Result_Rising}
 
 
     \subsection{Funktionsweise Chips}
+    \vspace{-15pt}
     Wir wollen als basis für unseren Computer ja Chips kaufen, aber wie funktionieren die eigentlich?
     Wir haben also versucht den Aufbau herauszufinden, indem wir einfach einen geöffnet haben, wobei $"$Einfach$"$ nicht so ganz stimmt, weil die Hülle aus Epoxidharz besteht, was sich fast nicht auflösen lässt.
     Also mussten wir mechanisch abtragen, also Schleifen.
-
     Leider haben wir es damit nie geschafft das gesamte Silizium/die Verbindungsbahnen frei zu legen, sodass wir keinen schaltplan erstellen könnten,
     es gab uns aber trotzdem eine beeindruckende persönliche Einsicht:
 
@@ -331,7 +342,9 @@
 
 
     \section{Umsetzung}
+    \vspace{-15pt}
     \subsection{Programmierung}
+    \vspace{-15pt}
 
         \begin{wrapfigure}{r}{0.6\textwidth}
         \vspace{-30pt}
@@ -347,6 +360,7 @@
     \includegraphics[width=0.8\textwidth]{assembler_code}
 
     \subsection{weitere tests zum Ätzen}
+    \vspace{-15pt}
         \begin{wrapfigure}{r}{0.6\textwidth}
         \vspace{-40pt}
         \begin{center}
@@ -355,16 +369,18 @@
         \vspace{-20pt}
         \end{wrapfigure}
     Im Schuljahr 2021-2022 haben wir dann wieder weitere Tests zum Ätzen - dieses mahl sowohl erfolgreicher, als auch besser Dokumentiert, um die optimalen Belichtungs- und Ätzzeiten zu finden.
-
+    \newpage
     \subsection{Spezifikation}
-    Gleichzeitig haben wir auch angefangen unsere erste vollständige Version der Spezifikation zu schreiben siehe: https://www.mediafire.com/file/9iz9wlpiuwhr1ln/HandBuch.pdf/file
+    \vspace{-15pt}
+    Gleichzeitig haben wir auch angefangen unsere erste vollständige Version der Spezifikation zu schreiben siehe: \href{https://www.mediafire.com/file/9iz9wlpiuwhr1ln/HandBuch.pdf/file}{Handbuch.pdf}
 
     \includegraphics[width=0.612\textwidth]{arch.drawio}
-    
+    \newpage
     \subsection{Desighnen der Schaltungen}
+    \vspace{-15pt}
 
         \begin{wrapfigure}{r}{0.7\textwidth}
-        \vspace{-40pt}
+        \vspace{-20pt}
         \begin{center}
         \includegraphics[width=0.65\textwidth]{kicad_schematic}
         \includegraphics[width=0.65\textwidth]{kicad_pcb}
