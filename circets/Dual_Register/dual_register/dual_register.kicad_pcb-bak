@@ -2,7 +2,7 @@
 
   (general
     (thickness 1.6)
-    (drawings 8)
+    (drawings 6)
     (tracks 717)
     (zones 0)
     (modules 13)
@@ -2064,12 +2064,6 @@
     )
   )
 
-  (gr_text "Dual Register" (at 97 27) (layer Dwgs.User) (tstamp 61DFBFC8)
-    (effects (font (size 6 6) (thickness 0.7)))
-  )
-  (gr_text "Dual Register" (at 97 27) (layer F.Cu) (tstamp 61DFBFCA)
-    (effects (font (size 6 6) (thickness 1)))
-  )
   (dimension 162 (width 0.15) (layer Dwgs.User)
     (gr_text "162,000 mm" (at 16.7 101 270) (layer Dwgs.User)
       (effects (font (size 1 1) (thickness 0.15)))

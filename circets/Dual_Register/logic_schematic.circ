@@ -76,11 +76,16 @@
       <circ-anchor facing="east" height="6" width="6" x="47" y="47"/>
       <circ-port height="10" pin="440,120" width="10" x="155" y="75"/>
       <circ-port height="10" pin="440,210" width="10" x="155" y="65"/>
+      <circ-port height="8" pin="210,160" width="8" x="46" y="76"/>
       <circ-port height="8" pin="210,210" width="8" x="46" y="86"/>
       <circ-port height="8" pin="210,230" width="8" x="46" y="106"/>
       <circ-port height="8" pin="210,280" width="8" x="46" y="126"/>
       <circ-port height="8" pin="220,120" width="8" x="46" y="56"/>
     </appear>
+    <comp lib="0" loc="(210,160)" name="Pin">
+      <a name="appearance" val="classic"/>
+      <a name="label" val="CLK_R"/>
+    </comp>
     <comp lib="0" loc="(210,210)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="label" val="WE_F"/>
