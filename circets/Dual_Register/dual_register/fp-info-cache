@@ -1,4 +1,4 @@
-18991617711855703
+18994901901467703
 Battery
 BatteryHolder_Bulgin_BX0036_1xC
 Bulgin Battery Holder, BX0036, Battery Type C (https://www.bulgin.com/products/pub/media/bulgin/data/Battery_holders.pdf)
@@ -6124,6 +6124,20 @@ capacitor tantalum
 0
 2
 2
+Computer_Component_Library
+PinHeader_1x42_P2.54mm_Horizontal
+Through hole angled pin header, 1x40, 2.54mm pitch, 6mm pin length, single row
+Through hole angled pin header THT 1x40 2.54mm single row
+0
+42
+42
+Computer_Component_Library
+PinHeader_1x78_P2.54mm_Horizontal
+Through hole angled pin header, 1x40, 2.54mm pitch, 6mm pin length, single row
+Through hole angled pin header THT 1x40 2.54mm single row
+0
+78
+78
 Computer_Component_Library
 PinSocket_1x42_P2.00mm_Horizontal
 Through hole angled socket strip, 1x40, 2.00mm pitch, 6.35mm socket length, single row (from Kicad 4.0.7), script generated
