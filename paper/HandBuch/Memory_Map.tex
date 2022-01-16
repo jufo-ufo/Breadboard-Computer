@@ -1,0 +1,79 @@
+\documentclass{scrartcl}
+
+\usepackage{graphicx}
+\usepackage[siunitx, RPvoltages, european]{circuitikz}
+\usepackage{tikz-timing}
+
+\usepackage{ulem}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[babel,german=quotes]{csquotes}
+\usepackage[style=numeric, backend=biber]{biblatex}
+\usepackage{listings}
+\usepackage{bytefield}
+\usepackage{longtable}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\lstdefinestyle{asm}{
+}
+
+\addbibresource{ref.bib}
+
+\graphicspath{ {../images} }
+
+\KOMAoptions{parskip=full}
+
+\begin{document}
+\begin{figure}[h]
+	\centering
+	\label{fig:memoryMap}
+	\begin{bytefield}[leftcurly=., rightcurly=., leftcurlyspace=0pt, rightcurlyspace=0pt]{16}
+		
+		\begin{leftwordgroup}{\small \texttt{0x0000}}
+			\bitbox[lrt]{16}{}
+		\end{leftwordgroup}\\
+		\wordbox[lr]{2}{ROM Supervisor\\$16384 \text{w} \approx 16 \text{kiw}$} \\
+		\begin{leftwordgroup}{\small \texttt{0x3fff}}
+			\bitbox[lr]{16}{}
+		\end{leftwordgroup}\\
+
+		\begin{leftwordgroup}{\small \texttt{0x4000}}
+			\bitbox[lrt]{16}{}
+		\end{leftwordgroup}\\
+		\begin{rightwordgroup}{\large $\uparrow$ Sup Stack}
+			\wordbox[lr]{2}{RAM Supervisor\\$16384 \text{w} \approx 16 \text{kiw}$} \\
+		\end{rightwordgroup}
+		\begin{leftwordgroup}{\small \texttt{0x7fff}}
+			\bitbox[lr]{16}{}
+		\end{leftwordgroup}\\
+
+		\begin{leftwordgroup}{\small \texttt{0x8000}}
+			\bitbox[lrt]{16}{}
+		\end{leftwordgroup}\\
+			\wordbox[lr]{2}{Bank 1 (User Programm)\\$16384 \text{w} \approx 16 \text{kiw}$} \\
+		\begin{leftwordgroup}{\small \texttt{0xbfff}}
+			\bitbox[lr]{16}{}
+		\end{leftwordgroup}\\
+
+		\begin{leftwordgroup}{\small \texttt{0xc000}}
+			\bitbox[lrt]{16}{}
+		\end{leftwordgroup}\\
+		\begin{rightwordgroup}{\large $\uparrow$ User Stack}
+			\wordbox[lr]{2}{Bank 2 (User Data)\\$16384 \text{w} \approx 16 \text{kiw}$} \\
+		\end{rightwordgroup}
+		\begin{leftwordgroup}{\small \texttt{0xffff}}
+			\bitbox[lrb]{16}{}
+		\end{leftwordgroup}
+
+	\end{bytefield}
+	
+\end{figure}
+\end{document}
