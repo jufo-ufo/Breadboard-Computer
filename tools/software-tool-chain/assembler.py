@@ -3,6 +3,12 @@ import re
 import sys
 import traceback
 
+if len(sys.argv) < 2:
+    print("Usage: <input_file>", file=sys.stderr)
+    exit(1)
+
+INPUT_FILE = sys.argv[1]
+
 WHITESPACE = [" ", "\t", "\r"]
 REGISTERS = ["zero", "ip", "sp", "a", "b", "c", "d", "flag"]
 ENDIANNESS = "big"
@@ -243,9 +249,6 @@ def tokenize(program_raw_str: str, filename: str, depth=0) -> Tuple[List[Token],
 
     return program_tokens, references, token_number
 
-
-INPUT_FILE = "test_program.asm"
-
 with open(INPUT_FILE) as f:
     program_raw = f.read()
 
@@ -321,13 +324,53 @@ for i, token in enumerate(program):
             program[i].value[j] = references_index[token_fragment]
 
 # Converting Instruction to binary
+for i, token in enumerate(program):
+    if token.type == "instruction":
+        instruction_body = INSTRUCTIONS.get(token.value[0].lower())
 
+        if not instruction_body:
+            throw_error("Unknown Instruction \"{}\"".format(token.value[0]), token.line, token.file)
+
+        instruction_parameter_order = list(instruction_body)[:-1]
+        while "" in instruction_parameter_order:
+            instruction_parameter_order.remove("")
+
+        for j in REGISTERS:
+            while j in instruction_parameter_order:
+                instruction_parameter_order.remove(j)
+
+        if len(token.value) - 1 != len(instruction_parameter_order):
+            throw_error("Invalid Amount of parameters! {} requires {}".format(
+                token.value[0], "".join(["<{}> ".format(j) for j in instruction_parameter_order])
+            ), token.line, token.file)
+
+        for expected, parameter in zip(instruction_parameter_order, token.value[1:]):
+            if expected == "r" and type(parameter) == str and parameter.lower() not in REGISTERS:
+                throw_error("\"{}\" is not a register, expected register!".format(
+                    parameter.value if type(parameter) == LiteralValue else parameter
+                ), token.line, token.file)
+            elif expected == "c" and type(parameter) != LiteralValue:
+                throw_error("\"{}\" is not a literal, expected literal".format(parameter), token.line, token.file)
+
+        instruction_binary = instruction_body[-1]
+        j_body = 0
+        j_ins = 1
+
+        while j_body < len(instruction_body) - 1:
+            token.binary_data = b"\x00\x00"
+            if instruction_body[j_body] != "":
+                if type(token.value[j_ins]) == LiteralValue:
+                    instruction_binary |= 0b1000000
+                    token.binary_data = token.value[j_ins].bin_value
+                else:
+                    instruction_binary |= REGISTERS.index(token.value[j_ins].lower()) << (7 + j_body*3)
+                j_ins += 1
+            j_body += 1
+        token.binary_data = token.binary_data + instruction_binary.to_bytes(2, ENDIANNESS)
 
 # Writing stuff to Output file
-with open("output_file.bin", "wb") as f_bin, open("output_file.hex", "w") as f_hex:
+with open(INPUT_FILE + ".bin", "wb") as f_bin, open(INPUT_FILE + ".bin", "w") as f_hex:
     for i in program:
         if i.type == "instruction" or i.type == "data":
             f_bin.write(i.binary_data)
             f_hex.write(i.binary_data.hex() + "\n")
-
-# TODO Add "User Interface" aka sys.args to input in/output file
