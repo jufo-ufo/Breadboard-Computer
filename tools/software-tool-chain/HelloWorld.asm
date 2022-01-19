@@ -1,13 +1,15 @@
+;
+; This Code is written for an 16x2 LCD display with an 1602A Controller
+;
 
 #define Display-Port 0x0000
-
 mov IP main
 
 string:
     db "HelloWorld" 0x00
 
 main:
-    MOV A string
+    MOV A ZERO
     MOV B Display-Port
 
     ; Initialing LCD
@@ -18,9 +20,12 @@ main:
 
     ; Printing HelloWorld!
 loop:
-    LD
-
-
+    LD C A string
+    ADD A A 1
+    TEST C 0x0000
+    ME IP loop_end
+    DOUT B C
+    MOV IP loop
 
     ; Jumping into Infinity Loop!
 loop_end:
