@@ -26,5 +26,5 @@ Let's build a computer from ICs!
 | Instruction\_Decoder  | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       |        | [ ]          | alex     | 
 | IO\_Controller        | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       |        | [ ]          | simon    | 
 | Activation\_Module    | [X]   | [X]       | [ ]    | [X]        | [ ] x7  | [ ] x7    |        | [ ]          | alex     | 
-| Dual\_Register        | [X]   | [X]       | [ ]    | [ ]        | [ ] x2  | [ ] x2    |        | [ ]          | alex     | Replacement for BID-Regiser and IR
+| Dual\_Register        | [X]   | [X]       | [X]    | [X]        | [ ] x2  | [ ] x2    |        | [ ]          | alex     | Replacement for BID-Regiser and IR
 https://www.youtube.com/watch?v=9aUsTlBjspE

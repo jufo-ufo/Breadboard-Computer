@@ -157,22 +157,24 @@ def tokenize(program_raw_str: str, filename: str, depth=0) -> Tuple[List[Token],
 
             if re.match("#include .*", preprocessor_string):
                 if depth >= 256:
-                    throw_error("""Reached max recursive include depth at 256! 
-                    Please stop messing with this, a poor programmer has to fix this now, and he won't be happy. Please 
-                    keep in mind every bug you report and encounter the develop has to fix, so DON'T tell me about this 
-                    issue it would const me hours to fix and a lot of headache. SO SIMPLY DON'T DO THIS AGAIN OR ELSE.
-                    By the way, how did get her, seriously, either you are just dum and process that error by including
-                    the wrong freaking fucking file (And yes this is Alliteration, please learn your stylistic devices)
-                    or you did this on purpose, the you are an evil person, an very evil, a person how would tell me
-                    about this bug. Person how likes to put pineapple on there pizza, a person how likes killing little
-                    baby kittens. Like I would kill, and you would not only die, but it will hurt very very much, 
-                    I promise, you if you would report this bug to me and I would have to fix it
-                    (By the way to not get any lawsuits, because some people are just dum and don't understand irony if
-                    it would jump into there face. The Part about killing, THIS WAS FUCKING IRONY DON'T SUW ME! YOU 
-                    ALREADY MAD ALOT OF TROUBLE BY CAUSING THIS ERROR, I DON'T FANCY MEETING YOU EVER AGAIN IF YOU SUW 
-                    OR TELL ME ABOUT THIS BUG). AND PLEASE, I KNOW MY SPEELLING IS WORSE THEN EVERYTHING ELSE, BUT IF
-                    YOU TELL ME THAT I WILL BE VERY UPSAD. AND BEING UP SAD MEANS I WILL HEAT YOU UNTIL YOU DIE, WTICH
-                    WILL BE SONER THEN YOU THINK, IF YOU DON'T STOP TELLING ME THAT I'AM DOING A BAD JOB!"""
+                    throw_error("""Reached max recursive include depth at 256! Please stop messing with this, 
+                    a poor programmer has to fix this now, and he won't be happy. Please keep in mind every bug you 
+                    report and encounter the develop has to fix, so DON'T tell me about this issue it would const me 
+                    hours to fix and a lot of headache. SO SIMPLY DON'T DO THIS AGAIN OR ELSE. By the way, 
+                    how did I get her, seriously, either you are just dum and process that error by including the 
+                    wrong freaking fucking file (And yes this is Alliteration, please learn your stylistic devices) 
+                    or you did this on purpose, the you are an evil person, an very evil, a person how would tell me 
+                    about this bug. Person how likes to put pineapple on there pizza, a person how likes killing 
+                    little baby kittens. Like I would kill, and you would not only die, but it will hurt very very 
+                    much, I promise, you if you would report this bug to me and I would have to fix it (By the way to 
+                    not get any lawsuits, because some people are just dum and don't understand irony if it would 
+                    jump into there face. The Part about killing, THIS WAS FUCKING IRONY DON'T SUW ME! YOU ALREADY 
+                    MAD ALOT OF TROUBLE BY CAUSING THIS ERROR, I DON'T FANCY MEETING YOU EVER AGAIN IF YOU SUW OR 
+                    TELL ME ABOUT THIS BUG). AND PLEASE, I KNOW MY SPEELLING IS WORSE THEN EVERYTHING ELSE, 
+                    BUT IF YOU TELL ME THAT I WILL BE VERY UPSAD. AND BEING UP SAD MEANS I WILL HEAT YOU UNTIL YOU 
+                    DIE, WITCH WILL BE SONER THEN YOU THINK, IF YOU DON'T STOP TELLING ME THAT I'AM DOING A BAD JOB!
+                    Best wishes, 
+                    Alex"""
                                 , line_number, filename)
 
                 include_file_name = "".join(preprocessor_string.split(" ")[1:])
@@ -218,12 +220,12 @@ for i, token in enumerate(program):
                 for char in j[1:-1]:
                     char_bin = b"\x00" + char.encode("utf-8")
                     program[i].binary_data += char_bin[-2:]
-                program[i].size += len(token.binary_data)
+                program[i].size += len(j[1:-1])
             else:
                 new_literal = LiteralValue()
                 new_literal.parse(j, token.line, token.file)
                 program[i].binary_data += new_literal.bin_value
-                program[i].size += 2
+                program[i].size += 1
     elif token.type == "instruction":
         program[i].size = 2
 
@@ -233,6 +235,7 @@ offset = 0
 for i, token in enumerate(program):
     if token.type != "preprocessor":
         program[i].offset = offset
+        # print(offset, token.size, token)
         offset += program[i].size
 
 # Evaluating references
@@ -317,7 +320,10 @@ for i, token in enumerate(program):
                     instruction_binary |= 0b1000000
                     token.binary_data = token.value[j_ins].bin_value
                 else:
-                    instruction_binary |= REGISTERS.index(token.value[j_ins].lower()) << (7 + j_body*3)
+                    if not token.value[j_ins].lower() in REGISTERS:
+                        throw_error("Unknown Register: \"{}\"".format(token.value[j_ins]), token.line, token.file)
+                    else:
+                        instruction_binary |= REGISTERS.index(token.value[j_ins].lower()) << (7 + j_body*3)
                 j_ins += 1
             j_body += 1
         token.binary_data = token.binary_data + instruction_binary.to_bytes(2, ENDIANNESS)

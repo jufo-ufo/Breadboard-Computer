@@ -6,7 +6,7 @@
 mov IP main
 
 string:
-    db "HelloWorld" 0x00
+    db "HI" 0x00
 
 main:
     MOV A ZERO
@@ -28,5 +28,6 @@ loop:
     MOV IP loop
 
     ; Jumping into Infinity Loop!
+
 loop_end:
-    mov IP loop_end
+    db 0xffff 0xffff

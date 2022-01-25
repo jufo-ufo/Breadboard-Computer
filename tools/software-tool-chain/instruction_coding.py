@@ -1,4 +1,6 @@
-INSTRUCTIONS = {
+from typing import Dict, Tuple
+
+INSTRUCTIONS: Dict[str, Tuple[str, str, str, int]] = {
     "nop": ("", "", "", 0x00),
     "mov": ("r", "", "rc", 0x01),
     "add": ("r", "r", "rc", 0x02),
@@ -19,14 +21,13 @@ INSTRUCTIONS = {
     "call": ("", "", "rc", 0x10),
     "ret": ("", "", "", 0x11),
 
-    "test": ("r", "", "rc", 0x12),
+    "test": ("", "r", "rc", 0x12),
     "me": ("r", "", "rc", 0x13),
     "mg": ("r", "", "rc", 0x14),
     "ml": ("r", "", "rc", 0x15),
     "ms": ("r", "", "rc", 0x16),
     "mi": ("r", "", "rc", 0x17),
     "mofadd": ("r", "", "rc", 0x18),
-    "mofsub": ("r", "", "rc", 0x19),
 
     "iout": ("r", "", "rc", 0x1a),
     "dout": ("r", "", "rc", 0x1b),
@@ -43,8 +44,10 @@ INSTRUCTIONS = {
     "ssth2": ("", "", "rc", 0x25),
     "cfl": ("r", "", "", 0x26),
     "cfh": ("r", "", "", 0x27),
+    "EXIT_EMULATOR": ("", "", "", 0x3f)
 }
 
 WHITESPACE = [" ", "\t", "\r"]
 REGISTERS = ["zero", "ip", "sp", "a", "b", "c", "d", "flag"]
 ENDIANNESS = "big"
+MODULUS = 2**16
