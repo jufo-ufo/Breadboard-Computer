@@ -6,7 +6,7 @@
 mov IP main
 
 string:
-    db "HI" 0x00
+    db "The answer is 42" 0x00
 
 main:
     MOV A ZERO
@@ -31,3 +31,4 @@ loop:
 
 loop_end:
     db 0xffff 0xffff
+    mov IP loop_end

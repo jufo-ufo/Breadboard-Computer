@@ -231,7 +231,7 @@ if __name__ == "__main__":
     state = ComputerState()
     state.load_from_file("HelloWorld.asm.bin")
 
-    for i in range(50):
+    for i in range(1000):
         instruction = (state.load_memory(state.register[1]) << 16) | state.load_memory(state.register[1] + 1)
         print("{:04x} {:032b} {:02x}".format(
             state.register[1], instruction, (instruction & 0b111111)), disassemble(instruction)
