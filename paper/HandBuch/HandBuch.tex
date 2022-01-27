@@ -127,13 +127,13 @@ Bei gesetztem E Bit wird die Konstante verwendet, bei nicht gesetztem E Bit das 
 				\hbox{\strut IP = op3}} \\
 			\texttt{0x11} & RET  &  &  &  & IP = memory[SP]; SP++ \\
 			\hline
-			\texttt{0x12} & TEST & reg &  & reg/c & Vergleicht op1 und op3 \\
-			\texttt{0x13} & ME   & reg &  & reg/c & op1 = op3 if E \\
-			\texttt{0x14} & MG   & reg &  & reg/c & op1 = op3 if G \\
-			\texttt{0x15} & ML   & reg &  & reg/c & op1 = op3 if L \\
-			\texttt{0x16} & MS & reg &  & reg/c & op1 = op3 if SUP \\
-			\texttt{0x17} & MI & reg &  & reg/c & op1 = op3 if OINT \\
-			\texttt{0x18} & MOFadd  & reg &  & reg/c & op1 = op3 if O \\
+			\texttt{0x12} & TEST &  & reg & reg/c & Vergleicht op1 und op3 \\
+			\texttt{0x13} & ME   &  & reg & reg/c & op1 = op3 if E \\
+			\texttt{0x14} & MG   &  & reg & reg/c & op1 = op3 if G \\
+			\texttt{0x15} & ML   &  & reg & reg/c & op1 = op3 if L \\
+			\texttt{0x16} & MS &  & reg & reg/c & op1 = op3 if SUP \\
+			\texttt{0x17} & MI &  & reg & reg/c & op1 = op3 if OINT \\
+			\texttt{0x18} & MOFadd  &  & reg <& reg/c & op1 = op3 if O \\
 			\hline
 			\texttt{0x1a} & IOUT & reg &  & reg/c & IIO[op1] = op3/c \\
 			\texttt{0x1b} & DOUT & reg &  & reg/c & DIO[op1] = op3/c \\
