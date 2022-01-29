@@ -19,6 +19,7 @@ WIP/IO_Protocoll_v1.txt
 cmake-build-debug
 tools/VTR-toolchain/VTR/*
 
+*.~lock
 *.swp
 *.out
 *.log
