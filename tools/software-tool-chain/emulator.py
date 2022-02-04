@@ -166,25 +166,37 @@ class ComputerState:
                 new_flags |= (1 if op2 > op3 else 0) << 2
                 new_flags |= (1 if op2 < op3 else 0) << 3
                 new_flags |= (1 if (op2 + op3) >= MODULUS else 0) << 4
-                self.write_register(7, new_flags)
+                self.write_register(op1_reg, new_flags)
             case 0x13:  # ME
                 if self.register[7] & 0b0010 > 0:
                     self.write_register(op1_reg, op3)
+                else:
+                    self.write_register(op1_reg, op2)
             case 0x14:  # MG
                 if self.register[7] & 0b0100 > 0:
                     self.write_register(op1_reg, op3)
+                else:
+                    self.write_register(op1_reg, op2)
             case 0x15:  # ML
                 if self.register[7] & 0b1000 > 0:
                     self.write_register(op1_reg, op3)
+                else:
+                    self.write_register(op1_reg, op2)
             case 0x16:  # MS
                 if self.register[7] & 0b0001 > 0:
                     self.write_register(op1_reg, op3)
+                else:
+                    self.write_register(op1_reg, op2)
             case 0x17:  # MI
                 if self.register[7] & 0b0001 > 0:
                     self.write_register(op1_reg, op3)
+                else:
+                    self.write_register(op1_reg, op2)
             case 0x18:  # MOFadd
                 if self.register[7] & 0b10000 > 0:
                     self.write_register(op1_reg, op3)
+                else:
+                    self.write_register(op1_reg, op2)
             case 0x1a:  # IOUT
                 print("Instruction Out: {:04x}".format(op3))
             case 0x1b:  # DOUT

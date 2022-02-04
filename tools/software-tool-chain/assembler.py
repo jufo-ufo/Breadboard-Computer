@@ -206,6 +206,7 @@ def tokenize(program_raw_str: str, filename: str, depth=0) -> Tuple[List[Token],
 
     return program_tokens, references, token_number
 
+
 with open(INPUT_FILE) as f:
     program_raw = f.read()
 
@@ -330,7 +331,11 @@ for i, token in enumerate(program):
 
 # Writing stuff to Output file
 with open(INPUT_FILE + ".bin", "wb") as f_bin, open(INPUT_FILE + ".hex", "w") as f_hex:
+    # f_bin.write(b"\x00\x00")
+    # f_hex.write("0000\n")
     for i in program:
         if i.type == "instruction" or i.type == "data":
             f_bin.write(i.binary_data)
-            f_hex.write(i.binary_data.hex() + "\n")
+            f_hex.write("".join([i + " " for i in re.findall("....?", i.binary_data.hex())]) + "\n")
+
+print(references_index)

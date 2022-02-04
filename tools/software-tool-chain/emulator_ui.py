@@ -6,20 +6,7 @@ import time
 BASE_DELAY = 0.001
 CLK_DELAY = 0.5
 
-
-def print_frame(window: curses.window, x: int, y: int, width: int, height: int):
-    for i in range(width-1):
-        window.addstr(y, x + i + 1, "─")
-        window.addstr(y + height, x + i + 1, "─")
-
-    for i in range(height-1):
-        window.addstr(y + i + 1, x, "│")
-        window.addstr(y + i + 1, x + width, "│")
-
-    window.addstr(y, x, "┌")
-    window.addstr(y, x + width, "┐")
-    window.addstr(y + height, x, "└")
-    window.addstr(y + height, x + width, "┘")
+# │┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌
 
 
 def main(stdscr: curses.window):
@@ -41,17 +28,41 @@ def main(stdscr: curses.window):
     SIZE_Y, SIZE_X = stdscr.getmaxyx()[0] - 1, stdscr.getmaxyx()[1] - 1
     stdscr.addstr(SIZE_Y, 0, "[Q]uit [C]ontinue [S]top [R]eset [M]odify".ljust(SIZE_X+1)[:SIZE_X], curses.A_REVERSE)
 
-    print_frame(stdscr, 0, 5, SIZE_X // 2, (SIZE_Y-6) // 2)
-    print_frame(stdscr,
-                (SIZE_X - (SIZE_X // 2)*2) + SIZE_X // 2, 5,
-                -(SIZE_X - (SIZE_X // 2)*2) + SIZE_X // 2, (SIZE_Y-6) // 2
-                )
+    third_SIZE_Y = (SIZE_Y-4) // 3
+    half_SIZE_X = (SIZE_X) // 2
+
+
+
+    for i in range(third_SIZE_Y):
+        stdscr.addstr(i + 1, 0, "│")
+        stdscr.addstr(i + third_SIZE_Y + 2, 0, "│")
+        stdscr.addstr(i + third_SIZE_Y*2 + 3, 0, "│")
+        stdscr.addstr(i + 1, half_SIZE_X, "│")
+        stdscr.addstr(i + third_SIZE_Y + 2, half_SIZE_X, "│")
+        stdscr.addstr(i + third_SIZE_Y*2 + 3, half_SIZE_X, "│")
+        # stdscr.addstr(i + 1, half_SIZE_X*2, "│")
+        # stdscr.addstr(i + third_SIZE_Y + 2, half_SIZE_X*2, "│")
+        # stdscr.addstr(i + third_SIZE_Y*2 + 3, half_SIZE_X*2, "│")
+
+    stdscr.addstr(0, 0, "┌" + "─"*(half_SIZE_X-1) + "┐")
+    stdscr.addstr(third_SIZE_Y + 1, 0, "├" + "─" * (half_SIZE_X - 1) + "┤")
+    stdscr.addstr(third_SIZE_Y * 2 + 2, 0, "├" + "─" * (half_SIZE_X - 1) + "┤")
+    stdscr.addstr(third_SIZE_Y * 3 + 3, 0, "└" + "─" * (half_SIZE_X - 1) + "┘")
 
     string_in_enable = False
     string_in_max_size = 32
     string_in = ""
 
+    memory_view_window = curses.newwin(third_SIZE_Y, half_SIZE_X, 1, 1)
+
+    def render_memory_view():
+        for i in range(third_SIZE_Y):
+            for j in range(half_SIZE_X-1):
+                memory_view_window.addstr(i, j, "X")
+        memory_view_window.refresh()
+
     stdscr.refresh()
+    render_memory_view()
 
     while True:
         try:
@@ -82,7 +93,6 @@ def main(stdscr: curses.window):
 
         if time.time() - clk_start >= CLK_DELAY:
             clk_start = time.time()
-            stdscr.addstr(0, 0, str(i))
             i = i ^ 1
             stdscr.refresh()
 
