@@ -23,7 +23,7 @@ Let's build a computer from ICs!
 | Interrupt\_Controller | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       |        | [ ]          | alex     | 
 | Timer                 | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       |        | [ ]          | alex     | 
 | Freq\_Counter         | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       |        | [ ]          | alex     | 
-| Instruction\_Decoder  | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       |        | [ ]          | alex     | 
+| Instruction\_Decoder  | [X]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       |        | [ ]          | alex     | 
 | IO\_Controller        | [ ]   | [ ]       | [ ]    | [ ]        | [ ]     | [ ]       |        | [ ]          | simon    | 
 | Activation\_Module    | [X]   | [X]       | [ ]    | [X]        | [ ] x7  | [ ] x7    |        | [ ]          | alex     | 
 | Dual\_Register        | [X]   | [X]       | [X]    | [X]        | [ ] x2  | [ ] x2    |        | [ ]          | alex     | Replacement for BID-Regiser and IR
@@ -35,11 +35,11 @@ https://www.youtube.com/watch?v=9aUsTlBjspE
 | Activation Module x4 | [X]   | [X]       | [ ]    |           |             | [ ]       |
 | Register File        | [X]   | [X]       | [ ]    |           |             | [ ]       |
 | ALU                  | [X]   | [ ]       |        | [ ]       |             |           |
-| Dual Register        | [X]   | [X]       | [ ]    |           | [ ]         | [ ]       |
+| Dual Register        | [X]   | [X]       | [X]    |           | [X]         | [ ]       |
 | Memory               | [X]   | [X]       | [ ]    |           |             | [ ]       |
-| Interrupt Controller | [ ]   | [ ]       |        | [ ]       |             |           |
-| Instruction Decoader | [ ]   | [ ]       |        | [ ]       |             |           |
-| IO-Controller        | [ ]   | [ ]       |        | [ ]       |             |           |
+| Interrupt Controller | [X]   | [ ]       |        | [ ]       |             |           |
+| Instruction Decoader | [X]   |           |        | [ ]       |             |           | No Schematic need, due unstable design
+| IO-Controller        | [X]   |           |        | [ ]       |             |           | No Schematic need, has to be build spontainiously
 
 | Day | Date | Allgmein | Alexander                                    | Simon                                             |
 |-----|------|----------|----------------------------------------------|---------------------------------------------------|
@@ -67,7 +67,21 @@ https://www.youtube.com/watch?v=9aUsTlBjspE
 | Mi  | 16.2 | PCBs komen Präsentation | | |
 | Do  | 17.2 |  | Löten | Löten
 | Fr  | 18.2 |  | Löten | Löten
-| Sa  | 19.2 | Präsentation | Präsentation | Präsentation |
+X Sa  | 19.2 | Präsentation | Präsentation | Präsentation |
 | So  | 20.2 | Präsentation | Präsentation | Präsentation |
 | Mo  | 21.2 | Präsentation | Präsentation | Präsentation |
 | Di  | 22.2 | Wettbewerb   | | |
+
+
+## Was macht unseren Computer besonders?
+
+- Modular: Die Funktionialiät des Computer kann erweitern werden indem neues einfach eingesteckt wird
+- 2 Bus-Architektur: Efficenter
+- IO-System sehr vielfältig: bis zu 2^16 IO-Geräte
+- Wäre der Laufzeit anpassbares Instruktions Satz (kommt noch)
+- Keine Softwareverwaltes Berechtigungs System: Supervisor/Usermode
+
+=> Sehr einfache Anpassbarkeit und Optimierung auf Verschieden Zenarien
+
+
+
