@@ -2,11 +2,11 @@
 ; This Code is written for an 16x2 LCD display with an 1602A Controller
 ;
 
-#define Display-Port 0x0000
+#define Display-Port 0x1337
 mov IP main
 
 string:
-    db "The answer is 42" 0x00
+    db "The answer is 42!" 0x00
 
 main:
     MOV A ZERO
@@ -22,8 +22,8 @@ main:
 loop:
     LD C A string
     ADD A A 1
-    TEST C 0x0000
-    ME IP loop_end
+    TEST FLAG C 0x0000
+    ME IP IP loop_end
     DOUT B C
     MOV IP loop
 
