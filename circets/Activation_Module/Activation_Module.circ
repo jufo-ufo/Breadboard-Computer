@@ -18,7 +18,7 @@
   <lib desc="#BFH-Praktika" name="9"/>
   <lib desc="#Input/Output-Extra" name="10"/>
   <lib desc="#Soc" name="11"/>
-  <main name="main"/>
+  <main name="main_Activation_Module"/>
   <options>
     <a name="gateUndefined" val="ignore"/>
     <a name="simlimit" val="1000"/>
@@ -51,9 +51,9 @@
     <tool lib="4" name="D Flip-Flop"/>
     <tool lib="4" name="Register"/>
   </toolbar>
-  <circuit name="main">
+  <circuit name="main_Activation_Module">
     <a name="appearance" val="logisim_evolution"/>
-    <a name="circuit" val="main"/>
+    <a name="circuit" val="main_Activation_Module"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="4.0"/>
     <comp lib="0" loc="(250,440)" name="Splitter">
@@ -200,45 +200,46 @@
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="4.0"/>
     <appear>
-      <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="71" y="70">CLK_R</text>
+      <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="70" y="191">CLK_R</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="67" y="100">RE1</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="67" y="110">RE2</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="69" y="130">WE1</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="68" y="139">WE2</text>
-      <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="71" y="80">CLK_F</text>
+      <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="70" y="201">CLK_F</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="78" y="171">PatternW</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="77" y="161">PatternR</text>
-      <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="131" y="76">BUS1</text>
-      <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="131" y="94">BUS2</text>
-      <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="121" y="130">Data_Out</text>
-      <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="117" y="121">Data_In</text>
+      <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="70" y="58">BUS1</text>
+      <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="70" y="78">BUS2</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="135" y="151">RE</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="124" y="159">Mode_R</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="128" y="191">WE_F</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="128" y="181">WE_R</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="125" y="201">Mode_W</text>
-      <rect fill="none" height="150" stroke="#000000" width="100" x="50" y="60"/>
-      <circ-anchor facing="east" height="6" width="6" x="47" y="57"/>
+      <rect fill="none" height="182" stroke="#000000" width="100" x="50" y="40"/>
+      <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="120" y="81">from_Bus</text>
+      <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="129" y="60">to_Bus</text>
+      <text dominant-baseline="central" font-family="SansSerif" font-size="9" text-anchor="middle" x="135" y="211">WE</text>
+      <circ-anchor facing="east" height="6" width="6" x="47" y="37"/>
       <circ-port height="10" pin="280,360" width="10" x="145" y="195"/>
       <circ-port height="10" pin="280,80" width="10" x="145" y="155"/>
       <circ-port height="10" pin="590,180" width="10" x="145" y="145"/>
       <circ-port height="10" pin="610,510" width="10" x="145" y="205"/>
       <circ-port height="10" pin="610,590" width="10" x="145" y="185"/>
       <circ-port height="10" pin="610,640" width="10" x="145" y="175"/>
-      <circ-port height="10" pin="680,400" width="10" x="145" y="125"/>
-      <circ-port height="10" pin="750,280" width="10" x="145" y="75"/>
-      <circ-port height="10" pin="750,320" width="10" x="145" y="95"/>
+      <circ-port height="10" pin="680,400" width="10" x="145" y="75"/>
+      <circ-port height="10" pin="750,280" width="10" x="45" y="55"/>
+      <circ-port height="10" pin="750,320" width="10" x="45" y="75"/>
       <circ-port height="8" pin="110,240" width="8" x="46" y="96"/>
       <circ-port height="8" pin="110,340" width="8" x="46" y="106"/>
       <circ-port height="8" pin="110,520" width="8" x="46" y="126"/>
       <circ-port height="8" pin="110,620" width="8" x="46" y="136"/>
       <circ-port height="8" pin="140,160" width="8" x="46" y="156"/>
       <circ-port height="8" pin="140,440" width="8" x="46" y="166"/>
-      <circ-port height="8" pin="530,600" width="8" x="46" y="66"/>
-      <circ-port height="8" pin="530,650" width="8" x="46" y="76"/>
-      <circ-port height="8" pin="680,320" width="8" x="146" y="116"/>
-      <circ-port height="8" pin="760,360" width="8" x="146" y="66"/>
-      <circ-port height="8" pin="760,400" width="8" x="146" y="86"/>
+      <circ-port height="8" pin="530,600" width="8" x="46" y="196"/>
+      <circ-port height="8" pin="530,650" width="8" x="46" y="186"/>
+      <circ-port height="8" pin="680,320" width="8" x="146" y="56"/>
+      <circ-port height="8" pin="760,360" width="8" x="46" y="46"/>
+      <circ-port height="8" pin="760,400" width="8" x="46" y="66"/>
     </appear>
     <comp lib="0" loc="(110,240)" name="Pin">
       <a name="appearance" val="classic"/>

@@ -18,7 +18,7 @@
   <lib desc="#BFH-Praktika" name="9"/>
   <lib desc="#Input/Output-Extra" name="10"/>
   <lib desc="#Soc" name="11"/>
-  <main name="main"/>
+  <main name="main_Dual_Register"/>
   <options>
     <a name="gateUndefined" val="ignore"/>
     <a name="simlimit" val="1000"/>
@@ -51,9 +51,9 @@
     <tool lib="4" name="D Flip-Flop"/>
     <tool lib="4" name="Register"/>
   </toolbar>
-  <circuit name="main">
+  <circuit name="main_Dual_Register">
     <a name="appearance" val="logisim_evolution"/>
-    <a name="circuit" val="main"/>
+    <a name="circuit" val="main_Dual_Register"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="4.0"/>
   </circuit>
@@ -64,8 +64,6 @@
     <a name="simulationFrequency" val="4.0"/>
     <appear>
       <rect fill="none" height="91" stroke="#000000" width="110" x="50" y="49"/>
-      <visible-register height="10" path="/Register(370,90)" stroke-width="0" width="26" x="90" y="75"/>
-      <visible-register height="10" path="/Register(370,180)" stroke-width="0" width="26" x="90" y="65"/>
       <text dominant-baseline="central" font-family="SansSerif" font-size="8" text-anchor="middle" x="65" y="60">Data</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="8" text-anchor="middle" x="136" y="80">Data H</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="8" text-anchor="middle" x="135" y="70">Data L</text>
@@ -73,6 +71,8 @@
       <text dominant-baseline="central" font-family="SansSerif" font-size="8" text-anchor="middle" x="63" y="110">Sup</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="8" text-anchor="middle" x="66" y="90">WE_F</text>
       <text dominant-baseline="central" font-family="SansSerif" font-size="8" text-anchor="middle" x="69" y="80">CLK_R</text>
+      <visible-register height="10" path="/Register(370,90)" stroke-width="0" width="26" x="90" y="75"/>
+      <visible-register height="10" path="/Register(370,180)" stroke-width="0" width="26" x="90" y="65"/>
       <circ-anchor facing="east" height="6" width="6" x="47" y="47"/>
       <circ-port height="10" pin="440,120" width="10" x="155" y="75"/>
       <circ-port height="10" pin="440,210" width="10" x="155" y="65"/>

@@ -18,7 +18,7 @@
   <lib desc="#BFH-Praktika" name="9"/>
   <lib desc="#Input/Output-Extra" name="10"/>
   <lib desc="#Soc" name="11"/>
-  <main name="main"/>
+  <main name="main_Register_File"/>
   <options>
     <a name="gateUndefined" val="ignore"/>
     <a name="simlimit" val="1000"/>
@@ -51,9 +51,9 @@
     <tool lib="4" name="D Flip-Flop"/>
     <tool lib="4" name="Register"/>
   </toolbar>
-  <circuit name="main">
+  <circuit name="main_Register_File">
     <a name="appearance" val="logisim_evolution"/>
-    <a name="circuit" val="main"/>
+    <a name="circuit" val="main_Register_File"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="4.0"/>
     <comp lib="0" loc="(110,140)" name="Pin">
@@ -144,7 +144,7 @@
     <comp lib="1" loc="(240,70)" name="AND Gate">
       <a name="size" val="30"/>
     </comp>
-    <comp loc="(130,120)" name="RegisterFile"/>
+    <comp loc="(130,120)" name="Register_File"/>
     <wire from="(110,140)" to="(130,140)"/>
     <wire from="(110,30)" to="(110,50)"/>
     <wire from="(110,30)" to="(120,30)"/>
@@ -201,9 +201,9 @@
     <wire from="(310,250)" to="(320,250)"/>
     <wire from="(90,50)" to="(110,50)"/>
   </circuit>
-  <circuit name="RegisterFile">
+  <circuit name="Register_File">
     <a name="appearance" val="custom"/>
-    <a name="circuit" val="RegisterFile"/>
+    <a name="circuit" val="Register_File"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="4.0"/>
     <appear>
