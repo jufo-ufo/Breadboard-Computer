@@ -37,7 +37,6 @@ https://www.youtube.com/watch?v=9aUsTlBjspE
 | ALU                  | [X]   | [ ]       |        | [ ]       |             |           |
 | Dual Register        | [X]   | [X]       | [X]    |           | [X]         | [ ]       |
 | Memory               | [X]   | [X]       | [ ]    |           |             | [ ]       |
-| Interrupt Controller | [X]   | [ ]       |        | [ ]       |             |           |
 | Instruction Decoader | [X]   |           |        | [ ]       |             |           | No Schematic need, due unstable design
 | IO-Controller        | [X]   |           |        | [ ]       |             |           | No Schematic need, has to be build spontainiously
 
