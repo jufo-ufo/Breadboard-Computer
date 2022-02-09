@@ -16,8 +16,8 @@ INSTRUCTIONS: Dict[str, Tuple[str, str, str, int]] = {
     "ld": ("r", "r", "rc", 0x0b),
     "bnk1": ("", "", "rc", 0x0c),
     "bnk2": ("", "", "rc", 0x0d),
-    "push": ("", "r", "rc", 0x0e),
-    "pop": ("", "r", "", 0x0f),
+    "push": ("", "", "rc", 0x0e),
+    "pop": ("r", "", "", 0x0f),
     "call": ("", "", "rc", 0x10),
     "ret": ("", "", "", 0x11),
 

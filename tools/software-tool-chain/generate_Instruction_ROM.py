@@ -26,9 +26,13 @@ IR_MODE_L = 0b000
 IR_MODE_H = 0b001
 
 CONFIG_R_SUP = 0b00000001
-CONFIG_Zero_One = 0b00000010
-CONFIG_Reg_In_IP = 0b00000100
-CONFIG_Ink = 0b00001000
+CONFIG_UNUSED = 0b00000010
+CONFIG_Reg_B_IP = 0b00000100
+CONFIG_Inc = 0b00001000
+CONFIG_Reg_A_SP = 0b00010000
+CONFIG_Dec = 0b00100000
+CONFIG_Reg_In_SP = 0b01000000
+CONFIG_Reg_In_IP = 0b10000000
 
 WE1 = [0 for i in range(2**8)]
 WE2 = [0 for i in range(2**8)]
@@ -50,13 +54,13 @@ for i in range(2**6):
     WE2[(i << 2) + 0] = WRITE_IR | IR_MODE_H
     RE1[(i << 2) + 0] = READ_INT_CONTROLLER
     RE2[(i << 2) + 0] = READ_MEMORY
-    CONFIG[(i << 2) + 0] = CONFIG_Reg_In_IP | CONFIG_Ink
+    CONFIG[(i << 2) + 0] = CONFIG_Reg_B_IP | CONFIG_Reg_In_IP | CONFIG_Inc
 
     WE1[(i << 2) + 1] = WRITE_REG
     WE2[(i << 2) + 1] = WRITE_IR | IR_MODE_L
     RE1[(i << 2) + 1] = READ_ALU | ALU_MODE_PASS_B
     RE2[(i << 2) + 1] = READ_MEMORY
-    CONFIG[(i << 2) + 1] = CONFIG_Reg_In_IP | CONFIG_Ink
+    CONFIG[(i << 2) + 1] = CONFIG_Reg_B_IP | CONFIG_Reg_In_IP | CONFIG_Inc
 
 
 add_instruction("mov", 2, WRITE_REG, 0, READ_ALU | ALU_MODE_PASS_B, 0, 0)
@@ -64,12 +68,22 @@ add_instruction("add", 2, WRITE_REG, 0, READ_ALU | ALU_MODE_ADD, 0, 0)
 add_instruction("sub", 2, WRITE_REG, 0, READ_ALU | ALU_MODE_SUB, 0, 0)
 add_instruction("xor", 2, WRITE_REG, 0, READ_ALU | ALU_MODE_XOR, 0, 0)
 add_instruction("and", 2, WRITE_REG, 0, READ_ALU | ALU_MODE_AND, 0, 0)
-add_instruction("me", 2, WRITE_REG, 0, READ_ALU | ALU_MODE_ME, 0, 0)
-add_instruction("test", 2, WRITE_REG, 0, READ_ALU | ALU_MODE_TEST, 0, 0)
-add_instruction("str", 2, WRITE_MEMORY, 0, READ_ALU | ALU_MODE_ADD, READ_ALU | ALU_MODE_PASS_B, 0)
+
+add_instruction("str", 2, WRITE_MEMORY, 0, READ_ALU | ALU_MODE_PASS_A, READ_ALU | ALU_MODE_PASS_B, 0)
 add_instruction("ld", 2, 0, WRITE_REG, READ_ALU | ALU_MODE_ADD, READ_MEMORY, 0)
 
+add_instruction("push", 2, WRITE_REG, WRITE_MEMORY, READ_ALU | ALU_MODE_PASS_A, READ_ALU | ALU_MODE_PASS_B, CONFIG_Dec | CONFIG_Reg_A_SP | CONFIG_Reg_In_SP)
+add_instruction("pop", 2, WRITE_REG, 0, READ_ALU | ALU_MODE_PASS_A, 0, CONFIG_Reg_A_SP | CONFIG_Reg_In_SP | CONFIG_Inc)
+add_instruction("pop", 3, 0, WRITE_REG, READ_ALU | ALU_MODE_PASS_A, READ_MEMORY, CONFIG_Reg_A_SP)
 
+add_instruction("call", 2, WRITE_REG, WRITE_MEMORY, READ_ALU | ALU_MODE_PASS_A, READ_ALU | ALU_MODE_PASS_B, CONFIG_Dec | CONFIG_Reg_A_SP | CONFIG_Reg_B_IP | CONFIG_Reg_In_SP)
+add_instruction("call", 3, WRITE_REG, 0, READ_ALU | ALU_MODE_PASS_B, 0, CONFIG_Reg_In_IP)
+
+add_instruction("ret", 2, WRITE_REG, 0, READ_ALU | ALU_MODE_PASS_A, 0, CONFIG_Reg_A_SP | CONFIG_Reg_In_SP | CONFIG_Inc)
+add_instruction("ret", 3, 0, WRITE_REG, READ_ALU | ALU_MODE_PASS_A, READ_MEMORY, CONFIG_Reg_A_SP | CONFIG_Reg_In_IP)
+
+add_instruction("me", 2, WRITE_REG, 0, READ_ALU | ALU_MODE_ME, 0, 0)
+add_instruction("test", 2, WRITE_REG, 0, READ_ALU | ALU_MODE_TEST, 0, 0)
 
 add_instruction("iout", 2, WRITE_IO, 0, READ_ALU | ALU_MODE_PASS_A, READ_ALU | ALU_MODE_PASS_B, 0)
 add_instruction("dout", 2, WRITE_IO | 1, 0, READ_ALU | ALU_MODE_PASS_A, READ_ALU | ALU_MODE_PASS_B, 0)
