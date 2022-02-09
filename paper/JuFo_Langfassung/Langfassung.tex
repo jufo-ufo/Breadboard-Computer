@@ -254,7 +254,7 @@
             \texttt{0x08} & OR   & reg & reg & reg/c & op1 $=$ op2 $\lor$ op3 \\
             \texttt{0x09} & NOT  & reg &  & reg/c & op1 $=$ $\lnot$op3 \\
             \hline
-            \texttt{0x0a} & STR  & reg & reg & reg/c & memory[op2 + op3] = op1  \\
+            \texttt{0x0a} & STR  &  & reg & reg/c & memory[op3] = op2 \\
             \texttt{0x0b} & LD   & reg & reg & reg/c & op1 = memory[op2 + op3] \\
             \texttt{0x0c} & BNK1 &  &  & reg/c & Setzt BID für Bank-Slot1 \\
             \texttt{0x0d} & BNK2 &  &  & reg/c & Setzt BID für Bank-Slot2 \\
