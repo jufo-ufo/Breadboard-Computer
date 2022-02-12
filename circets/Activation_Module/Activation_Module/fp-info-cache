@@ -1,4 +1,4 @@
-19801338360217300
+19840051613844202
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -6201,6 +6201,13 @@ Through hole angled socket strip THT 1x40 2.00mm single row
 0
 78
 78
+Computer_Component_Library
+SRGB_2000
+
+
+0
+40
+40
 Connector
 Banana_Jack_1Pin
 Single banana socket, footprint - 6mm drill
@@ -59492,6 +59499,13 @@ Hamamatsu SiPM
 0
 2
 2
+OptoDevice
+Kingbright_KPS-3227
+3.2mmx2.7mm, light sensor, https://www.kingbright.com/attachments/file/psearch/000/00/00/KPS-3227SP1C(Ver.16).pdf
+KPS-3227 Ambient Light Photo Sensor
+0
+4
+4
 OptoDevice
 Kingbright_KPS-5130
 http://www.kingbright.com/attachments/file/psearch/000/00/00/KPS-5130PD7C(Ver.14).pdf
