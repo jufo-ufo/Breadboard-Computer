@@ -342,9 +342,7 @@
     }
   },
   "libraries": {
-    "pinned_footprint_libs": [
-      "Computer_Component_Library"
-    ],
+    "pinned_footprint_libs": [],
     "pinned_symbol_libs": []
   },
   "meta": {
