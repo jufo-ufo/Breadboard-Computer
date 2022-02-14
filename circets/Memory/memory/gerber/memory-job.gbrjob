@@ -5,13 +5,13 @@
       "Application": "Pcbnew",
       "Version": "6.0.1-79c1e3a40b~116~ubuntu21.10.1"
     },
-    "CreationDate": "2022-02-14T17:27:15+01:00"
+    "CreationDate": "2022-02-14T17:54:15+01:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "memory",
       "GUID": "6d656d6f-7279-42e6-9b69-6361645f7063",
-      "Revision": "v.1"
+      "Revision": "v.3"
     },
     "Size": {
       "X": 152.2,
