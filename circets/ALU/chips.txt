@@ -1,0 +1,14 @@
+**Es sind immer einzelne Gatter gemeint, nicht chip-pakete**
+--Basismodul--
+16/32-Bit Decoder
+2 4-Fach NOR
+8 XOR
+3 Breadboards
+
+--Aufbauten--
+160 Buffer
+16 AND
+16 XOR
+16 NOT
+16 Add
+
