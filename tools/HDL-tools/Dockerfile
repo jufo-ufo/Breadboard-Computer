@@ -1,7 +1,9 @@
 FROM ubuntu:20.04
 
 # Installing compiler
+RUN echo "Test"
 RUN apt-get -y update
+RUN apt-get -y upgrade
 RUN apt-get -y install apt-utils
 RUN apt-get -y install build-essential
 RUN apt-get -y install gcc-10
@@ -31,6 +33,7 @@ RUN apt-get -y install valgrind
 RUN apt-get -y install gdb 
 RUN apt-get -y install ctags
 RUN apt-get -y install curl
+RUN apt-get -y install wget
 RUN apt-get -y install libssl-dev
 RUN apt-get -y install python3-pip
 

@@ -18,6 +18,11 @@ After building it, start the container with
 docker run -it --rm --net=host -e DISPLAY=$DISPLAY -v $PWD/workspace:/workspace -v /tmp/.X11-unix:/tmp/.X11-unix vtr-toolchain:v8.0.0 bash
 ```
 
+Or simply run this to build and run VTR
+```
+./build_and_run
+```
+
 WARNING all files get deleted that are not in /workspace after exiting, so put all your imported stuff in /workspace
 
 ## Running The Toolchain
